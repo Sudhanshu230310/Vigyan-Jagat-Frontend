@@ -1,13 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import LEImage from "../../images/laboratory-equipments-and-instruments.png";
-import {
-  ImageIcon,
-  Brush,
-  Video,
-  Star
-} from 'lucide-react'
 import RightArrow from '../../icons/RightArrow';
+import { useNavigate } from 'react-router-dom';
 
 const initialApps = [
   {
@@ -21,7 +16,7 @@ const initialApps = [
     starred: false,
   },
   {
-    name: "laboratory equipments and instruments",
+    name: "Glassware & Plasticware",
     image: LEImage,
     description: "Advanced image editing and composition",
     category: "Creative",
@@ -50,7 +45,6 @@ const initialApps = [
     progress: 100,
     starred: false,
   },
-
 ]
 
 const cardVariants = {
@@ -95,7 +89,7 @@ const arrowVariants = {
 
 export function Categories() {
   const [apps, setApps] = useState(initialApps)
-
+  const navigate = useNavigate();
   const toggleStar = (name) => {
     setApps(prevApps =>
       prevApps.map(app =>
@@ -119,6 +113,9 @@ export function Categories() {
               whileHover="hover"
               whileTap={{ scale: 0.98 }}
               variants={cardVariants}
+              onClick={() => {
+                navigate(`/subcategory/${app.name}`);
+              }}
               transition={{ duration: 0.25, ease: "easeOut" }}
               className="flex flex-col h-full w-full bg-white rounded-2xl overflow-hidden border border-zinc-200"
             >

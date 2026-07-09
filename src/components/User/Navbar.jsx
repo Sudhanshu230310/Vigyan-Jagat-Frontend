@@ -42,7 +42,7 @@ export function Navbar({ sidebarOpen, onToggleSidebar, onOpenMobileMenu }) {
 
   return (
     <header
-      className="sticky top-0 z-20 flex h-16 items-center gap-3 mb-10 border-b border-gray-300 px-4"
+      className="sticky top-0 z-20 flex h-16 items-center gap-0 lg:gap-3 mb-10 border-b border-gray-300 lg:px-4"
       style={{
         background: 'rgba(255,255,255,0.95)',
         backdropFilter: 'blur(12px)',

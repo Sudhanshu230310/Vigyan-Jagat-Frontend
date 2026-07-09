@@ -16,11 +16,9 @@ export function HeroBanner({ sidebarOpen = false }) {
 
   return (
     <div className="min-h-[80vh]">
-
-
       {/* Desktop floating pill nav (lg and up only) */}
       <div
-        className="w-[min(80%,60rem)] text-md font-sans h-10 mb-3 xl:flex xl:justify-center xl:items-center hidden xl:gap-24 2xl:gap-30 xl:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white transition-all duration-300 ease-in-out"
+        className="w-[min(80%,60rem)] text-md font-sans h-10 xl:flex xl:justify-center xl:items-center hidden xl:gap-24 2xl:gap-30 xl:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white transition-all duration-300 ease-in-out"
         style={{ left: pillLeft }}
       >
         {navItems.map((item) => (
@@ -30,7 +28,7 @@ export function HeroBanner({ sidebarOpen = false }) {
         ))}
       </div>
 
-      <div className=" h-10 text-md mb-10 font-sans  visible lg:hidden flex">
+      <div className="h-10 text-md mb-10 font-sans  visible lg:hidden flex">
         <div className='w-full border border-gray-300 mx-2 rounded-xl h-full pl-3 flex items-center'>
           <SearchIcon />
           <input type="text" placeholder='Search...' className='w-full px-4 h-full outline-none' /></div>
@@ -43,7 +41,7 @@ export function HeroBanner({ sidebarOpen = false }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="overflow-hidden bg-gradient-to-br from-black to-blue-400 rounded-3xl p-6 sm:p-8 min-h-[22rem] md:h-80 xl:mt-24 text-white"
+          className="overflow-hidden bg-gradient-to-br from-black to-blue-400 rounded-3xl p-6 sm:p-8 min-h-[22rem] md:h-80 xl:mt-16 text-white"
         >
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between h-full">
             {/* Left: Text content */}

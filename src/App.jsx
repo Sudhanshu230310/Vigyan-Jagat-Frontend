@@ -1,12 +1,8 @@
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
-import { Navbar } from './components/User/Navbar'
-import { Sidebar } from './components/User/Sidebar'
-import { HeroBanner } from './components/Common/HeroBanner'
-import { StatsBar } from './components/User/StatsBar'
-import { Categories } from './components/User/Categories'
-import { WhyVigyanJagat } from './components/User/WhyVigyanJagat'
-import { Footer } from './components/Common/Footer'
+import UserDashboard from './Dashboards/User/User'
+import Subcategory from './components/User/Subcategories'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -14,41 +10,22 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[oklch(0.99_0_0)]">
-      {/* Sidebar */}
-      <Sidebar
-        isOpen={sidebarOpen}
-        isMobile={false}
-        onClose={() => setSidebarOpen(false)}
-      />
-      {/* Mobile sidebar */}
-      <Sidebar
-        isOpen={mobileMenuOpen}
-        isMobile={true}
-        onClose={() => setMobileMenuOpen(false)}
-      />
-
-      {/* Main content area offset by sidebar width on desktop */}
-      <div
-        className="transition-all duration-300 ease-in-out"
-        style={{ paddingLeft: sidebarOpen ? '16rem' : '0' }}
-      >
-        <Navbar
-          sidebarOpen={sidebarOpen}
-          onToggleSidebar={() => setSidebarOpen((v) => !v)}
-          onOpenMobileMenu={() => setMobileMenuOpen(true)}
-        />
-
-        {/* Page content */}
-        <main className="">
-          <div className="px-6 md:px-8">
-          <HeroBanner sidebarOpen={sidebarOpen} />
-          </div>
-          <Categories />
-          <WhyVigyanJagat />
-        </main>
-
-        <Footer />
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <UserDashboard
+                sidebarOpen={sidebarOpen}
+                setSidebarOpen={setSidebarOpen}
+                mobileMenuOpen={mobileMenuOpen}
+                setMobileMenuOpen={setMobileMenuOpen}
+              />
+            }
+          />
+          <Route path="/subcategory/:categoryName" element={<Subcategory />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }

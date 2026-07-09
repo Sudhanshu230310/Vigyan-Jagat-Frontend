@@ -82,15 +82,15 @@ export function WhyVigyanJagat() {
   }, [])
 
   return (
-    <div className="w-full min-h-screen  flex flex-col justify-center">
-      <section className="py-12 pb-20 bg-gray-200 px-4 md:px-8 rounded-3xl">
+    <div className="w-full min-h-screen flex flex-col justify-center">
+      <section className="py-12 pb-20 bg-gray-200 px-4 md:px-8 ">
         {/* Heading */}
         <h2 className="flex justify-center text-3xl md:text-4xl font-semibold font-sans mb-10 text-zinc-900 tracking-tight">
           Why Vigyan Jagat ??
         </h2>
 
         {/* Carousel container */}
-        <div className="relative border border-gray-300 rounded-3xl p-4 md:p-6 bg-gray-200">
+        <div className="relative p-4 md:p-6 bg-gray-200">
           {/* Cards Scrollable Row */}
           <div
             ref={scrollContainerRef}
