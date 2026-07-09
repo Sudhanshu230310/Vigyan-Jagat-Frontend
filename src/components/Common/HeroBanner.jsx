@@ -18,7 +18,7 @@ export function HeroBanner({ sidebarOpen = false }) {
     <div className="min-h-[80vh]">
       {/* Desktop floating pill nav (lg and up only) */}
       <div
-        className="w-[min(80%,60rem)] text-md font-sans h-10 xl:flex xl:justify-center xl:items-center hidden xl:gap-24 2xl:gap-30 xl:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white transition-all duration-300 ease-in-out"
+        className="w-[min(80%,60rem)] xl:mt-6 text-md font-sans h-10 xl:flex xl:justify-center xl:items-center hidden xl:gap-24 2xl:gap-30 xl:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white transition-all duration-300 ease-in-out"
         style={{ left: pillLeft }}
       >
         {navItems.map((item) => (
@@ -28,7 +28,7 @@ export function HeroBanner({ sidebarOpen = false }) {
         ))}
       </div>
 
-      <div className="h-10 text-md mb-10 font-sans  visible lg:hidden flex">
+      <div className="h-10 text-md mb-10 font-sans visible mx-2 lg:hidden flex">
         <div className='w-full border border-gray-300 mx-2 rounded-xl h-full pl-3 flex items-center'>
           <SearchIcon />
           <input type="text" placeholder='Search...' className='w-full px-4 h-full outline-none' /></div>
@@ -36,7 +36,7 @@ export function HeroBanner({ sidebarOpen = false }) {
       </div>
 
 
-      <section className="relative">
+      <section className="relative xl:mt-30 lg:mt-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

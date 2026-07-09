@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 const initialApps = [
   {
-    name: "laboratory equipments and instruments",
+    name: "Laboratory Equipments and Instruments",
     image: LEImage,
     description: "Advanced image editing and composition",
     category: "Creative",
