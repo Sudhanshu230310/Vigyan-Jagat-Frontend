@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const sidebarItems = [
   {
@@ -69,7 +70,7 @@ const SettingsIcon = () => (
 
 export function Sidebar({ isOpen, isMobile, onClose }) {
   const [expandedItems, setExpandedItems] = useState({})
-
+  const navigate = useNavigate();
   const toggleExpanded = (title) => {
     setExpandedItems((prev) => ({ ...prev, [title]: !prev[title] }))
   }
@@ -111,7 +112,7 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
       {/* Nav items — scrollable */}
       <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-3">
         {sidebarItems.map((item) => (
-          <div key={item.title}>
+          <div key={item.title} onClick={() => { navigate(item.url) }}>
             <button
               onClick={() => item.items && toggleExpanded(item.title)}
               className={`flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm font-medium transition-colors ${item.isActive
