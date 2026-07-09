@@ -41,7 +41,7 @@ function App() {
         {/* Page content */}
         <main className="">
           <div className="px-6 md:px-8">
-            <HeroBanner />
+          <HeroBanner sidebarOpen={sidebarOpen} />
           </div>
           <Categories />
           <WhyVigyanJagat />

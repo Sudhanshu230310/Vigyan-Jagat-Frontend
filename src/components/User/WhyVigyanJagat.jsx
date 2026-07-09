@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useRef, useEffect } from 'react'
 
 const features = [
   {
@@ -35,57 +34,72 @@ const features = [
 ]
 
 export function WhyVigyanJagat() {
-  const [startIndex, setStartIndex] = useState(0)
+  const scrollContainerRef = useRef(null)
 
-  const visibleCount = 4
-  const maxStart = Math.max(0, features.length - visibleCount)
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
 
-  const handlePrev = () => {
-    setStartIndex((prev) => Math.max(0, prev - 1))
-  }
+    let intervalId
 
-  const handleNext = () => {
-    setStartIndex((prev) => Math.min(maxStart, prev + 1))
-  }
+    const startAutoScroll = () => {
+      intervalId = setInterval(() => {
+        const { scrollLeft, scrollWidth, clientWidth } = container
 
-  const visibleFeatures = features.slice(startIndex, startIndex + visibleCount)
+        // Wrap around to 0 if we reached the end (with 10px tolerance)
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          container.scrollTo({
+            left: 0,
+            behavior: 'smooth',
+          })
+        } else {
+          container.scrollTo({
+            left: scrollLeft + 300, // Scroll roughly by one card width
+            behavior: 'smooth',
+          })
+        }
+      }, 3000) // Scroll every 3 seconds
+    }
+
+    startAutoScroll()
+
+    // Pause scrolling when mouse is over or screen is touched
+    const handlePause = () => clearInterval(intervalId)
+    const handleResume = () => startAutoScroll()
+
+    container.addEventListener('mouseenter', handlePause)
+    container.addEventListener('mouseleave', handleResume)
+    container.addEventListener('touchstart', handlePause, { passive: true })
+    container.addEventListener('touchend', handleResume, { passive: true })
+
+    return () => {
+      clearInterval(intervalId)
+      container.removeEventListener('mouseenter', handlePause)
+      container.removeEventListener('mouseleave', handleResume)
+      container.removeEventListener('touchstart', handlePause)
+      container.removeEventListener('touchend', handleResume)
+    }
+  }, [])
 
   return (
-    <div className="min-h-screen flex justify-center items-center">
-      <section className="py-12 pb-30 bg-gray-200 px-6 md:px-8">
+    <div className="w-full min-h-screen  flex flex-col justify-center">
+      <section className="py-12 pb-20 bg-gray-200 px-4 md:px-8 rounded-3xl">
         {/* Heading */}
         <h2 className="flex justify-center text-3xl md:text-4xl font-semibold font-sans mb-10 text-zinc-900 tracking-tight">
           Why Vigyan Jagat ??
         </h2>
 
         {/* Carousel container */}
-        <div className="relative border border-gray-300 rounded-3xl p-6 md:p-8">
-          {/* Left Arrow */}
-          <button
-            onClick={handlePrev}
-            disabled={startIndex === 0}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full border-2 border-zinc-400 bg-white/80 backdrop-blur-sm text-zinc-600 flex items-center justify-center transition-all duration-200 hover:bg-white hover:border-zinc-600 hover:text-zinc-900 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/80 disabled:hover:border-zinc-400 disabled:hover:text-zinc-600"
-            aria-label="Previous"
+        <div className="relative border border-gray-300 rounded-3xl p-4 md:p-6 bg-gray-200">
+          {/* Cards Scrollable Row */}
+          <div
+            ref={scrollContainerRef}
+            className="flex gap-4 overflow-x-auto scroll-smooth no-scrollbar py-2 px-1"
           >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-
-          {/* Right Arrow */}
-          <button
-            onClick={handleNext}
-            disabled={startIndex >= maxStart}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full border-2 border-zinc-400 bg-white/80 backdrop-blur-sm text-zinc-600 flex items-center justify-center transition-all duration-200 hover:bg-white hover:border-zinc-600 hover:text-zinc-900 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-white/80 disabled:hover:border-zinc-400 disabled:hover:text-zinc-600"
-            aria-label="Next"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-
-          {/* Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mx-8">
-            {visibleFeatures.map((feature) => (
+            {features.map((feature) => (
               <div
                 key={feature.title}
-                className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow duration-300 min-h-[220px]"
+                className="bg-white border border-gray-300 rounded-2xl p-6 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow duration-300 min-h-[200px] w-[260px] sm:w-[320px] flex-shrink-0"
               >
                 <h3 className="text-base font-bold text-zinc-900 mb-4 leading-snug">
                   {feature.title}
@@ -101,3 +115,4 @@ export function WhyVigyanJagat() {
     </div>
   )
 }
+

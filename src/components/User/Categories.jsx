@@ -1,16 +1,18 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import LEImage from "../../images/laboratory-equipments-and-instruments.png";
 import {
   ImageIcon,
   Brush,
   Video,
   Star
 } from 'lucide-react'
+import RightArrow from '../../icons/RightArrow';
 
 const initialApps = [
   {
-    name: "PixelMaster",
-    icon: <ImageIcon className="text-violet-500 w-6 h-6" />,
+    name: "laboratory equipments and instruments",
+    image: LEImage,
     description: "Advanced image editing and composition",
     category: "Creative",
     recent: true,
@@ -19,36 +21,77 @@ const initialApps = [
     starred: false,
   },
   {
-    name: "VectorPro",
-    icon: <Brush className="text-orange-500 w-6 h-6" />,
-    description: "Professional vector graphics creation",
+    name: "laboratory equipments and instruments",
+    image: LEImage,
+    description: "Advanced image editing and composition",
     category: "Creative",
     recent: true,
     new: false,
     progress: 100,
-    starred: true,
+    starred: false,
   },
   {
-    name: "VideoStudio",
-    icon: <Video className="text-pink-500 w-6 h-6" />,
-    description: "Cinematic video editing and production",
-    category: "Video",
+    name: "laboratory equipments and instruments",
+    image: LEImage,
+    description: "Advanced image editing and composition",
+    category: "Creative",
     recent: true,
     new: false,
     progress: 100,
     starred: false,
   },
   {
-    name: "VideoStudio",
-    icon: <Video className="text-pink-500 w-6 h-6" />,
-    description: "Cinematic video editing and production",
-    category: "Video",
+    name: "laboratory equipments and instruments",
+    image: LEImage,
+    description: "Advanced image editing and composition",
+    category: "Creative",
     recent: true,
     new: false,
     progress: 100,
     starred: false,
-  }
+  },
+
 ]
+
+const cardVariants = {
+  initial: {
+    scale: 1,
+    y: 0,
+    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)"
+  },
+  hover: {
+    scale: 1.03,
+    y: -6,
+    boxShadow: `
+      0 15px 35px rgba(59, 130, 246, 0.25),
+      0 25px 60px rgba(173, 216, 230, 0.70),
+      0 0 50px rgba(180, 255, 255, 0.50)
+    `
+  }
+}
+
+const imageVariants = {
+  initial: { scale: 1 },
+  hover: { scale: 1.04 }
+}
+
+const textVariants = {
+  initial: {
+    opacity: 0,
+    width: 0,
+    marginRight: 0
+  },
+  hover: {
+    opacity: 1,
+    width: "auto",
+    marginRight: 6
+  }
+}
+
+const arrowVariants = {
+  initial: { x: 0, color: "black" }, // text-blue-600
+  hover: { x: 4, color: "black" }    // text-blue-700
+}
 
 export function Categories() {
   const [apps, setApps] = useState(initialApps)
@@ -62,57 +105,56 @@ export function Categories() {
   }
 
   return (
-    <div className="min-h-screen flex items-center  justify-center">
-      <section className="space-y-4 w-full px-6 pb-20 md:px-8 py-10 bg-black text-white">
+    <div className="min-h-screen flex items-center justify-center">
+      <section className="space-y-4 w-full px-6 pb-20 md:px-8 py-10 text-black">
         <div className="flex items-center justify-center">
-          <h2 className="text-4xl pb-10 font-semibold font-sans ">Explore Categorie </h2>
+          <h2 className="text-4xl pb-10 font-semibold font-sans">Explore Categories</h2>
         </div>
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {apps.map((app) => (
             <motion.div
               key={app.name}
-              whileHover={{ scale: 1.02, y: -5 }}
+              initial="initial"
+              whileHover="hover"
               whileTap={{ scale: 0.98 }}
-              className="flex"
+              variants={cardVariants}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="flex flex-col h-full w-full bg-white rounded-2xl overflow-hidden border border-zinc-200"
             >
-              {/* Custom Card component container with premium border hover effects */}
-              <div className="flex flex-col w-full overflow-hidden rounded-3xl border-2 border-[oklch(0.92_0_0)] bg-white p-5 hover:border-[oklch(0.45_0.18_270_/_0.5)] hover:shadow-lg transition-all duration-300">
+              {/* Image container */}
+              <div className="overflow-hidden w-full relative">
+                <motion.img
+                  variants={imageVariants}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  src={app.image}
+                  alt={app.name}
+                  className="w-full object-cover rounded-t-2xl pb-4"
+                />
+              </div>
 
-                {/* CardHeader */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex h-40 w-12 items-center justify-center rounded-2xl bg-[oklch(0.96_0_0)]">
-                    {app.icon}
-                  </div>
-                  <button
-                    onClick={() => toggleStar(app.name)}
-                    className={`flex h-8 w-8 items-center justify-center rounded-2xl transition-colors duration-200 ${app.starred
-                      ? 'text-amber-500 hover:bg-amber-50'
-                      : 'text-[oklch(0.60_0_0)] hover:bg-[oklch(0.96_0_0)]'
-                      }`}
-                  >
-                    <Star
-                      className="h-4 w-4"
-                      fill={app.starred ? "currentColor" : "none"}
-                    />
-                  </button>
+              {/* Text & Button content */}
+              <div className="flex flex-col justify-between items-center text-center p-6 pt-0 w-full flex-grow">
+                <div className="mb-4">
+                  <div className="text-lg font-bold text-[oklch(0.12_0_0)] mb-2 capitalize">{app.name}</div>
+                  <div className="text-sm text-zinc-500 leading-relaxed">{app.description}</div>
                 </div>
 
-                {/* CardContent */}
-                <div className="flex-1 mb-5">
-                  <h3 className="text-lg font-semibold text-[oklch(0.12_0_0)] mb-1">{app.name}</h3>
-                  <p className="text-sm text-[oklch(0.50_0_0)] leading-relaxed">{app.description}</p>
-                </div>
-
-                {/* CardFooter */}
-                <div>
-                  <button
-                    className="w-full rounded-2xl py-2.5 text-sm font-semibold text-[oklch(0.20_0_0)] bg-[oklch(0.96_0_0)] hover:bg-[oklch(0.92_0_0)] active:bg-[oklch(0.88_0_0)] transition-colors duration-200"
+                <div className="flex items-center justify-center font-bold cursor-pointer">
+                  <motion.span
+                    variants={textVariants}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="inline-block overflow-hidden whitespace-nowrap text-black"
                   >
                     Open
-                  </button>
+                  </motion.span>
+                  <motion.div
+                    variants={arrowVariants}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                  >
+                    <RightArrow />
+                  </motion.div>
                 </div>
-
               </div>
             </motion.div>
           ))}

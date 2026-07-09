@@ -74,13 +74,13 @@ export function Navbar({ sidebarOpen, onToggleSidebar, onOpenMobileMenu }) {
         </h1>
 
         {/* Right actions */}
-        <div className="flex justify-end items-center pr-6 md:pr-8 gap-1.5 w-[40%]">
+        <div className="lg:flex lg:visible hidden justify-end items-center pr-6 md:pr-8 gap-1.5 w-[40%]">
           <div className="flex items-center border border-gray-400 py-1 pl-4 rounded-xl w-[90%]">
             <SearchIcon />
             <input type="text" placeholder="Search..." className="w-full px-2 h-full outline-0"
             />
           </div>
-          <button className="bg-blue-600 text-white px-8 py-1 rounded-xl">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-1 rounded-xl transition-colors cursor-pointer">
             Search
           </button>
         </div>
