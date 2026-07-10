@@ -112,7 +112,7 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
       {/* Nav items — scrollable */}
       <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-3">
         {sidebarItems.map((item) => (
-          <div key={item.title} onClick={() => { navigate(`${item.url}` || "/") }}>
+          <div key={item.title} >
             <button
               onClick={() => item.items && toggleExpanded(item.title)}
               className={`flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm font-medium transition-colors ${item.isActive
@@ -120,7 +120,7 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
                 : 'text-[oklch(0.30_0_0)] hover:bg-[oklch(0.96_0_0)]'
                 }`}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 cursor-pointer" onClick={() => { navigate(`${item.url}` || "/") }}>
                 <span className={item.isActive ? 'text-[oklch(0.45_0.18_270)]' : 'text-[oklch(0.55_0_0)]'}>
                   {item.icon}
                 </span>
