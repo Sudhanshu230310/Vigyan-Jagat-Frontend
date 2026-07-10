@@ -9,6 +9,7 @@ const sidebarItems = [
         <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
       </svg>
     ),
+    url: '/',
     isActive: true,
   },
   {
@@ -30,6 +31,7 @@ const sidebarItems = [
         <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z" /><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65" /><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65" />
       </svg>
     ),
+    url: '#',
   },
   {
     title: 'Contact',
@@ -38,6 +40,7 @@ const sidebarItems = [
         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
       </svg>
     ),
+    url: '#',
   },
 ]
 
@@ -70,13 +73,23 @@ const SettingsIcon = () => (
 
 export function Sidebar({ isOpen, isMobile, onClose }) {
   const [expandedItems, setExpandedItems] = useState({})
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  
   const toggleExpanded = (title) => {
     setExpandedItems((prev) => ({ ...prev, [title]: !prev[title] }))
   }
 
+  const handleItemClick = (item) => {
+    if (item.items) {
+      toggleExpanded(item.title)
+    } else if (item.url) {
+      navigate(item.url)
+      if (isMobile) onClose()
+    }
+  }
+
   const sidebarContent = (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-white">
       {/* Logo area */}
       <div className="flex items-center justify-between p-4 border-b border-[oklch(0.90_0_0)]">
         <div className="flex items-center gap-3">
@@ -100,7 +113,7 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
         {isMobile && (
           <button
             onClick={onClose}
-            className="flex items-center justify-center w-8 h-8 rounded-xl hover:bg-[oklch(0.96_0_0)] text-[oklch(0.45_0_0)] transition-colors"
+            className="flex items-center justify-center w-8 h-8 rounded-xl hover:bg-[oklch(0.96_0_0)] text-[oklch(0.45_0_0)] transition-colors cursor-pointer"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 6 6 18" /><path d="m6 6 12 12" />
@@ -111,51 +124,58 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
 
       {/* Nav items — scrollable */}
       <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-3">
-        {sidebarItems.map((item) => (
-          <div key={item.title} >
-            <button
-              onClick={() => item.items && toggleExpanded(item.title)}
-              className={`flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm font-medium transition-colors ${item.isActive
-                ? 'bg-[oklch(0.94_0.04_270)] text-[oklch(0.35_0.20_270)]'
-                : 'text-[oklch(0.30_0_0)] hover:bg-[oklch(0.96_0_0)]'
+        {sidebarItems.map((item) => {
+          const hasSubItems = !!item.items
+          return (
+            <div key={item.title}>
+              <div
+                onClick={() => handleItemClick(item)}
+                className={`flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm font-medium transition-colors cursor-pointer ${
+                  item.isActive
+                    ? 'bg-[oklch(0.94_0.04_270)] text-[oklch(0.35_0.20_270)]'
+                    : 'text-[oklch(0.30_0_0)] hover:bg-[oklch(0.96_0_0)]'
                 }`}
-            >
-              <div className="flex items-center gap-3 cursor-pointer" onClick={() => { navigate(`${item.url}` || "/") }}>
-                <span className={item.isActive ? 'text-[oklch(0.45_0.18_270)]' : 'text-[oklch(0.55_0_0)]'}>
-                  {item.icon}
-                </span>
-                <span>{item.title}</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                {item.badge && (
-                  <span className="rounded-full border border-[oklch(0.85_0_0)] px-2 py-0.5 text-xs font-normal text-[oklch(0.45_0_0)]">
-                    {item.badge}
+              >
+                <div className="flex items-center gap-3">
+                  <span className={item.isActive ? 'text-[oklch(0.45_0.18_270)]' : 'text-[oklch(0.55_0_0)]'}>
+                    {item.icon}
                   </span>
-                )}
-                {item.items && <ChevronDownIcon rotated={expandedItems[item.title]} />}
+                  <span>{item.title}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {item.badge && (
+                    <span className="rounded-full border border-[oklch(0.85_0_0)] px-2 py-0.5 text-xs font-normal text-[oklch(0.45_0_0)]">
+                      {item.badge}
+                    </span>
+                  )}
+                  {hasSubItems && <ChevronDownIcon rotated={expandedItems[item.title]} />}
+                </div>
               </div>
-            </button>
 
-            {item.items && expandedItems[item.title] && (
-              <div className="mt-0.5 ml-6 border-l border-[oklch(0.88_0_0)] pl-3 space-y-0.5">
-                {item.items.map((sub) => (
-                  <a
-                    key={sub.title}
-                    href={sub.url}
-                    className="flex items-center justify-between rounded-2xl px-3 py-2 text-sm text-[oklch(0.40_0_0)] hover:bg-[oklch(0.96_0_0)] transition-colors"
-                  >
-                    {sub.title}
-                    {sub.badge && (
-                      <span className="rounded-full border border-[oklch(0.85_0_0)] px-2 py-0.5 text-xs text-[oklch(0.45_0_0)]">
-                        {sub.badge}
-                      </span>
-                    )}
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
+              {hasSubItems && expandedItems[item.title] && (
+                <div className="mt-0.5 ml-6 border-l border-[oklch(0.88_0_0)] pl-3 space-y-0.5">
+                  {item.items.map((sub) => (
+                    <div
+                      key={sub.title}
+                      onClick={() => {
+                        navigate(sub.url)
+                        if (isMobile) onClose()
+                      }}
+                      className="flex items-center justify-between rounded-2xl px-3 py-2 text-sm text-[oklch(0.40_0_0)] hover:bg-[oklch(0.96_0_0)] transition-colors cursor-pointer"
+                    >
+                      {sub.title}
+                      {sub.badge && (
+                        <span className="rounded-full border border-[oklch(0.85_0_0)] px-2 py-0.5 text-xs text-[oklch(0.45_0_0)]">
+                          {sub.badge}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )
+        })}
       </nav>
     </div>
   )
