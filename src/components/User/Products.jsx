@@ -117,7 +117,7 @@ export default function Products() {
     useEffect(() => {
         setLoading(true);
         setError(null);
-        axios.get(`http://localhost:8000/${SubcategoryName}`)
+        axios.get(`https://vigyan-jagat-backend.onrender.com/${SubcategoryName}`)
             .then(res => {
                 setProducts(res.data.items || []);
             })
