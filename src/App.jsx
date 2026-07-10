@@ -7,6 +7,7 @@ import { Footer } from './components/Common/Footer'
 import UserDashboard from './Dashboards/User/User'
 import Subcategory from './components/User/Subcategories'
 import { ScrollToTop } from './components/Common/ScrollToTop'
+import Products from './components/User/Products'
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -48,6 +49,7 @@ function App() {
                 element={<UserDashboard sidebarOpen={sidebarOpen} />}
               />
               <Route path="/subcategory/:categoryName" element={<Subcategory />} />
+              <Route path="/products/:SubcategoryName" element={<Products />} />
             </Routes>
           </div>
 

@@ -8,42 +8,152 @@ import { useNavigate } from 'react-router-dom';
 
 const LabEquipmentsAndInstruments = [
     {
-        name: "Laboratory Equipments and Instruments",
+        name: "Organic Chemicals",
         image: LEImage,
-        description: "Advanced image editing and composition",
-        category: "Creative",
+        description: "High-quality organic chemicals for industrial and commercial applications.",
+        category: "Chemicals",
+        recent: true,
+        new: true,
+        progress: 100,
+        starred: true,
+    },
+    {
+        name: "Inorganic Chemicals",
+        image: LEImage,
+        description: "Industrial-grade inorganic chemicals for manufacturing and processing.",
+        category: "Chemicals",
+        recent: true,
+        new: true,
+        progress: 100,
+        starred: false,
+    },
+    {
+        name: "Acids",
+        image: LEImage,
+        description: "Organic and mineral acids for laboratory and industrial use.",
+        category: "Chemicals",
+        recent: true,
+        new: false,
+        progress: 100,
+        starred: true,
+    },
+    {
+        name: "Alkalis",
+        image: LEImage,
+        description: "Premium alkalis and caustic chemicals for industrial applications.",
+        category: "Chemicals",
         recent: true,
         new: false,
         progress: 100,
         starred: false,
+    },
+    {
+        name: "Industrial Solvents",
+        image: LEImage,
+        description: "Pure solvents for pharmaceuticals, paints, coatings, and manufacturing.",
+        category: "Chemicals",
+        recent: true,
+        new: true,
+        progress: 100,
+        starred: true,
+    },
+    {
+        name: "Laboratory Chemicals",
+        image: LEImage,
+        description: "Analytical and research-grade chemicals for laboratories.",
+        category: "Laboratory",
+        recent: true,
+        new: false,
+        progress: 100,
+        starred: false,
+    },
+    {
+        name: "Laboratory Equipments & Instruments",
+        image: LEImage,
+        description: "Precision laboratory instruments for research, testing, and analysis.",
+        category: "Laboratory",
+        recent: true,
+        new: true,
+        progress: 100,
+        starred: true,
     },
     {
         name: "Glassware & Plasticware",
-        image: GWImage,
-        description: "Advanced image editing and composition",
-        category: "Creative",
+        image: LEImage,
+        description: "Durable laboratory glassware and plasticware for scientific applications.",
+        category: "Laboratory",
         recent: true,
         new: false,
         progress: 100,
         starred: false,
     },
     {
-        name: "laboratory equipments and instruments",
+        name: "Water Treatment Chemicals",
         image: LEImage,
-        description: "Advanced image editing and composition",
-        category: "Creative",
+        description: "Effective chemicals for wastewater and drinking water treatment.",
+        category: "Industrial",
         recent: true,
         new: false,
         progress: 100,
         starred: false,
     },
     {
-        name: "laboratory equipments and instruments",
+        name: "Food Chemicals",
         image: LEImage,
-        description: "Advanced image editing and composition",
-        category: "Creative",
+        description: "Food-grade chemicals and additives for food processing industries.",
+        category: "Food",
+        recent: true,
+        new: true,
+        progress: 100,
+        starred: true,
+    },
+    {
+        name: "Pharmaceutical Chemicals",
+        image: LEImage,
+        description: "High-purity chemicals for pharmaceutical manufacturing.",
+        category: "Pharmaceutical",
         recent: true,
         new: false,
+        progress: 100,
+        starred: true,
+    },
+    {
+        name: "Specialty Chemicals",
+        image: LEImage,
+        description: "Specialty chemicals for advanced industrial applications.",
+        category: "Chemicals",
+        recent: true,
+        new: true,
+        progress: 100,
+        starred: false,
+    },
+    {
+        name: "Textile Chemicals",
+        image: LEImage,
+        description: "Performance chemicals for textile processing and finishing.",
+        category: "Industrial",
+        recent: true,
+        new: false,
+        progress: 100,
+        starred: false,
+    },
+    {
+        name: "Cleaning Chemicals",
+        image: LEImage,
+        description: "Industrial cleaning chemicals for commercial and manufacturing facilities.",
+        category: "Industrial",
+        recent: true,
+        new: false,
+        progress: 100,
+        starred: false,
+    },
+    {
+        name: "Agro Chemicals",
+        image: LEImage,
+        description: "Agricultural chemicals for crop protection and productivity.",
+        category: "Agriculture",
+        recent: true,
+        new: true,
         progress: 100,
         starred: false,
     },
@@ -155,7 +265,7 @@ export default function Subcategory() {
                                 whileTap={{ scale: 0.98 }}
                                 variants={cardVariants}
                                 onClick={() => {
-                                    navigate(`/subcategory/${app.name}`);
+                                    navigate(`/products/${app.name}`);
                                 }}
                                 transition={{ duration: 0.25, ease: "easeOut" }}
                                 className="flex flex-col h-full w-full bg-white rounded-2xl overflow-hidden border border-zinc-200"
@@ -217,7 +327,7 @@ export default function Subcategory() {
                                 whileTap={{ scale: 0.98 }}
                                 variants={cardVariants}
                                 onClick={() => {
-                                    navigate(`/subcategory/${app.name}`);
+                                    navigate(`/products/${app.name}`);
                                 }}
                                 transition={{ duration: 0.25, ease: "easeOut" }}
                                 className="flex flex-col h-full w-full bg-white rounded-2xl overflow-hidden border border-zinc-200"
