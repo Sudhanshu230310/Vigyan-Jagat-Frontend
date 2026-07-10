@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import SearchIcon from '../../icons/Search'
+import { useNavigate } from 'react-router-dom'
 
 const MenuIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -9,6 +10,7 @@ const MenuIcon = () => (
 
 
 export function Navbar({ sidebarOpen, onToggleSidebar, onOpenMobileMenu }) {
+  const navigate = useNavigate();
   const [activeTooltip, setActiveTooltip] = useState(null)
 
   const NavButton = ({ id, icon, tooltip, badge }) => (
@@ -53,7 +55,7 @@ export function Navbar({ sidebarOpen, onToggleSidebar, onOpenMobileMenu }) {
       <button
         id="mobile-menu-btn"
         onClick={onOpenMobileMenu}
-        className="flex md:hidden items-center justify-center w-16 h-16 rounded-2xl font-bold text-black hover:bg-[oklch(0.95_0_0)] transition-colors"
+        className="flex md:hidden cursor-pointer items-center justify-center w-16 h-16 rounded-2xl font-bold text-black  hover:bg-[oklch(0.95_0_0)] transition-colors"
       >
         <MenuIcon />
       </button>
@@ -62,15 +64,15 @@ export function Navbar({ sidebarOpen, onToggleSidebar, onOpenMobileMenu }) {
       <button
         id="sidebar-toggle-btn"
         onClick={onToggleSidebar}
-        className="hidden md:flex items-center justify-center w-12 h-12 rounded-2xl text-black hover:bg-[oklch(0.95_0_0)] transition-colors"
+        className="hidden cursor-pointer md:flex items-center justify-center w-12 h-12 rounded-2xl text-black hover:bg-[oklch(0.95_0_0)] transition-colors"
       >
         <MenuIcon />
       </button>
 
       {/* Title */}
       <div className="flex flex-1 items-center justify-between">
-        <h1 className="text-[1.4rem] font-bold text-[oklch(0.12_0_0)]">
-          <div className="flex">Vigyan Jagat</div>
+        <h1 className="text-[1.4rem] font-semibold text-[oklch(0.12_0_0)]">
+          <div onClick={() => { navigate('/') }} className="flex cursor-pointer font-sans ">Vigyan Jagat</div>
         </h1>
 
         {/* Right actions */}

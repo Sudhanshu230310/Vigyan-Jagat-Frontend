@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import LEImage from "../../images/laboratory-equipments-and-instruments.png";
+import GWImage from "../../images/glassware.png"
 import RightArrow from '../../icons/RightArrow';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,7 +18,7 @@ const initialApps = [
   },
   {
     name: "Glassware & Plasticware",
-    image: LEImage,
+    image: GWImage,
     description: "Advanced image editing and composition",
     category: "Creative",
     recent: true,
@@ -102,7 +103,7 @@ export function Categories() {
     <div className="min-h-screen flex items-center justify-center">
       <section className="space-y-4 w-full px-6 pb-20 md:px-8 py-10 text-black">
         <div className="flex items-center justify-center">
-          <h2 className="text-4xl pb-10 font-semibold font-sans">Explore Categories</h2>
+          <h2 className="text-4xl pb-10 from-neutral-950 font-sans">Explore Categories</h2>
         </div>
 
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

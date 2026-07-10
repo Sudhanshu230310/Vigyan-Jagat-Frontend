@@ -15,7 +15,7 @@ export function HeroBanner({ sidebarOpen = false }) {
   const navItems = ['Home', 'Categories', 'About Us', 'Contact']
 
   return (
-    <div className="min-h-[80vh]">
+    <div className="min-h-[60vh] font-sans">
       {/* Desktop floating pill nav (lg and up only) */}
       <div
         className="w-[min(80%,60rem)] xl:mt-6 text-md font-sans h-10 xl:flex xl:justify-center xl:items-center hidden xl:gap-24 2xl:gap-30 xl:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white transition-all duration-300 ease-in-out"
