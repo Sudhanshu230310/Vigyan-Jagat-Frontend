@@ -22,6 +22,8 @@ const sidebarItems = [
     items: [
       { title: 'Laboratory Equipments and Instruments', url: '/subcategory/Laboratory Equipments and Instruments' },
       { title: 'Glassware & Plasticware', url: '/subcategory/Glassware & Plasticware' },
+      { title: 'Chemical & Reagent', url: '/subcategory/chemical & reagent' },
+      { title: 'Laboratory Consumables', url: '/subcategory/laboratory consumables' },
     ],
   },
   {
@@ -74,7 +76,7 @@ const SettingsIcon = () => (
 export function Sidebar({ isOpen, isMobile, onClose }) {
   const [expandedItems, setExpandedItems] = useState({})
   const navigate = useNavigate()
-  
+
   const toggleExpanded = (title) => {
     setExpandedItems((prev) => ({ ...prev, [title]: !prev[title] }))
   }
@@ -130,11 +132,10 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
             <div key={item.title}>
               <div
                 onClick={() => handleItemClick(item)}
-                className={`flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm font-medium transition-colors cursor-pointer ${
-                  item.isActive
-                    ? 'bg-[oklch(0.94_0.04_270)] text-[oklch(0.35_0.20_270)]'
-                    : 'text-[oklch(0.30_0_0)] hover:bg-[oklch(0.96_0_0)]'
-                }`}
+                className={`flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm font-medium transition-colors cursor-pointer ${item.isActive
+                  ? 'bg-[oklch(0.94_0.04_270)] text-[oklch(0.35_0.20_270)]'
+                  : 'text-[oklch(0.30_0_0)] hover:bg-[oklch(0.96_0_0)]'
+                  }`}
               >
                 <div className="flex items-center gap-3">
                   <span className={item.isActive ? 'text-[oklch(0.45_0.18_270)]' : 'text-[oklch(0.55_0_0)]'}>
