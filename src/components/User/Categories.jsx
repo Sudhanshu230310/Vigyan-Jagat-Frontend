@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import LEImage from "../../images/laboratory-equipments-and-instruments.png";
 import GWImage from "../../images/glassware.png"
+import CRImage from "../../images/chemical-reagents.png"
+import LCImage from "../../images/laboratory-consumables.png"
 import RightArrow from '../../icons/RightArrow';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,8 +29,8 @@ const initialApps = [
     starred: false,
   },
   {
-    name: "laboratory equipments and instruments",
-    image: LEImage,
+    name: "Chemical & Reagent",
+    image: CRImage,
     description: "Advanced image editing and composition",
     category: "Creative",
     recent: true,
@@ -37,7 +39,7 @@ const initialApps = [
     starred: false,
   },
   {
-    name: "laboratory equipments and instruments",
+    name: "Laboratory Consumables",
     image: LEImage,
     description: "Advanced image editing and composition",
     category: "Creative",
