@@ -119,7 +119,15 @@ export default function Products() {
         setError(null);
         axios.get(`https://vigyan-jagat-backend-1.onrender.com/${SubcategoryName}`)
             .then(res => {
-                setProducts(res.data.items || []);
+                const items = res.data.items || [];
+                const sorted = [...items].sort((a, b) =>
+                    (a.name || a.product_name || "").localeCompare(
+                        b.name || b.product_name || "",
+                        undefined,
+                        { sensitivity: "base" }
+                    )
+                );
+                setProducts(sorted);
             })
             .catch(err => {
                 console.error(err);
