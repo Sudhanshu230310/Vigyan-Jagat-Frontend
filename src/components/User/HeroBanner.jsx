@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { useState, useMemo } from 'react'
 import Main from '../../images/main.png'
 import { Link } from 'react-router-dom'
@@ -6,6 +6,18 @@ import { Link } from 'react-router-dom'
 export function HeroBanner({ sidebarOpen = false }) {
   const SIDEBAR_W = '16rem'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [navHidden, setNavHidden] = useState(false)
+  
+  const { scrollY } = useScroll()
+  
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious()
+    if (latest > previous && latest > 150) {
+      setNavHidden(true)
+    } else {
+      setNavHidden(false)
+    }
+  })
 
   // When sidebar open: content starts at 16rem, so the content-center = 16rem + (100vw-16rem)/2 = 8rem + 50vw
   // Pill is already -translate-x-1/2, so we set left to that center point
@@ -37,7 +49,7 @@ export function HeroBanner({ sidebarOpen = false }) {
   }, [])
 
   return (
-    <div className="min-h-screen font-sans relative overflow-hidden bg-black/40">
+    <div className="min-h-screen font-sans relative overflow-hidden bg-white">
 
       {/* 1. Slow zooming background image */}
       <motion.img
@@ -53,9 +65,8 @@ export function HeroBanner({ sidebarOpen = false }) {
         className="absolute inset-0 z-0"
         animate={{
           background: [
-            "linear-gradient(45deg, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.3) 100%)",
-            "linear-gradient(45deg, rgba(0,0,20,0.15) 0%, rgba(20,0,40,0.15) 100%)",
-            "linear-gradient(45deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.3) 100%)"
+            "linear-gradient(45deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.2) 100%)",
+            "linear-gradient(45deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.15) 100%)",
           ]
         }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
@@ -119,8 +130,14 @@ export function HeroBanner({ sidebarOpen = false }) {
       ))}
 
       {/* Desktop floating pill nav (xl and up only) */}
-      <div
-        className="w-[min(80%,60rem)] xl:mt-6 text-md font-sans h-10 xl:flex xl:justify-center xl:items-center hidden xl:gap-24 2xl:gap-30 xl:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white transition-all duration-300 ease-in-out"
+      <motion.div
+        variants={{
+          visible: { y: 0, opacity: 1 },
+          hidden: { y: "-150%", opacity: 0 }
+        }}
+        animate={navHidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className="w-[min(80%,60rem)] xl:mt-6 text-md font-sans h-10 xl:flex xl:justify-center xl:items-center hidden xl:gap-24 2xl:gap-30 xl:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white"
         style={{ left: pillLeft }}
       >
         {navItems.map((item) => (
@@ -128,7 +145,7 @@ export function HeroBanner({ sidebarOpen = false }) {
             {item.name}
           </Link>
         ))}
-      </div>
+      </motion.div>
 
       {/* Mobile search bar (hidden on xl and up) */}
       {/* 7. Breathing search bar */}
