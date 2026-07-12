@@ -155,8 +155,6 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
         })}
       </nav>
 
-      {/* Footer Links */}
-
     </div>
   )
 

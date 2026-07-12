@@ -129,7 +129,7 @@ export function Navbar({ onToggleSidebar, onOpenMobileMenu }) {
         {/* Mobile: opens drawer */}
         <button
           onClick={onOpenMobileMenu}
-          className="flex md:hidden w-10 h-10 rounded-full hover:bg-zinc-100 items-center justify-center text-zinc-700"
+          className="flex md:hidden w-10 h-10 rounded-full hover:bg-zinc-100 items-center justify-center text-zinc-700 cursor-pointer"
         >
           <MenuIcon />
         </button>
@@ -137,7 +137,7 @@ export function Navbar({ onToggleSidebar, onOpenMobileMenu }) {
         {/* Desktop: toggles sidebar panel */}
         <button
           onClick={onToggleSidebar}
-          className="hidden md:flex w-10 h-10 rounded-full hover:bg-zinc-100 items-center justify-center text-zinc-700"
+          className="hidden md:flex w-10 h-10 rounded-full hover:bg-zinc-100 items-center justify-center text-zinc-700 cursor-pointer"
         >
           <MenuIcon />
         </button>
