@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import Main from '../../images/main.png'
-
+import { Link } from 'react-router-dom'
 export function HeroBanner({ sidebarOpen = false }) {
   const SIDEBAR_W = '16rem'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -12,7 +12,25 @@ export function HeroBanner({ sidebarOpen = false }) {
     ? `calc(${SIDEBAR_W} / 2 + 50%)` // = 8rem + 50vw
     : '50%'
 
-  const navItems = ['Home', 'Categories', 'About Us', 'Contact']
+  const navItems = [
+    {
+      name: 'Home',
+      path: '/',
+    },
+    {
+      name: 'Categories',
+      path: 'categories'
+    },
+    {
+      name: 'About Us',
+      path: 'about'
+    },
+    {
+      name: 'Contact Us',
+      path: 'contact'
+    }
+
+  ]
 
   const trustedBy = ['Universities', 'Research Institutes', 'Hospitals', 'Industries', 'Govt. Labs']
 
@@ -22,13 +40,13 @@ export function HeroBanner({ sidebarOpen = false }) {
       <div className="bg-black/30 h-screen w-full absolute"></div>
       {/* Desktop floating pill nav (xl and up only) */}
       <div
-        className="w-[min(80%,60rem)] xl:mt-6 text-md font-sans h-10 lg:flex lg:justify-center lg:items-center hidden lg:gap-24 2xl:gap-30 lg:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white transition-all duration-300 ease-in-out"
+        className="w-[min(80%,60rem)] xl:mt-6 text-md font-sans h-10 xl:flex xl:justify-center xl:items-center hidden xl:gap-24 2xl:gap-30 xl:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white transition-all duration-300 ease-in-out"
         style={{ left: pillLeft }}
       >
         {navItems.map((item) => (
-          <div key={item} className="cursor-pointer hover:text-blue-700 whitespace-nowrap">
-            {item}
-          </div>
+          <Link to={item.path} key={item.name} className="cursor-pointer hover:text-blue-700 whitespace-nowrap">
+            {item.name}
+          </Link>
         ))}
       </div>
       {/* Mobile search bar (hidden on xl and up) */}

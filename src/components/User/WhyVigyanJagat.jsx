@@ -85,7 +85,7 @@ export function WhyVigyanJagat() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <section className="w-full mt-40 bg-gray-900 mb-[80vh]">
+      <section className="w-full mt-40 bg-gray-900 mb-[40vh]">
         <div className="mx-auto grid min-h-[80vh] max-w-[1600px] grid-cols-1 items-center gap-12 px-6 py-16 sm:px-10 lg:grid-cols-[1.4fr_1fr] lg:gap-20 lg:px-16 lg:py-24">
           {/* ---- Panel: shows second on mobile, left on desktop ---- */}
           <div
