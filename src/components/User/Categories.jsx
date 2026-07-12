@@ -152,7 +152,7 @@ export function Categories() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="text-3xl lg:text-4xl pb-8 md:pb-10 font-sans font-semibold text-zinc-900 text-center"
+            className="text-3xl lg:text-4xl pb-8 md:pb-10 font-sans text-zinc-900 text-center"
           >
             Explore Categories
           </motion.h2>
