@@ -113,11 +113,12 @@ export default function Products() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const BackendURL = import.meta.env.VITE_BACKEND_URL;
+    console.log("Backend URL:", BackendURL);
     useEffect(() => {
         setLoading(true);
         setError(null);
-        axios.get(`https://vigyan-jagat-backend-1.onrender.com/${SubcategoryName}`)
+        axios.get(`${BackendURL}/${SubcategoryName}`)
             .then(res => {
                 const items = res.data.items || [];
                 const sorted = [...items].sort((a, b) =>

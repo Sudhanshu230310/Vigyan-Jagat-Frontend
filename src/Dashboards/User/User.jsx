@@ -5,7 +5,7 @@ import { WhyVigyanJagat } from '../../components/User/WhyVigyanJagat'
 
 export default function UserDashboard({ sidebarOpen }) {
     return (
-        <main className="space-y-8">
+        <main className="">
             <div className="">
                 <HeroBanner sidebarOpen={sidebarOpen} />
             </div>

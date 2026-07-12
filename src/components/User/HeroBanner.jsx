@@ -22,7 +22,7 @@ export function HeroBanner({ sidebarOpen = false }) {
       <div className="bg-black/30 h-screen w-full absolute"></div>
       {/* Desktop floating pill nav (xl and up only) */}
       <div
-        className="w-[min(80%,60rem)] xl:mt-6 text-md font-sans h-10 xl:flex xl:justify-center xl:items-center hidden xl:gap-24 2xl:gap-30 xl:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white transition-all duration-300 ease-in-out"
+        className="w-[min(80%,60rem)] xl:mt-6 text-md font-sans h-10 lg:flex lg:justify-center lg:items-center hidden lg:gap-24 2xl:gap-30 lg:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white transition-all duration-300 ease-in-out"
         style={{ left: pillLeft }}
       >
         {navItems.map((item) => (
@@ -30,6 +30,25 @@ export function HeroBanner({ sidebarOpen = false }) {
             {item}
           </div>
         ))}
+      </div>
+      {/* Mobile search bar (hidden on xl and up) */}
+      <div
+        className="w-[90%] max-w-sm text-md font-sans flex justify-center items-center lg:hidden p-1.5 border border-white/60 shadow-2xl rounded-2xl z-20 fixed top-24 -translate-x-1/2 bg-white/95 backdrop-blur-xl transition-all duration-300 ease-in-out"
+        style={{ left: pillLeft }}
+      >
+        <div className="flex w-full items-center">
+          <svg className="w-5 h-5 text-gray-400 ml-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Search Vigyan Jagat..."
+            className="flex-1 w-full px-3 py-2 bg-transparent border-none outline-none text-gray-800 placeholder-gray-500 focus:ring-0"
+          />
+          <button className="px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors whitespace-nowrap shadow-md">
+            Search
+          </button>
+        </div>
       </div>
 
       {/* Hero content — minimal, centered */}
