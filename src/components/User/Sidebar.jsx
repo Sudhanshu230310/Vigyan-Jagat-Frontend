@@ -13,7 +13,7 @@ const sidebarItems = [
     isActive: true,
   },
   {
-    title: 'Explore',
+    title: 'Categories',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
@@ -156,14 +156,7 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
       </nav>
 
       {/* Footer Links */}
-      <div className="px-6 pb-6 pt-4 text-xs font-semibold text-zinc-400 space-y-3 border-t border-zinc-100">
-        <div className="flex flex-wrap gap-x-3 gap-y-1">
-          <span className="hover:text-zinc-700 cursor-pointer transition">Privacy</span>
-          <span className="hover:text-zinc-700 cursor-pointer transition">Terms</span>
-          <span className="hover:text-zinc-700 cursor-pointer transition">About</span>
-        </div>
-        <p className="text-zinc-400 font-normal">&copy; {new Date().getFullYear()} Vigyan Jagat</p>
-      </div>
+
     </div>
   )
 
