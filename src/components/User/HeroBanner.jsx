@@ -7,9 +7,9 @@ export function HeroBanner({ sidebarOpen = false }) {
   const SIDEBAR_W = '16rem'
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [navHidden, setNavHidden] = useState(false)
-  
+
   const { scrollY } = useScroll()
-  
+
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious()
     if (latest > previous && latest > 150) {

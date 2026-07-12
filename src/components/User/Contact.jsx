@@ -19,7 +19,7 @@ export default function Contact() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative h-[30vh] overflow-hidden bg-white flex items-center justify-center"
+            className="relative h-[50vh] overflow-hidden bg-white flex justify-center"
         >
             {/* Floating Blob 1 */}
             <motion.div
@@ -93,7 +93,7 @@ export default function Contact() {
                             duration: 0.8,
                         },
                     }}
-                    className="text-4xl md:text-6xl font-semibold"
+                    className="text-4xl md:text-5xl font-sans"
                 >
                     Get in Touch
                 </motion.h1>
