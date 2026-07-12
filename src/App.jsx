@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
 import { Navbar } from './components/User/Navbar'
 import { Sidebar } from './components/User/Sidebar'
-import { Footer } from './components/Common/Footer'
+import { Footer } from './components/User/Footer'
 import UserDashboard from './Dashboards/User/User'
 import Subcategory from './components/User/Subcategories'
-import { ScrollToTop } from './components/Common/ScrollToTop'
+import { ScrollToTop } from './components/User/ScrollToTop'
 import Products from './components/User/Products'
 
 function App() {

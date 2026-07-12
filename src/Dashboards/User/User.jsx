@@ -1,4 +1,4 @@
-import { HeroBanner } from '../../components/Common/HeroBanner'
+import { HeroBanner } from '../../components/User/HeroBanner'
 import AboutUs from '../../components/User/AboutUs'
 import { Categories } from '../../components/User/Categories'
 import { WhyVigyanJagat } from '../../components/User/WhyVigyanJagat'
@@ -12,8 +12,6 @@ export default function UserDashboard({ sidebarOpen }) {
             <div className="">
                 <Categories />
                 <AboutUs />
-            </div>
-            <div className="px-6 md:px-8">
                 <WhyVigyanJagat />
             </div>
         </main>

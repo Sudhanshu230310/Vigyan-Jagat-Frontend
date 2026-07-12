@@ -8,17 +8,17 @@ const stats = [
 
 export default function AboutUs() {
     return (
-        <section className="w-full bg-white">
-            <div className="mx-auto grid min-h-[80vh] max-w-[1600px] grid-cols-1 items-center gap-12 px-6 py-16 sm:px-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:px-16 lg:py-24">
+        <section className="w-full bg-black">
+            <div className="mx-auto my-40 grid min-h-[80vh] max-w-[1600px] grid-cols-1 items-center gap-12 px-6 pt-16 sm:px-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:px-16 lg:py-24">
 
                 {/* ── Text column ───────────────────────────── */}
-                <div>
-                    <h2 className="text-3xl font-sans leading-tight tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
+                <div className="">
+                    <h2 className=" text-3xl font-sans leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
                         Trusted by labs
                         <br className="hidden sm:block" /> since 1962
                     </h2>
 
-                    <p className="mt-8 max-w-lg text-lg leading-relaxed text-neutral-600">
+                    <p className="mt-8 max-w-lg text-lg leading-relaxed text-zinc-400">
                         Vigyan Jagat is an authorized dealer and supplier of laboratory
                         equipment, chemicals, glassware, and consumables. Headquartered
                         in Muzaffarpur with offices across India, we bring world-class
@@ -31,10 +31,10 @@ export default function AboutUs() {
                     <dl className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-neutral-200 pt-8">
                         {stats.map((stat) => (
                             <div key={stat.label}>
-                                <dd className="text-2xl font-semibold text-neutral-900 sm:text-3xl">
+                                <dd className="text-2xl font-semibold text-white sm:text-3xl">
                                     {stat.value}
                                 </dd>
-                                <dt className="mt-1 text-xs leading-snug text-neutral-500 sm:text-sm">
+                                <dt className="mt-1 text-xs leading-snug text-white sm:text-sm">
                                     {stat.label}
                                 </dt>
                             </div>
