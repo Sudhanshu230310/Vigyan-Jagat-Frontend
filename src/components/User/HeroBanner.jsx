@@ -130,7 +130,7 @@ export function HeroBanner({ sidebarOpen = false }) {
       ))}
 
       {/* Desktop floating pill nav (xl and up only) */}
-      <motion.div
+      {/* <motion.div
         variants={{
           visible: { y: 0, opacity: 1 },
           hidden: { y: "-150%", opacity: 0 }
@@ -145,11 +145,11 @@ export function HeroBanner({ sidebarOpen = false }) {
             {item.name}
           </Link>
         ))}
-      </motion.div>
+      </motion.div> */}
 
       {/* Mobile search bar (hidden on xl and up) */}
       {/* 7. Breathing search bar */}
-      <motion.div
+      {/* <motion.div
         className="w-[90%] max-w-sm text-md font-sans flex justify-center items-center lg:hidden p-1.5 border border-white/60 rounded-2xl z-20 fixed top-24 -translate-x-1/2 bg-white/95 backdrop-blur-xl transition-all duration-300 ease-in-out"
         style={{ left: pillLeft }}
         animate={{
@@ -175,10 +175,10 @@ export function HeroBanner({ sidebarOpen = false }) {
             Search
           </button>
         </div>
-      </motion.div>
+      </motion.div> */}
 
       {/* Hero content — minimal, centered */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-[80vh] px-6 text-center text-white">
+      <div className="relative z-10 pt-20 flex flex-col items-center  h-[80vh] px-6 text-center text-white">
 
         {/* 6. Floating logo */}
         <motion.div

@@ -1,92 +1,96 @@
-import { useState } from 'react'
-import SearchIcon from '../../icons/Search'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import SearchIcon from "../../icons/Search";
 
 const MenuIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+  >
+    <line x1="4" y1="6" x2="20" y2="6" />
+    <line x1="4" y1="12" x2="20" y2="12" />
+    <line x1="4" y1="18" x2="20" y2="18" />
   </svg>
-)
+);
 
 
-export function Navbar({ sidebarOpen, onToggleSidebar, onOpenMobileMenu }) {
+
+export function Navbar({
+  onToggleSidebar,
+  onOpenMobileMenu,
+}) {
   const navigate = useNavigate();
-  const [activeTooltip, setActiveTooltip] = useState(null)
-
-  const NavButton = ({ id, icon, tooltip, badge }) => (
-    <div className="relative">
-      <button
-        id={id}
-        onMouseEnter={() => setActiveTooltip(id)}
-        onMouseLeave={() => setActiveTooltip(null)}
-        className="relative flex items-center justify-center w-9 h-9 rounded-2xl text-[oklch(0.40_0_0)] hover:bg-[oklch(0.95_0_0)] transition-colors"
-      >
-        {icon}
-        {badge > 0 && (
-          <span
-            className="absolute -top-1 -right-1 flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-semibold"
-          >
-            {badge}
-          </span>
-        )}
-      </button>
-      {activeTooltip === id && (
-        <div
-          className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1.5 rounded-xl bg-[oklch(0.12_0_0)] text-white text-xs whitespace-nowrap z-50 pointer-events-none"
-          style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}
-        >
-          {tooltip}
-          <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[oklch(0.12_0_0)] rotate-45" />
-        </div>
-      )}
-    </div>
-  )
+  const [search, setSearch] = useState("");
 
   return (
     <header
-      className="sticky top-0 z-20 flex h-16 items-center gap-0 lg:gap-3 mb-1 border-b border-gray-300 lg:px-4"
-      style={{
-        background: 'rgba(255,255,255,0.95)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-      }}
+      className="sticky top-0 z-50 h-16 px-4 flex items-center justify-between bg-white/95 backdrop-blur-xl border-b border-zinc-200"
     >
-      {/* Mobile hamburger */}
-      <button
-        id="mobile-menu-btn"
-        onClick={onOpenMobileMenu}
-        className="flex md:hidden cursor-pointer items-center justify-center w-16 h-16 rounded-2xl font-bold text-black  hover:bg-[oklch(0.95_0_0)] transition-colors"
-      >
-        <MenuIcon />
-      </button>
+      {/* Left */}
+      <div className="flex items-center gap-3">
+        {/* Mobile: opens drawer */}
+        <button
+          onClick={onOpenMobileMenu}
+          className="flex md:hidden w-10 h-10 rounded-full hover:bg-zinc-100 items-center justify-center text-zinc-700"
+        >
+          <MenuIcon />
+        </button>
 
-      {/* Desktop toggle sidebar */}
-      <button
-        id="sidebar-toggle-btn"
-        onClick={onToggleSidebar}
-        className="hidden cursor-pointer md:flex items-center justify-center w-12 h-12 rounded-2xl text-black hover:bg-[oklch(0.95_0_0)] transition-colors"
-      >
-        <MenuIcon />
-      </button>
+        {/* Desktop: toggles sidebar panel */}
+        <button
+          onClick={onToggleSidebar}
+          className="hidden md:flex w-10 h-10 rounded-full hover:bg-zinc-100 items-center justify-center text-zinc-700"
+        >
+          <MenuIcon />
+        </button>
 
-      {/* Title */}
-      <div className="flex flex-1 items-center justify-between">
-        <h1 className="text-[1.4rem] font-semibold text-[oklch(0.12_0_0)]">
-          <div onClick={() => { navigate('/') }} className="flex cursor-pointer font-sans ">Vigyan Jagat</div>
-        </h1>
+        <div
+          onClick={() => navigate("/")}
+          className="cursor-pointer flex items-center gap-2"
+        >
+          <div className="w-9 h-9 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold">
+            V
+          </div>
 
-        {/* Right actions */}
-        <div className="lg:flex lg:visible hidden justify-end items-center pr-6 md:pr-8 gap-1.5 w-[40%]">
-          <div className="flex items-center border border-gray-400 py-1 pl-4 rounded-xl w-[90%]">
-            <SearchIcon />
-            <input type="text" placeholder="Search..." className="w-full px-2 h-full outline-0"
+          <div className="hidden sm:block">
+            <h1 className="text-zinc-900 font-semibold text-lg">
+              Vigyan Jagat
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      {/* Center Search */}
+      <div className="hidden lg:flex flex-1 justify-end px-10">
+        <div className="flex w-full max-w-2xl">
+          <div className="flex items-center flex-1 bg-white border border-zinc-300 rounded-l-full px-5">
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search products..."
+              className="bg-transparent text-zinc-900 placeholder:text-zinc-400 w-full h-11 px-3 outline-none"
             />
           </div>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-1 rounded-xl transition-colors cursor-pointer">
-            Search
+
+          <button
+            className="w-16 bg-zinc-100 border border-l-0 border-zinc-300 rounded-r-full hover:bg-zinc-200 transition flex items-center justify-center text-zinc-600"
+          >
+            <SearchIcon />
           </button>
         </div>
       </div>
+
+      {/* Right */}
+      <div className="flex items-center gap-3">
+        <button className="lg:hidden w-10 h-10 rounded-full hover:bg-zinc-100 flex items-center justify-center text-zinc-700">
+          <SearchIcon />
+        </button>
+      </div>
     </header>
-  )
+  );
 }
