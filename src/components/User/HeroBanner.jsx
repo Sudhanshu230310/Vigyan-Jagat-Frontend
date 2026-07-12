@@ -178,7 +178,7 @@ export function HeroBanner({ sidebarOpen = false }) {
       </motion.div> */}
 
       {/* Hero content — minimal, centered */}
-      <div className="relative z-10 pt-20 flex flex-col items-center  h-[80vh] px-6 text-center text-white">
+      <div className="relative z-10 pt-30 flex flex-col items-center h-[70vh] px-6 text-center text-white">
 
         {/* 6. Floating logo */}
         <motion.div
@@ -228,7 +228,7 @@ export function HeroBanner({ sidebarOpen = false }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="absolute bottom-12 inset-x-0 w-full overflow-hidden"
+          className="absolute bottom-0 inset-x-0 w-full overflow-hidden"
         >
           <p className="text-sm text-gray-300 mb-6 font-medium tracking-wide uppercase">Trusted by leading institutions</p>
 
