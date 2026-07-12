@@ -1,85 +1,142 @@
 import { motion } from "framer-motion";
 
+const floating = {
+    animate: {
+        y: [0, -20, 0, 20, 0],
+        x: [0, 15, 0, -15, 0],
+    },
+    transition: {
+        duration: 12,
+        repeat: Infinity,
+        ease: "easeInOut",
+    },
+};
+
 export default function Contact() {
     return (
         <motion.section
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
-            viewport={{ once: true, amount: 0.4 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative h-[50vh] overflow-hidden bg-white text-black flex items-center justify-center"
+            className="relative h-[50vh] overflow-hidden bg-white flex items-center justify-center"
         >
-            {/* Animated Background */}
+            {/* Floating Blob 1 */}
+            <motion.div
+                {...floating}
+                className="absolute -left-32 -top-24 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl"
+            />
+
+            {/* Floating Blob 2 */}
             <motion.div
                 animate={{
-                    scale: [1, 1.1, 1],
-                    rotate: [0, 4, -4, 0],
+                    y: [0, 30, 0, -30, 0],
+                    x: [0, -20, 0, 20, 0],
+                    rotate: [0, 10, -10, 0],
                 }}
                 transition={{
-                    duration: 12,
+                    duration: 16,
                     repeat: Infinity,
                     ease: "easeInOut",
                 }}
-                className="absolute -left-32 -top-32 h-96 w-96 rounded-full blur-3xl"
+                className="absolute -right-24 bottom-0 h-[420px] w-[420px] rounded-full bg-cyan-400/10 blur-3xl"
             />
 
+            {/* Rotating Circle */}
             <motion.div
-                animate={{
-                    scale: [1.1, 1, 1.1],
-                    rotate: [0, -5, 5, 0],
-                }}
+                animate={{ rotate: 360 }}
                 transition={{
-                    duration: 15,
+                    duration: 45,
                     repeat: Infinity,
-                    ease: "easeInOut",
+                    ease: "linear",
                 }}
-                className="absolute -right-32 -bottom-32 h-96 w-96 rounded-full blur-3xl"
+                className="absolute h-[700px] w-[700px] rounded-full border border-blue-200/40"
             />
 
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0" />
-
-            {/* Content */}
-            <div className="relative z-10 flex flex-col items-center text-center px-6">
-                <motion.h1
-                    initial={{ opacity: 0, y: 70 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                        duration: 0.8,
-                        type: "spring",
-                        stiffness: 80,
+            {/* Floating Particles */}
+            {[...Array(12)].map((_, i) => (
+                <motion.span
+                    key={i}
+                    animate={{
+                        y: [0, -25, 0],
+                        opacity: [0.3, 1, 0.3],
+                        scale: [1, 1.5, 1],
                     }}
-                    className="text-4xl md:text-6xl font-sans"
+                    transition={{
+                        duration: 3 + i * 0.4,
+                        repeat: Infinity,
+                        delay: i * 0.3,
+                    }}
+                    className="absolute h-2 w-2 rounded-full bg-blue-500/50"
+                    style={{
+                        left: `${8 + i * 8}%`,
+                        top: `${15 + (i % 5) * 15}%`,
+                    }}
+                />
+            ))}
+
+            <div className="relative z-10 flex flex-col items-center text-center px-6">
+                {/* Floating Heading */}
+                <motion.h1
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    animate={{
+                        y: [0, -6, 0],
+                    }}
+                    transition={{
+                        y: {
+                            duration: 4,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                        },
+                        opacity: {
+                            duration: 0.8,
+                        },
+                    }}
+                    className="text-4xl md:text-6xl font-semibold"
                 >
                     Get in Touch
                 </motion.h1>
 
                 <motion.p
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 25 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                        delay: 0.25,
-                        duration: 0.7,
-                    }}
-                    className="mt-6 max-w-2xl text-gray-700 text-lg md:text-xl"
+                    transition={{ delay: 0.2 }}
+                    className="mt-6 max-w-2xl text-gray-600 text-lg"
                 >
-                    Our team is ready to assist you with product inquiries, quotations,
-                    and technical support. Let's build something together.
+                    Our team is ready to assist you with product inquiries,
+                    quotations, and technical support. Let's build something
+                    together.
                 </motion.p>
 
+                {/* Breathing Button */}
                 <motion.button
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.5 }}
+                    animate={{
+                        scale: [1, 1.04, 1],
+                        boxShadow: [
+                            "0 0 0px rgba(37,99,235,.2)",
+                            "0 0 35px rgba(37,99,235,.45)",
+                            "0 0 0px rgba(37,99,235,.2)",
+                        ],
+                    }}
+                    transition={{
+                        scale: {
+                            duration: 2.5,
+                            repeat: Infinity,
+                        },
+                        boxShadow: {
+                            duration: 2.5,
+                            repeat: Infinity,
+                        },
+                    }}
                     whileHover={{
-                        scale: 1.05,
-                        boxShadow: "0 0 40px rgba(59,130,246,0.45)",
+                        scale: 1.08,
+                        boxShadow: "0 0 45px rgba(37,99,235,.6)",
                     }}
                     whileTap={{ scale: 0.96 }}
-                    className="mt-10 rounded-full text-white bg-blue-600 px-8 py-4 font-semibold transition-colors hover:bg-blue-500"
+                    className="mt-10 rounded-full bg-blue-600 px-8 py-4 font-semibold text-white"
                 >
                     Contact Us
                 </motion.button>
