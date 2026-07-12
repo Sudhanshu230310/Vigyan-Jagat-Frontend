@@ -19,12 +19,12 @@ export default function Contact() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative h-[50vh] overflow-hidden bg-white flex justify-center"
+            className="relative h-[70vh] items-center overflow-hidden bg-white flex justify-center"
         >
             {/* Floating Blob 1 */}
             <motion.div
                 {...floating}
-                className="absolute -left-32 -top-24 h-96 w-96 rounded-full bg-blue-500/10 blur-3xl"
+                className="absolute -left-32 -top-24 rounded-full bg-blue-500/10 blur-3xl"
             />
 
             {/* Floating Blob 2 */}

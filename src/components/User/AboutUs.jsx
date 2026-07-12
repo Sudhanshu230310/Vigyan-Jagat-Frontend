@@ -9,7 +9,7 @@ const stats = [
 export default function AboutUs() {
     return (
         <section className="w-full bg-black ">
-            <div className="mx-auto my-40 grid min-h-[80vh] max-w-[1600px] grid-cols-1 items-center gap-12 px-6 py-16 sm:px-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:px-16 lg:py-24">
+            <div className="mx-auto mt-40 grid min-h-[80vh] max-w-[1600px] grid-cols-1 items-center gap-12 px-6 py-16 sm:px-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:px-16 lg:py-24">
 
                 {/* ── Text column ───────────────────────────── */}
                 <div className="">
