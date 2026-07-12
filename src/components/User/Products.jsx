@@ -110,6 +110,7 @@ function ProductCard({ product }) {
 
 export default function Products() {
     const { SubcategoryName } = useParams();
+    const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -139,7 +140,25 @@ export default function Products() {
 
     return (
         <div className="w-full min-h-screen pt-14">
-            <section className="w-full px-6 md:px-8 py-10 text-black space-y-8 pb-20">
+            <section className="w-full px-6 md:px-8 pb-10 text-black space-y-8 pb-20">
+
+                {/* Back link */}
+                <motion.button
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    onClick={() => navigate(-1)}
+                    className="flex items-center gap-1.5 text-sm font-medium text-zinc-500 hover:text-cyan-700 transition-colors"
+                >
+                    <motion.span
+                        whileHover={{ x: -3 }}
+                        transition={{ duration: 0.2 }}
+                        className="inline-block"
+                    >
+                        ←
+                    </motion.span>
+                    All subcategories
+                </motion.button>
 
                 {/* Header */}
                 <h2 className="lg:text-4xl text-3xl font-sans  capitalize">

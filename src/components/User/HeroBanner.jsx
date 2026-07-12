@@ -37,21 +37,21 @@ export function HeroBanner({ sidebarOpen = false }) {
   }, [])
 
   return (
-    <div className="min-h-screen font-sans relative overflow-hidden bg-black">
-      
+    <div className="min-h-screen font-sans relative overflow-hidden bg-black/40">
+
       {/* 1. Slow zooming background image */}
-      <motion.img 
-        src={Main} 
-        alt="" 
+      <motion.img
+        src={Main}
+        alt=""
         className="absolute inset-0 h-screen w-full object-cover"
         animate={{ scale: [1, 1.15, 1] }}
         transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
       />
 
       {/* 2. Animated gradient overlay */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0 z-0"
-        animate={{ 
+        animate={{
           background: [
             "linear-gradient(45deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%)",
             "linear-gradient(45deg, rgba(0,0,20,0.7) 0%, rgba(20,0,40,0.4) 100%)",
@@ -162,16 +162,16 @@ export function HeroBanner({ sidebarOpen = false }) {
 
       {/* Hero content — minimal, centered */}
       <div className="relative z-10 flex flex-col items-center justify-center h-[80vh] px-6 text-center text-white">
-        
+
         {/* 6. Floating logo */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ 
-            opacity: 1, 
+          animate={{
+            opacity: 1,
             scale: 1,
-            y: [0, -10, 0] 
+            y: [0, -10, 0]
           }}
-          transition={{ 
+          transition={{
             opacity: { duration: 0.5 },
             scale: { duration: 0.5 },
             y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
@@ -184,11 +184,11 @@ export function HeroBanner({ sidebarOpen = false }) {
         {/* 6. Floating heading */}
         <motion.h1
           initial={{ opacity: 0, y: 12 }}
-          animate={{ 
-            opacity: 1, 
-            y: [0, -8, 0] 
+          animate={{
+            opacity: 1,
+            y: [0, -8, 0]
           }}
-          transition={{ 
+          transition={{
             opacity: { duration: 0.5, delay: 0.1 },
             y: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }
           }}
@@ -214,7 +214,7 @@ export function HeroBanner({ sidebarOpen = false }) {
           className="absolute bottom-12 inset-x-0 w-full overflow-hidden"
         >
           <p className="text-sm text-gray-300 mb-6 font-medium tracking-wide uppercase">Trusted by leading institutions</p>
-          
+
           {/* Marquee Container */}
           <div className="relative flex overflow-hidden group">
             {/* The wrapper must be wide enough to translate, masking its overflow */}
@@ -228,8 +228,8 @@ export function HeroBanner({ sidebarOpen = false }) {
               }}
             >
               {marqueeItems.map((name, index) => (
-                <span 
-                  key={`${name}-${index}`} 
+                <span
+                  key={`${name}-${index}`}
                   className="text-lg md:text-xl font-semibold text-white/80 transition-colors hover:text-white"
                 >
                   {name}

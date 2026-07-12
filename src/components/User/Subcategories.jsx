@@ -246,7 +246,7 @@ export default function Subcategory() {
                     transition={{ duration: 0.4 }}
                     className="text-center py-20 text-zinc-400 text-lg"
                 >
-                    No subcategories found for <span className="font-semibold text-zinc-600">"{categoryName}"</span>.
+                    No subcategories found for <span className="font-sans text-zinc-600">"{categoryName}"</span>.
                 </motion.div>
             </div>
         );
@@ -266,7 +266,7 @@ export default function Subcategory() {
                 }}
             />
 
-            <section className="w-full px-6 md:px-8 py-10 text-black space-y-8 pb-20 relative">
+            <section className="w-full px-6 md:px-8 pb-10 text-black space-y-8 pb-20 relative">
                 {/* Back link */}
                 <motion.button
                     initial={{ opacity: 0, x: -8 }}
@@ -291,7 +291,7 @@ export default function Subcategory() {
                         initial={{ opacity: 0, y: 14 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="lg:text-4xl text-3xl font-sans capitalize font-semibold text-zinc-900"
+                        className="lg:text-4xl text-3xl pb-4 capitalize font-sans text-zinc-900"
                     >
                         {categoryName}
                     </motion.h2>
