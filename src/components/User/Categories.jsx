@@ -268,7 +268,7 @@ export function Categories() {
       {/* Ambient animated backdrop */}
       <AmbientBackground />
 
-      <section className="w-full pt-16 sm:pt-24 md:pt-30 px-6 md:px-8 pb-16 md:pb-20 text-black @container relative z-10">
+      <section className="w-full pt-16 sm:pt-24 md:pt-30 px-6 md:px-8 pb-10 xl:pb-0 text-black @container relative z-10">
         <div className="flex flex-col items-center justify-center pb-10">
           {/* 📝 Floating heading — entrance once, then a gentle idle bob */}
           <motion.div

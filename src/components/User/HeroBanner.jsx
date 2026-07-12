@@ -53,9 +53,9 @@ export function HeroBanner({ sidebarOpen = false }) {
         className="absolute inset-0 z-0"
         animate={{
           background: [
-            "linear-gradient(45deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%)",
-            "linear-gradient(45deg, rgba(0,0,20,0.7) 0%, rgba(20,0,40,0.4) 100%)",
-            "linear-gradient(45deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%)"
+            "linear-gradient(45deg, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.3) 100%)",
+            "linear-gradient(45deg, rgba(0,0,20,0.15) 0%, rgba(20,0,40,0.15) 100%)",
+            "linear-gradient(45deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.3) 100%)"
           ]
         }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
