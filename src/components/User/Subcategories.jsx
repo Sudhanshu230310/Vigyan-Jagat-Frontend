@@ -1,5 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { motion } from 'framer-motion';
+import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
+import { SearchIcon } from "lucide-react";
 
 const GlasswareAndPlasticware = [
     { name: "Beakers", description: "High-quality laboratory beakers for mixing, heating, and measuring liquids." },
@@ -22,7 +24,7 @@ const GlasswareAndPlasticware = [
     { name: "Tubes", description: "Laboratory tubes for sample storage, testing, and chemical analysis." },
     { name: "Vials", description: "Glass and plastic vials for sample storage, pharmaceuticals, and laboratory testing." },
     { name: "Volumetric Glassware", description: "Precision volumetric glassware for accurate measurement and solution preparation." },
-]
+];
 
 const LabEquipmentsAndInstruments = [
     { name: "Autoclaves & Sterilizers", description: "Reliable autoclaves and sterilizers for laboratory sterilization and safety." },
@@ -52,7 +54,7 @@ const LabEquipmentsAndInstruments = [
     { name: "Stirrers & Mixers", description: "Laboratory stirrers and mixers for efficient sample preparation and mixing." },
     { name: "Water Baths & Circulators", description: "Water baths and circulators for precise temperature control in laboratory procedures." },
     { name: "Water Purification Systems", description: "Advanced water purification systems for producing high-purity laboratory water." },
-]
+];
 
 const ChemicalReagent = [
     { name: "Acids", description: "High-purity laboratory acids for analytical, research, and industrial applications." },
@@ -67,7 +69,7 @@ const ChemicalReagent = [
     { name: "Salts", description: "High-quality laboratory salts for research, testing, and industrial use." },
     { name: "Solvents", description: "Analytical-grade solvents for laboratories, pharmaceuticals, and chemical processing." },
     { name: "Standards & Reference Materials", description: "Certified reference materials and standards for calibration and laboratory validation." },
-]
+];
 
 const LabConsumables = [
     { name: "Cell Culture Consumables", description: "High-quality consumables for cell culture, tissue culture, and biological research." },
@@ -90,9 +92,9 @@ const LabConsumables = [
     { name: "Syringes & Needles", description: "Disposable syringes and needles for accurate liquid transfer and sampling." },
     { name: "Tubes & Microtubes", description: "Laboratory tubes and microtubes for sample storage, processing, and analysis." },
     { name: "Weighing & Sampling Consumables", description: "Consumables for accurate weighing, sampling, and laboratory preparation tasks." },
-]
+];
 
-// ---- Category → short prefix used for the specimen-tag label on each card ----
+// Category -> short prefix used for the specimen-tag label on each card
 const CATEGORY_PREFIX = {
     "laboratory consumables": "LC",
     "chemical & reagent": "CR",
@@ -100,180 +102,127 @@ const CATEGORY_PREFIX = {
     "glassware & plasticware": "GP",
 };
 
-// ---- Motion variants ----
-
-const containerVariants = {
-    hidden: {},
-    show: {
-        transition: {
-            staggerChildren: 0.045,
-            delayChildren: 0.08,
-        },
-    },
-};
-
-const cardEntranceVariants = {
-    hidden: { opacity: 0, y: 24, scale: 0.97 },
-    show: {
-        opacity: 1,
+const cardVariants = {
+    initial: {
         y: 0,
-        scale: 1,
-        transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-    },
-};
-
-const cardHoverVariants = {
-    rest: {
-        scale: 1,
-        y: 0,
-        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)"
+        boxShadow:
+            "0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.04)"
     },
     hover: {
-        scale: 1.03,
         y: -6,
-        boxShadow: `
-      0 15px 35px rgba(59, 130, 246, 0.25),
-      0 25px 60px rgba(173, 216, 230, 0.70),
-      0 0 50px rgba(180, 255, 255, 0.50)
-    `
+        boxShadow:
+            "0 18px 40px rgba(37, 99, 235, 0.12), 0 6px 18px rgba(8, 145, 178, 0.10)"
     }
-}
-
-const textVariants = {
-    initial: { opacity: 0, width: 0, marginRight: 0 },
-    hover: { opacity: 1, width: "auto", marginRight: 6 }
-}
+};
 
 const arrowVariants = {
     initial: { x: 0 },
-    hover: { x: 4 }
-}
+    hover: { x: 5 }
+};
 
-const tagVariants = {
-    rest: { opacity: 0.55, y: 0 },
-    hover: { opacity: 1, y: -1 }
-}
-
-function SubcategoryCard({ app, index, prefix, onClick }) {
-    const tagLabel = `${prefix}-${String(index + 1).padStart(2, "0")}`;
+function SubcategoryCard({ item, prefix, onClick }) {
+    const tagLabel = `${prefix}-${String(item._idx + 1).padStart(2, "0")}`;
 
     return (
-        <motion.div
-            variants={cardEntranceVariants}
-            className="h-full w-full"
+        <motion.article
+            initial="initial"
+            whileHover="hover"
+            whileTap={{ scale: 0.985 }}
+            variants={cardVariants}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            onClick={onClick}
+            className="group relative flex flex-col h-full min-h-[15rem] bg-white rounded-2xl border border-gray-300 overflow-hidden cursor-pointer"
         >
-            <motion.div
-                initial="rest"
-                whileHover="hover"
-                whileTap={{ scale: 0.98 }}
-                animate="rest"
-                variants={cardHoverVariants}
-                onClick={onClick}
-                transition={{ duration: 0.25, ease: "easeOut" }}
-                className="relative flex flex-col h-full w-full bg-white rounded-2xl overflow-hidden border border-zinc-200 cursor-pointer"
-            >
-                {/* Colored top accent bar */}
-                <div className="h-1.5 w-full bg-gradient-to-r from-blue-400 via-cyan-300 to-teal-300" />
+            {/* Thin accent rail */}
+            <span className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-300" />
 
-                {/* Specimen-style tag, top right */}
-                <motion.span
-                    variants={tagVariants}
-                    transition={{ duration: 0.25, ease: "easeOut" }}
-                    className="absolute top-4 right-5 font-mono text-[11px] tracking-wider text-cyan-700/70 select-none"
-                >
-                    {tagLabel}
-                </motion.span>
-
-                {/* Card Body */}
-                <div className="flex flex-col justify-between p-5 pt-6 flex-grow gap-5 text-left">
-                    <div>
-                        <h3 className="text-base font-sans font-semibold text-zinc-900 capitalize leading-snug mb-2 pr-10">
-                            {app.name}
-                        </h3>
-                        {app.description && (
-                            <p className="text-sm text-zinc-500 leading-relaxed line-clamp-2">
-                                {app.description}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Bottom: Open CTA */}
-                    <div className="flex items-center font-semibold text-sm text-zinc-800 mt-1">
-                        <motion.span
-                            variants={textVariants}
-                            transition={{ duration: 0.25, ease: "easeOut" }}
-                            className="inline-block overflow-hidden whitespace-nowrap"
-                        >
-                            Open
-                        </motion.span>
-                        <motion.span
-                            variants={arrowVariants}
-                            transition={{ duration: 0.25, ease: "easeOut" }}
-                            className="ml-0.5"
-                        >
-                            →
-                        </motion.span>
-                    </div>
+            <div className="flex flex-col flex-grow gap-4 p-6 pt-7">
+                {/* Specimen tag + name */}
+                <div className="flex flex-col gap-2.5">
+                    <span className="font-mono text-[11px] tracking-wider text-cyan-600/90">
+                        {tagLabel}
+                    </span>
+                    <h3 className="text-[17px] font-medium text-zinc-900 capitalize leading-snug">
+                        {item.name}
+                    </h3>
                 </div>
-            </motion.div>
-        </motion.div>
+
+                {/* Description */}
+                {item.description && (
+                    <p className="text-sm text-zinc-500 leading-relaxed line-clamp-3">
+                        {item.description}
+                    </p>
+                )}
+
+                {/* CTA pinned to the bottom */}
+                <div className="mt-auto pt-2 flex items-center gap-1.5 text-sm font-medium text-blue-600">
+                    Open
+                    <motion.span variants={arrowVariants} transition={{ duration: 0.25 }}>
+                        →
+                    </motion.span>
+                </div>
+            </div>
+        </motion.article>
     );
 }
 
 export default function Subcategory() {
-    const params = useParams();
-    const { categoryName } = params;
+    const { categoryName } = useParams();
     const navigate = useNavigate();
+    const [query, setQuery] = useState("");
 
-    const getSubcategories = () => {
-        const cat = categoryName?.toLowerCase();
-        if (cat === "laboratory consumables") return LabConsumables;
-        if (cat === "chemical & reagent") return ChemicalReagent;
-        if (cat === "laboratory equipments and instruments") return LabEquipmentsAndInstruments;
-        if (cat === "glassware & plasticware") return GlasswareAndPlasticware;
-        return [];
-    };
+    const cat = categoryName?.toLowerCase();
+    const source =
+        cat === "laboratory consumables" ? LabConsumables :
+            cat === "chemical & reagent" ? ChemicalReagent :
+                cat === "laboratory equipments and instruments" ? LabEquipmentsAndInstruments :
+                    cat === "glassware & plasticware" ? GlasswareAndPlasticware :
+                        [];
 
-    const subcategories = getSubcategories();
-    const prefix = CATEGORY_PREFIX[categoryName?.toLowerCase()] || "GN";
+    const prefix = CATEGORY_PREFIX[cat] || "GN";
 
-    if (subcategories.length === 0) {
+    // Stable catalog index per item, preserved through filtering.
+    const indexed = useMemo(
+        () => source.map((s, i) => ({ ...s, _idx: i })),
+        [source]
+    );
+
+    const filtered = useMemo(() => {
+        const q = query.trim().toLowerCase();
+        if (!q) return indexed;
+        return indexed.filter(
+            (s) =>
+                s.name.toLowerCase().includes(q) ||
+                (s.description || "").toLowerCase().includes(q)
+        );
+    }, [indexed, query]);
+
+    if (source.length === 0) {
         return (
-            <div className="w-full min-h-screen pt-20 flex items-center justify-center">
+            <div className="w-full min-h-screen bg-gradient-to-b from-white to-zinc-50/60 pt-20 flex items-center justify-center">
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="text-center py-20 text-zinc-400 text-lg"
+                    className="text-center text-zinc-400 text-lg"
                 >
-                    No subcategories found for <span className="font-sans text-zinc-600">"{categoryName}"</span>.
+                    No subcategories found for{" "}
+                    <span className="font-semibold text-zinc-600">"{categoryName}"</span>.
                 </motion.div>
             </div>
         );
     }
 
     return (
-        <div className="w-full min-h-screen pt-14 relative">
-            {/* Ambient graph-paper backdrop — a quiet nod to the lab notebook */}
-            <div
-                className="pointer-events-none absolute inset-0 opacity-[0.35]"
-                style={{
-                    backgroundImage:
-                        "linear-gradient(to right, rgba(148,163,184,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.15) 1px, transparent 1px)",
-                    backgroundSize: "28px 28px",
-                    maskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)",
-                    WebkitMaskImage: "radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%)",
-                }}
-            />
-
-            <section className="w-full px-6 md:px-8 pb-10 text-black space-y-8 pb-20 relative">
+        <div className="w-full min-h-screen bg-gradient-to-b from-white to-zinc-50/60 pt-8">
+            <div className="mx-auto w-screen px-6 md:px-10 pb-24">
                 {/* Back link */}
                 <motion.button
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
                     onClick={() => navigate(-1)}
-                    className="flex items-center gap-1.5 text-sm font-medium text-zinc-500 hover:text-cyan-700 transition-colors"
+                    className="mt-8 flex items-center gap-1.5 text-sm font-medium text-zinc-500 hover:text-cyan-700 transition-colors"
                 >
                     <motion.span
                         whileHover={{ x: -3 }}
@@ -285,54 +234,84 @@ export default function Subcategory() {
                     All categories
                 </motion.button>
 
-                {/* Header */}
-                <div className="space-y-3">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 14 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="lg:text-4xl text-3xl pb-4 capitalize font-sans text-zinc-900"
-                    >
-                        {categoryName}
-                    </motion.h2>
+                {/* Header block */}
+                <header className="mt-8 border-b border-zinc-200/80 pb-8">
+                    <p className="font-mono text-xs tracking-[0.2em] uppercase text-cyan-600">
+                        Catalog
+                    </p>
+                    <div className="mt-3 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                        <h1 className="text-3xl lg:text-4xl font-sans tracking-tight text-zinc-900 capitalize max-w-3xl leading-[1.1]">
+                            {categoryName}
+                        </h1>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-                        className="flex items-center gap-3"
-                    >
-                        <span className="font-mono text-xs tracking-widest text-cyan-700 uppercase">
-                            {String(subcategories.length).padStart(2, "0")} catalogued
-                        </span>
-                        <motion.span
-                            initial={{ scaleX: 0 }}
-                            animate={{ scaleX: 1 }}
-                            transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
-                            style={{ transformOrigin: "left" }}
-                            className="h-px flex-1 max-w-[120px] bg-gradient-to-r from-cyan-400 to-transparent"
-                        />
-                    </motion.div>
-                </div>
+                        {/* Search */}
+                        <div className="relative w-full md:w-72 shrink-0">
+                            <input
+                                type="text"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                placeholder="Search subcategories"
+                                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 pr-9 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                            />
+                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400">
+                                <SearchIcon className="size-4" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <p className="mt-5 text-sm text-zinc-500">
+                        <span className="font-medium text-zinc-700">{filtered.length}</span>{" "}
+                        {filtered.length === 1 ? "subcategory" : "subcategories"}
+                        {query && (
+                            <>
+                                {" "}matching{" "}
+                                <span className="text-zinc-700">"{query}"</span>
+                            </>
+                        )}
+                    </p>
+                </header>
+
+                {/* Empty search state */}
+                {filtered.length === 0 && (
+                    <div className="text-center py-28 text-zinc-400 text-lg">
+                        No subcategories match{" "}
+                        <span className="font-semibold text-zinc-600">"{query}"</span>.
+                    </div>
+                )}
 
                 {/* Grid */}
-                <motion.div
-                    variants={containerVariants}
-                    initial="hidden"
-                    animate="show"
-                    className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-                >
-                    {subcategories.map((app, index) => (
-                        <SubcategoryCard
-                            key={app.name}
-                            app={app}
-                            index={index}
-                            prefix={prefix}
-                            onClick={() => navigate(`/products/${app.name}`)}
-                        />
-                    ))}
-                </motion.div>
-            </section>
+                {filtered.length > 0 && (
+                    <motion.div
+                        initial="hidden"
+                        animate="show"
+                        variants={{
+                            hidden: {},
+                            show: { transition: { staggerChildren: 0.04 } }
+                        }}
+                        className="mt-10 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3"
+                    >
+                        {filtered.map((item) => (
+                            <motion.div
+                                key={item.name}
+                                variants={{
+                                    hidden: { opacity: 0, y: 16 },
+                                    show: { opacity: 1, y: 0 }
+                                }}
+                                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                                className="h-full"
+                            >
+                                <SubcategoryCard
+                                    item={item}
+                                    prefix={prefix}
+                                    onClick={() =>
+                                        navigate(`/products/${encodeURIComponent(item.name)}`)
+                                    }
+                                />
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                )}
+            </div>
         </div>
     );
 }
