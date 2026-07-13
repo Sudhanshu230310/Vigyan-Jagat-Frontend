@@ -156,7 +156,7 @@ export default function Products() {
         const productName = product.name || product.product_name;
         if (!productName) return;
         navigate(
-            `/product/${encodeURIComponent(SubcategoryName)}/${encodeURIComponent(
+            `/products/${encodeURIComponent(SubcategoryName)}/${encodeURIComponent(
                 productName
             )}`
         );
