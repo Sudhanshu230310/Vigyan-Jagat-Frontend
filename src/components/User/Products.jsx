@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { SearchIcon } from "lucide-react";
 
 const cardVariants = {
     initial: {
@@ -33,7 +34,7 @@ function ProductCard({ product, index, onClick }) {
             variants={cardVariants}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             onClick={onClick}
-            className="group relative flex flex-col h-full min-h-[15rem] bg-white rounded-2xl border border-zinc-200/80 overflow-hidden cursor-pointer"
+            className="group relative flex flex-col h-full min-h-[15rem] bg-white rounded-2xl border border-gray-300 overflow-hidden cursor-pointer"
         >
             {/* Thin accent rail */}
             <span className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-300" />
@@ -162,7 +163,7 @@ export default function Products() {
     };
 
     return (
-        <div className="w-full min-h-screen bg-gradient-to-b from-white to-zinc-50/60 pt-14">
+        <div className="w-full min-h-screen bg-gradient-to-b from-white to-zinc-50/60 pt-6">
             <div className="mx-auto w-screen px-6 md:px-10 pb-24">
                 {/* Back link */}
                 <motion.button
@@ -188,7 +189,7 @@ export default function Products() {
                         Catalog
                     </p>
                     <div className="mt-3 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                        <h1 className="text-3xl lg:text-5xl font-semibold tracking-tight text-zinc-900 capitalize max-w-3xl leading-[1.1]">
+                        <h1 className="text-3xl lg:text-4xl font-sans tracking-tight text-zinc-900 capitalize max-w-3xl leading-[1.1]">
                             {SubcategoryName}
                         </h1>
 
@@ -201,8 +202,8 @@ export default function Products() {
                                 placeholder="Search this subcategory"
                                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 pr-9 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
                             />
-                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400">
-                                &#8981;
+                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 ">
+                                <SearchIcon className="size-4" />
                             </span>
                         </div>
                     </div>
