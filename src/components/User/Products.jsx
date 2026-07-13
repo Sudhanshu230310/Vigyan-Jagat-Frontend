@@ -30,7 +30,7 @@ const arrowVariants = {
     hover: { x: 4 }
 }
 
-function ProductCard({ product }) {
+function ProductCard({ product, onClick }) {
     return (
         <motion.div
             initial="initial"
@@ -38,6 +38,7 @@ function ProductCard({ product }) {
             whileTap={{ scale: 0.98 }}
             variants={cardVariants}
             transition={{ duration: 0.25, ease: "easeOut" }}
+            onClick={onClick}
             className="flex flex-col h-full w-full bg-white rounded-2xl overflow-hidden border border-zinc-200 cursor-pointer"
         >
             {/* Colored top accent bar */}
@@ -64,6 +65,16 @@ function ProductCard({ product }) {
 
                 {/* Middle: key details */}
                 <div className="flex flex-wrap gap-2 text-xs text-zinc-600">
+                    {product.brand && (
+                        <span className="bg-zinc-100 rounded-lg px-2.5 py-1">
+                            {product.brand}
+                        </span>
+                    )}
+                    {product.specifications?.Material && (
+                        <span className="bg-zinc-100 rounded-lg px-2.5 py-1">
+                            {product.specifications.Material}
+                        </span>
+                    )}
                     {product.cas_no && (
                         <span className="bg-zinc-100 rounded-lg px-2.5 py-1 font-mono">
                             CAS: {product.cas_no}
@@ -115,11 +126,11 @@ export default function Products() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const BackendURL = import.meta.env.VITE_BACKEND_URL;
-    console.log("Backend URL:", BackendURL);
+
     useEffect(() => {
         setLoading(true);
         setError(null);
-        axios.get(`${BackendURL}/${SubcategoryName}`)
+        axios.get(`${BackendURL}/${encodeURIComponent(SubcategoryName)}`)
             .then(res => {
                 const items = res.data.items || [];
                 const sorted = [...items].sort((a, b) =>
@@ -136,11 +147,19 @@ export default function Products() {
                 setError("Failed to load products.");
             })
             .finally(() => setLoading(false));
-    }, [SubcategoryName]);
+    }, [SubcategoryName, BackendURL]);
+
+    const handleProductClick = (product) => {
+        const productName = product.name || product.product_name;
+        if (!productName) return;
+        navigate(
+            `/product/${encodeURIComponent(SubcategoryName)}/${encodeURIComponent(productName)}`
+        );
+    };
 
     return (
         <div className="w-full min-h-screen pt-14">
-            <section className="w-full px-6 md:px-8 pb-10 text-black space-y-8 pb-20">
+            <section className="w-full px-6 md:px-8 pb-20 text-black space-y-8">
 
                 {/* Back link */}
                 <motion.button
@@ -161,7 +180,7 @@ export default function Products() {
                 </motion.button>
 
                 {/* Header */}
-                <h2 className="lg:text-4xl text-3xl font-sans  capitalize">
+                <h2 className="lg:text-4xl text-3xl font-sans capitalize">
                     {SubcategoryName}
                 </h2>
 
@@ -188,7 +207,11 @@ export default function Products() {
                 {!loading && !error && products.length > 0 && (
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                         {products.map((product, idx) => (
-                            <ProductCard key={product._id || idx} product={product} />
+                            <ProductCard
+                                key={product._id || idx}
+                                product={product}
+                                onClick={() => handleProductClick(product)}
+                            />
                         ))}
                     </div>
                 )}
