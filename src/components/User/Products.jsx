@@ -164,7 +164,7 @@ export default function Products() {
 
     return (
         <div className="w-full min-h-screen bg-gradient-to-b from-white to-zinc-50/60 pt-6">
-            <div className="mx-auto w-screen px-6 md:px-10 pb-24">
+            <div className="mx-auto w-full px-6 md:px-10 pb-24">
                 {/* Back link */}
                 <motion.button
                     initial={{ opacity: 0, x: -8 }}

@@ -298,7 +298,7 @@ export default function Item() {
                 variants={pageVariants}
                 initial="hidden"
                 animate="show"
-                className="mx-auto w-screen px-6 md:px-12 pb-24 relative z-10"
+                className="mx-auto w-full px-6 md:px-12 pb-24 relative z-10"
             >
                 {/* Navigation Back */}
                 <motion.div variants={itemVariants} className="mt-6">

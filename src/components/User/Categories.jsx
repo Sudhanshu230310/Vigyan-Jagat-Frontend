@@ -13,7 +13,7 @@ const categories = [
     description: "Balances, centrifuges, microscopes, analytical instruments and more for every lab.",
   },
   {
-    name: "Glassware & Plasticware",
+    name: "Laboratory Glassware & Plasticware",
     image: GWImage,
     description: "Beakers, flasks, volumetric ware and plasticware for measurement and storage.",
   },
