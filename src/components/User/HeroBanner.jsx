@@ -1,6 +1,6 @@
 import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
 import { useState, useMemo } from 'react'
-import Main from '../../images/main.png'
+import Main from '../../images/image.png'
 import { Link } from 'react-router-dom'
 
 export function HeroBanner({ sidebarOpen = false }) {
