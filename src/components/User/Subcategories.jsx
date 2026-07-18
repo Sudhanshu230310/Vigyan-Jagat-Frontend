@@ -171,8 +171,8 @@ export default function Subcategory() {
                     All categories
                 </motion.button>
 
-                {/* Header block */}
-                <header className="mt-8 border-b border-zinc-200/80 pb-8">
+                {/* Header block — sticky below Navbar (h-16 = 4rem) */}
+                <header className="sticky top-16 z-40 bg-white/90 backdrop-blur-xl border-b border-zinc-200/80 -mx-6 md:-mx-10 px-6 md:px-10 pb-5 pt-4">
                     <p className="font-mono text-xs tracking-[0.2em] uppercase text-cyan-600">
                         Catalog
                     </p>
