@@ -169,10 +169,12 @@ export default function Item() {
     const [isInquiryOpen, setIsInquiryOpen] = useState(false);
     const [inquirySuccess, setInquirySuccess] = useState(false);
     const [submittingInquiry, setSubmittingInquiry] = useState(false);
+    const [submitError, setSubmitError] = useState(null);
     
     const [formData, setFormData] = useState({
         name: "",
         email: "",
+        phone: "",
         org: "",
         qty: "100",
         message: ""
@@ -215,10 +217,29 @@ export default function Item() {
     const handleInquirySubmit = (e) => {
         e.preventDefault();
         setSubmittingInquiry(true);
-        setTimeout(() => {
-            setSubmittingInquiry(false);
-            setInquirySuccess(true);
-        }, 1200);
+        setSubmitError(null);
+        axios
+            .post(`${BackendURL}/quote`, {
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                organization: formData.org,
+                quantity: formData.qty,
+                message: formData.message,
+                product_name: item.name,
+                subcategory_name: SubcategoryName,
+                brand: item.brand || null
+            })
+            .then(() => {
+                setInquirySuccess(true);
+            })
+            .catch((err) => {
+                console.error(err);
+                setSubmitError(
+                    err.response?.data?.detail || "Failed to submit request. Please try again."
+                );
+            })
+            .finally(() => setSubmittingInquiry(false));
     };
 
     if (loading) {
@@ -584,16 +605,28 @@ export default function Item() {
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Organization</label>
+                                                <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Mobile Number</label>
                                                 <input 
-                                                    type="text" 
+                                                    type="tel" 
                                                     required
-                                                    value={formData.org}
-                                                    onChange={(e) => setFormData(prev => ({ ...prev, org: e.target.value }))}
-                                                    placeholder="Vigyan Jagat Corp"
+                                                    value={formData.phone}
+                                                    onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                                                    placeholder="+91 98765 43210"
+                                                    pattern="[+]?[0-9\s\-]{7,15}"
                                                     className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
                                                 />
                                             </div>
+                                        </div>
+                                        <div>
+                                            <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Organization</label>
+                                            <input 
+                                                type="text" 
+                                                required
+                                                value={formData.org}
+                                                onChange={(e) => setFormData(prev => ({ ...prev, org: e.target.value }))}
+                                                placeholder="Vigyan Jagat Corp"
+                                                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                                            />
                                         </div>
                                         <div>
                                             <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Estimated Qty Needed</label>
@@ -616,6 +649,10 @@ export default function Item() {
                                                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100 resize-none"
                                             />
                                         </div>
+                                        
+                                        {submitError && (
+                                            <p className="text-red-500 text-xs font-medium text-center">{submitError}</p>
+                                        )}
                                         
                                         <motion.button
                                             whileHover={{ scale: 1.01 }}
