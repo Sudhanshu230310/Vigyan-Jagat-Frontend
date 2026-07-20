@@ -1,260 +1,188 @@
-import { motion, useScroll, useMotionValueEvent } from 'framer-motion'
-import { useState, useMemo } from 'react'
-import Main from '../../images/image.png'
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import GlasswareImg from '../../images/image.png'
+import EquipImg from '../../images/main3.png'
 
-export function HeroBanner({ sidebarOpen = false }) {
-  const SIDEBAR_W = '16rem'
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [navHidden, setNavHidden] = useState(false)
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 24 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1], delay }
+})
 
-  const { scrollY } = useScroll()
+const TRUST_ICONS = [
+  {
+    label: 'Universities', icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7 mx-auto mb-1.5 text-gray-600">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 3.741-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+      </svg>
+    )
+  },
+  {
+    label: 'Research Institutes', icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7 mx-auto mb-1.5 text-gray-600">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+      </svg>
+    )
+  },
+  {
+    label: 'Hospitals', icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7 mx-auto mb-1.5 text-gray-600">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
+      </svg>
+    )
+  },
+  {
+    label: 'Industries', icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7 mx-auto mb-1.5 text-gray-600">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+      </svg>
+    )
+  },
+  {
+    label: 'Govt. Labs', icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7 mx-auto mb-1.5 text-gray-600">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
+      </svg>
+    )
+  },
+  {
+    label: 'Pharma Firms', icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7 mx-auto mb-1.5 text-gray-600">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+      </svg>
+    )
+  },
+  {
+    label: 'Defence Labs', icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-7 h-7 mx-auto mb-1.5 text-gray-600">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+      </svg>
+    )
+  },
+]
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = scrollY.getPrevious()
-    if (latest > previous && latest > 150) {
-      setNavHidden(true)
-    } else {
-      setNavHidden(false)
-    }
-  })
-
-  // When sidebar open: content starts at 16rem, so the content-center = 16rem + (100vw-16rem)/2 = 8rem + 50vw
-  // Pill is already -translate-x-1/2, so we set left to that center point
-  const pillLeft = sidebarOpen
-    ? `calc(${SIDEBAR_W} / 2 + 50%)` // = 8rem + 50vw
-    : '50%'
-
-  const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Categories', path: 'categories' },
-    { name: 'About Us', path: 'about' },
-    { name: 'Contact Us', path: 'contact' }
-  ]
-
-  const trustedBy = ['Universities', 'Research Institutes', 'Hospitals', 'Industries', 'Govt. Labs']
-  // Duplicate for seamless marquee
-  const marqueeItems = [...trustedBy, ...trustedBy, ...trustedBy, ...trustedBy]
-
-  // Generate random particles (memoized so they don't jump on re-render)
-  const particles = useMemo(() => {
-    return Array.from({ length: 25 }).map((_, i) => ({
-      id: i,
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      size: Math.random() * 4 + 2,
-      duration: Math.random() * 5 + 3,
-      delay: Math.random() * 2
-    }))
-  }, [])
-
+export function HeroBanner() {
   return (
-    <div className="min-h-screen font-sans relative overflow-hidden bg-white">
+    <div className="w-full bg-gradient-to-br from-white to-blue-100 min-h-[92vh] flex items-center overflow-hidden relative">
 
-      {/* 1. Slow zooming background image */}
-      <motion.img
-        src={Main}
-        alt=""
-        className="absolute inset-0 h-screen w-full object-cover"
-        animate={{ scale: [1, 1.15, 1] }}
-        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-      />
-
-      {/* 2. Animated gradient overlay */}
-      <motion.div
-        className="absolute inset-0 z-0"
-        animate={{
-          background: [
-            "linear-gradient(45deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.2) 100%)",
-            "linear-gradient(45deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.15) 100%)",
-          ]
+      {/* Subtle grid background */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(59,130,246,0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(59,130,246,0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px'
         }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* 3. Two rotating rings behind the content */}
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-white/5 border-dashed z-0 pointer-events-none"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[1100px] rounded-full border border-white/5 border-dotted z-0 pointer-events-none"
-        animate={{ rotate: -360 }}
-        transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-      />
+      {/* Ambient glow blobs */}
+      <div className="absolute -top-32 -left-32 w-[420px] h-[420px] bg-blue-200/40 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[350px] h-[350px] bg-indigo-200/30 rounded-full blur-[90px] pointer-events-none" />
 
-      {/* 4. Two floating gradient blobs */}
-      <motion.div
-        className="absolute -left-32 top-20 w-96 h-96 bg-blue-600/30 rounded-full blur-3xl mix-blend-screen pointer-events-none z-0"
-        animate={{
-          x: [0, 40, -20, 0],
-          y: [0, -40, 20, 0],
-          scale: [1, 1.2, 0.9, 1]
-        }}
-        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute right-0 bottom-32 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl mix-blend-screen pointer-events-none z-0"
-        animate={{
-          x: [0, -30, 20, 0],
-          y: [0, 40, -20, 0],
-          scale: [1, 1.1, 0.8, 1]
-        }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-      />
+      <div className="w-full px-6 md:px-12 lg:px-20 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
 
-      {/* 5. 20-30 glowing floating particles */}
-      {particles.map((p) => (
-        <motion.div
-          key={p.id}
-          className="absolute rounded-full bg-white/60 blur-[1px] pointer-events-none z-0"
-          style={{
-            left: p.left,
-            top: p.top,
-            width: p.size,
-            height: p.size,
-            boxShadow: "0 0 8px 2px rgba(255, 255, 255, 0.3)"
-          }}
-          animate={{
-            y: [0, -100],
-            opacity: [0, 1, 0],
-          }}
-          transition={{
-            duration: p.duration,
-            repeat: Infinity,
-            delay: p.delay,
-            ease: "easeInOut"
-          }}
-        />
-      ))}
+        {/* ── LEFT COLUMN ── */}
+        <div className="flex flex-col gap-10">
 
-      {/* Desktop floating pill nav (xl and up only) */}
-      {/* <motion.div
-        variants={{
-          visible: { y: 0, opacity: 1 },
-          hidden: { y: "-150%", opacity: 0 }
-        }}
-        animate={navHidden ? "hidden" : "visible"}
-        transition={{ duration: 0.35, ease: "easeInOut" }}
-        className="w-[min(80%,60rem)] xl:mt-6 text-md font-sans h-10 xl:flex xl:justify-center xl:items-center hidden xl:gap-24 2xl:gap-30 xl:visible px-4 pl-10 border border-gray-300 items-center rounded-xl py-8 z-50 fixed top-20 -translate-x-1/2 bg-white"
-        style={{ left: pillLeft }}
-      >
-        {navItems.map((item) => (
-          <Link to={item.path} key={item.name} className="cursor-pointer hover:text-blue-700 whitespace-nowrap">
-            {item.name}
-          </Link>
-        ))}
-      </motion.div> */}
 
-      {/* Mobile search bar (hidden on xl and up) */}
-      {/* 7. Breathing search bar */}
-      {/* <motion.div
-        className="w-[90%] max-w-sm text-md font-sans flex justify-center items-center lg:hidden p-1.5 border border-white/60 rounded-2xl z-20 fixed top-24 -translate-x-1/2 bg-white/95 backdrop-blur-xl transition-all duration-300 ease-in-out"
-        style={{ left: pillLeft }}
-        animate={{
-          scale: [1, 1.02, 1],
-          boxShadow: [
-            "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
-            "0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1)",
-            "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)"
-          ]
-        }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <div className="flex w-full items-center">
-          <svg className="w-5 h-5 text-gray-400 ml-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <input
-            type="text"
-            placeholder="Search Vigyan Jagat..."
-            className="flex-1 w-full px-3 py-2 bg-transparent border-none outline-none text-gray-800 placeholder-gray-500 focus:ring-0"
-          />
-          <button className="px-5 py-2.5 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 transition-colors whitespace-nowrap shadow-md">
-            Search
-          </button>
-        </div>
-      </motion.div> */}
+          {/* Logo chip + Heading */}
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-start items-center gap-4">
+              <motion.div {...fadeUp(0.08)} className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-400/30">
+                <span className="text-white font-bold text-lg tracking-tight">S</span>
+              </motion.div>
 
-      {/* Hero content — minimal, centered */}
-      <div className="relative z-10 pt-30 flex flex-col items-center h-[70vh] px-6 text-center text-white">
+              <motion.h1 {...fadeUp(0.14)} className="text-5xl md:text-6xl font-semibold text-zinc-900 tracking-tight leading-[1.05]">
+                <span className="text-blue-600">S</span>hodhix
+              </motion.h1>
+            </div>
 
-        {/* 6. Floating logo */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-            y: [0, -10, 0]
-          }}
-          transition={{
-            opacity: { duration: 0.5 },
-            scale: { duration: 0.5 },
-            y: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-          }}
-          className="w-20 h-20 rounded-2xl bg-white shadow-xl flex items-center justify-center mb-8"
-        >
-          <span className="text-blue-800 font-bold text-3xl">VJ</span>
-        </motion.div>
 
-        {/* 6. Floating heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 12 }}
-          animate={{
-            opacity: 1,
-            y: [0, -8, 0]
-          }}
-          transition={{
-            opacity: { duration: 0.5, delay: 0.1 },
-            y: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 0.2 }
-          }}
-          className="text-5xl md:text-6xl font-sans tracking-tight drop-shadow-lg"
-        >
-          Vigyan Jagat
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-6 text-lg md:text-2xl text-gray-100 drop-shadow-md max-w-2xl"
-        >
-          Laboratory equipment, chemicals &amp; glassware — since 1962.
-        </motion.p>
-
-        {/* 8. Infinite "Trusted By" marquee */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="absolute bottom-0 inset-x-0 w-full overflow-hidden"
-        >
-          <p className="text-sm text-gray-300 mb-6 font-medium tracking-wide uppercase">Trusted by leading institutions</p>
-
-          {/* Marquee Container */}
-          <div className="relative flex overflow-hidden group">
-            {/* The wrapper must be wide enough to translate, masking its overflow */}
-            <motion.div
-              className="flex whitespace-nowrap gap-16 md:gap-24 px-8 items-center"
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{
-                duration: 25,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-            >
-              {marqueeItems.map((name, index) => (
-                <span
-                  key={`${name}-${index}`}
-                  className="text-lg md:text-xl font-semibold text-white/80 transition-colors hover:text-white"
-                >
-                  {name}
-                </span>
-              ))}
-            </motion.div>
+            <motion.p {...fadeUp(0.2)} className="text-xl md:text-2xl font-sans text-black leading-snug max-w-lg">
+              Laboratory equipment, chemicals &amp; glassware — since 1962.
+            </motion.p>
           </div>
-        </motion.div>
+
+          {/* Trust Icons */}
+          <motion.div {...fadeUp(0.26)} className="flex flex-col gap-3">
+            <p className="text-[11px] font-bold text-zinc-400 tracking-[0.18em] uppercase flex items-center gap-2">
+              <svg className="w-3.5 h-3.5 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+              </svg>
+              Trusted by leading institutions
+            </p>
+            <div className="flex flex-wrap gap-x-4 gap-y-3">
+              {TRUST_ICONS.map((item) => (
+                <div key={item.label} className="flex flex-col items-center text-center w-[72px]">
+                  {item.icon}
+                  <span className="text-[10px] text-zinc-500 font-medium leading-tight">{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* CTAs */}
+          <motion.div {...fadeUp(0.32)} className="flex items-center gap-5 pt-2">
+            <Link to="/contact">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-7 py-3.5 rounded-xl shadow-lg shadow-blue-500/25 transition-colors text-sm"
+              >
+                Contact Sales
+              </motion.button>
+            </Link>
+            <Link to="/categories">
+              <motion.button
+                whileHover={{ x: 3 }}
+                className="flex items-center gap-1.5 text-zinc-700 hover:text-blue-600 font-semibold text-sm transition-colors"
+              >
+                About Us
+                <span className="text-base">&rsaquo;</span>
+              </motion.button>
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* ── RIGHT COLUMN — Overlapping image cards ── */}
+        <div className="relative h-[420px] md:h-[500px] hidden lg:block">
+
+          {/* Top card — Lab equipment / molecular */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, rotate: -1 }}
+            animate={{ opacity: 1, y: 0, rotate: -1 }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+            className="absolute top-0 right-0 w-[68%] h-[55%] rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/15 border border-white/60"
+          >
+            <img src={EquipImg} alt="Vigyan Jagat" className="w-full h-full object-cover" />
+
+          </motion.div>
+
+          {/* Bottom card — Glassware */}
+          <motion.div
+            initial={{ opacity: 0, y: 40, rotate: 2 }}
+            animate={{ opacity: 1, y: 0, rotate: 2 }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.28 }}
+            className="absolute bottom-0 left-0 w-[68%] h-[55%] rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/15 border border-white/60"
+          >
+            <img src={GlasswareImg} alt="Chemicals & Glassware" className="w-full h-full object-cover" />
+
+          </motion.div>
+
+          {/* Floating accent dot */}
+          <motion.div
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute top-[48%] left-[32%] w-5 h-5 bg-blue-400 rounded-full shadow-lg shadow-blue-400/50 z-10"
+          />
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            className="absolute top-[22%] left-[24%] w-3 h-3 bg-indigo-400 rounded-full shadow-md shadow-indigo-400/40 z-10"
+          />
+        </div>
       </div>
     </div>
   )

@@ -19,7 +19,7 @@ export default function Contact() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative h-[70vh] items-center overflow-hidden bg-white flex justify-center"
+            className="relative h-[80vh] items-center overflow-hidden bg-black flex justify-center"
         >
             {/* Floating Blob 1 */}
             <motion.div
@@ -93,7 +93,7 @@ export default function Contact() {
                             duration: 0.8,
                         },
                     }}
-                    className="text-4xl md:text-5xl font-sans"
+                    className="text-4xl md:text-5xl font-sans text-white"
                 >
                     Get in Touch
                 </motion.h1>
@@ -102,7 +102,7 @@ export default function Contact() {
                     initial={{ opacity: 0, y: 25 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="mt-6 max-w-2xl text-gray-600 text-lg"
+                    className="mt-6 max-w-2xl text-white/80 text-lg"
                 >
                     Our team is ready to assist you with product inquiries,
                     quotations, and technical support. Let's build something

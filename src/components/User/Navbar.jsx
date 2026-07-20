@@ -147,12 +147,12 @@ export function Navbar({ onToggleSidebar, onOpenMobileMenu }) {
           className="cursor-pointer flex items-center gap-2"
         >
           <div className="w-9 h-9 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold">
-            V
+            S
           </div>
 
           <div className="hidden sm:block">
             <h1 className="text-zinc-900 font-semibold text-lg">
-              Vigyan Jagat
+              Shodhix
             </h1>
           </div>
         </div>

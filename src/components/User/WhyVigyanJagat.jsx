@@ -85,24 +85,24 @@ export function WhyVigyanJagat() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <section className="w-full  bg-gray-900 ">
+      <section className="w-full  bg-white ">
         <div className="mx-auto grid min-h-[80vh] max-w-[1600px] grid-cols-1 items-center gap-12 px-6 py-16 sm:px-10 lg:grid-cols-[1.4fr_1fr] lg:gap-20 lg:px-16 lg:py-24">
           {/* ---- Panel: shows second on mobile, left on desktop ---- */}
           <div
-            className="relative order-2 lg:order-1 overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-200 via-violet-200 to-slate-100 flex items-center justify-center p-6 sm:p-10 lg:p-14"
+            className="relative order-2 lg:order-1 overflow-hidden rounded-3xl bg-black flex items-center justify-center p-6 sm:p-10 lg:p-14"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
             onTouchStart={() => setPaused(true)}
             onTouchEnd={() => setPaused(false)}
           >
             {/* soft glow blobs */}
-            <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-indigo-300/40 blur-3xl" />
-            <div className="absolute -bottom-20 -right-10 w-72 h-72 rounded-full bg-violet-300/40 blur-3xl" />
+            <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-black " />
+
 
             {/* The panel — one frame whose content changes automatically */}
-            <div className="relative mx-auto w-full max-w-2xl bg-white/90 backdrop-blur rounded-2xl shadow-xl border border-white/60 p-4 sm:p-6">
+            <div className="relative mx-auto w-full max-w-2xl bg-white backdrop-blur rounded-2xl shadow-xl border border-gray-300 p-4 sm:p-6">
               {/* Panel header */}
-              <p className="text-xs font-medium uppercase tracking-wider text-white mb-4">
+              <p className="text-xs font-medium uppercase tracking-wider text-black mb-4">
                 Why choose us
               </p>
 
@@ -122,7 +122,7 @@ export function WhyVigyanJagat() {
                     <h3 className="text-lg font-bold text-black mb-2 leading-snug">
                       {features[active].title}
                     </h3>
-                    <p className="text-sm text-gray-500 leading-relaxed min-h-[80px]">
+                    <p className="text-sm text-white/80 leading-relaxed min-h-[60px]">
                       {features[active].description}
                     </p>
                   </motion.div>
@@ -144,7 +144,7 @@ export function WhyVigyanJagat() {
                     {i === active && (
                       <motion.span
                         layoutId="activeRowHighlight"
-                        className="absolute inset-0 rounded-lg bg-indigo-400"
+                        className="absolute inset-0 rounded-lg bg-blue-400"
                         transition={{ type: 'spring', stiffness: 400, damping: 32 }}
                       />
                     )}
@@ -157,8 +157,8 @@ export function WhyVigyanJagat() {
                     />
                     <span
                       className={`relative text-xs truncate transition-colors duration-300 ${i === active
-                        ? 'text-zinc-900 font-semibold'
-                        : 'text-zinc-500'
+                        ? 'text-black font-semibold'
+                        : 'text-black'
                         }`}
                     >
                       {f.title}
@@ -167,7 +167,7 @@ export function WhyVigyanJagat() {
                       <motion.span
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="relative ml-auto text-[10px] text-indigo-500 font-medium flex-shrink-0"
+                        className="relative ml-auto text-[10px] text-black font-medium flex-shrink-0"
                       >
                         Now
                       </motion.span>
@@ -195,13 +195,13 @@ export function WhyVigyanJagat() {
 
           {/* ---- Text: shows first on mobile, right on desktop ---- */}
           <div className="order-1 lg:order-2 text-center lg:text-left">
-            <p className="text-sm font-semibold text-gray-200 mb-3 uppercase tracking-wide">
+            <p className="text-sm font-semibold text-black mb-3 uppercase tracking-wide">
               Since 1962
             </p>
-            <h2 className="text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight">
+            <h2 className="text-3xl md:text-5xl font-semibold text-black tracking-tight leading-tight">
               Why Vigyan Jagat?
             </h2>
-            <p className="mt-8 max-w-md mx-auto lg:mx-0 text-base md:text-lg text-zinc-300 leading-relaxed">
+            <p className="mt-8 max-w-md mx-auto lg:mx-0 text-base md:text-lg text-black/80 leading-relaxed">
               From quality-certified products and verified suppliers to
               competitive bulk pricing and dedicated support — everything your
               lab needs, sourced through one trusted partner.
@@ -214,7 +214,7 @@ export function WhyVigyanJagat() {
                   key={f.title}
                   aria-label={`Show ${f.title}`}
                   onClick={() => setActive(i)}
-                  className={`h-2 rounded-full ${i === active ? 'bg-indigo-200' : 'bg-zinc-300 hover:bg-zinc-400'
+                  className={`h-2 rounded-full text-black ${i === active ? 'bg-blue-500' : 'bg-gray-500 hover:bg-zinc-400'
                     }`}
                   animate={{ width: i === active ? 32 : 8 }}
                   transition={{ type: 'spring', stiffness: 500, damping: 35 }}

@@ -10,7 +10,7 @@ export default function UserDashboard({ sidebarOpen }) {
             <div className="">
                 <HeroBanner sidebarOpen={sidebarOpen} />
             </div>
-            <div className="">
+            <div>
                 <Categories />
                 <AboutUs />
                 <Contact />

@@ -59,11 +59,6 @@ const cardHoverVariants = {
   hover: {
     scale: 1.03,
     y: -6,
-    boxShadow: `
-      0 15px 35px rgba(59, 130, 246, 0.25),
-      0 25px 60px rgba(173, 216, 230, 0.70),
-      0 0 50px rgba(180, 255, 255, 0.50)
-    `,
   },
 }
 
@@ -99,12 +94,12 @@ const particles = Array.from({ length: 14 }, (_, i) => ({
 function AmbientBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden rounded-t-3xl md:rounded-t-4xl pointer-events-none" aria-hidden="true">
-      {/* 🌈 Animated gradient background */}
+      {/* 🌈 Subtle dark animated gradient overlay */}
       <motion.div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(120deg, #ffffff 0%, #eff6ff 25%, #ecfeff 50%, #eff6ff 75%, #ffffff 100%)",
+            "linear-gradient(120deg, rgba(15,23,42,0) 0%, rgba(30,58,138,0.18) 40%, rgba(8,47,73,0.14) 70%, rgba(15,23,42,0) 100%)",
           backgroundSize: "300% 300%",
         }}
         animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
@@ -114,19 +109,19 @@ function AmbientBackground() {
       {/* 🔵 Floating blurred blobs */}
       <motion.div
         className="absolute -top-20 -left-24 w-[28rem] h-[28rem] rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(59,130,246,0.14), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(59,130,246,0.22), transparent 70%)" }}
         animate={{ x: [0, 50, -20, 0], y: [0, 30, 60, 0], scale: [1, 1.15, 0.95, 1] }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute top-1/3 -right-32 w-[30rem] h-[30rem] rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(103,232,249,0.16), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(103,232,249,0.20), transparent 70%)" }}
         animate={{ x: [0, -60, 20, 0], y: [0, -40, 30, 0], scale: [1, 0.9, 1.1, 1] }}
         transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
       />
       <motion.div
         className="absolute bottom-[-6rem] left-1/3 w-[24rem] h-[24rem] rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(165,180,252,0.12), transparent 70%)" }}
+        style={{ background: "radial-gradient(circle, rgba(165,180,252,0.18), transparent 70%)" }}
         animate={{ x: [0, 40, -40, 0], y: [0, -50, 20, 0] }}
         transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -191,7 +186,7 @@ function CategoryCard({ app, onClick, index }) {
           variants={cardHoverVariants}
           onClick={onClick}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="flex flex-col h-full w-full bg-white rounded-2xl overflow-hidden border border-zinc-200 cursor-pointer"
+          className="flex flex-col h-full w-full bg-white rounded-2xl overflow-hidden  cursor-pointer"
         >
           {/* Image container — fixed aspect ratio so cards stay even at every breakpoint */}
           <div className="overflow-hidden w-full relative aspect-[4/3]">
@@ -264,11 +259,11 @@ export function Categories() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-[80vh] rounded-t-3xl md:rounded-t-4xl relative -mt-16 sm:-mt-24 md:-mt-30 bg-white flex items-center justify-center">
+    <div className="min-h-[90vh] rounded-t-3xl md:rounded-t-4xl -my-4 relative pb-20 bg-zinc-900 flex items-center justify-center">
       {/* Ambient animated backdrop */}
       <AmbientBackground />
 
-      <section className="w-full pt-16 sm:pt-24 md:pt-30 px-6 md:px-8 pb-10 xl:pb-0 text-black @container relative z-10">
+      <section className="w-full pt-16 sm:pt-24 md:pt-30 px-6 md:px-8 pb-10 xl:pb-0 text-white @container relative z-10">
         <div className="flex flex-col items-center justify-center pb-10">
           {/* 📝 Floating heading — entrance once, then a gentle idle bob */}
           <motion.div
@@ -281,7 +276,7 @@ export function Categories() {
             <motion.h2
               animate={{ y: [0, -4, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-              className="text-3xl lg:text-4xl font-sans text-zinc-900 text-center"
+              className="text-3xl lg:text-4xl font-sans text-white text-center"
             >
               Explore Categories
             </motion.h2>

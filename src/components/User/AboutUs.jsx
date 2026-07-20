@@ -1,4 +1,4 @@
-import heroImg from "../../images/main.png"
+import heroImg from "../../images/main2.png"
 
 const stats = [
     { value: "1962", label: "Established" },
@@ -8,17 +8,17 @@ const stats = [
 
 export default function AboutUs() {
     return (
-        <section className="w-full bg-black ">
-            <div className="mx-auto mt-40 grid min-h-[80vh] max-w-[1600px] grid-cols-1 items-center gap-12 px-6 py-16 sm:px-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:px-16 lg:py-24">
+        <section className="w-full">
+            <div className="mx-auto my-auto grid min-h-[80vh] max-w-[1600px] grid-cols-1 items-center gap-12 px-6 py-16 sm:px-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:px-16 lg:py-24">
 
                 {/* ── Text column ───────────────────────────── */}
                 <div className="">
-                    <h2 className=" text-3xl font-sans leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+                    <h2 className=" text-3xl font-sans leading-tight tracking-tight text-black sm:text-4xl lg:text-5xl">
                         Trusted by labs
                         <br className="hidden sm:block" /> since 1962
                     </h2>
 
-                    <p className="mt-8 max-w-lg text-lg leading-relaxed text-zinc-400">
+                    <p className="mt-8 max-w-lg text-lg leading-relaxed text-zinc-800">
                         Vigyan Jagat is an authorized dealer and supplier of laboratory
                         equipment, chemicals, glassware, and consumables. Headquartered
                         in Muzaffarpur with offices across India, we bring world-class
@@ -43,23 +43,19 @@ export default function AboutUs() {
                 </div>
 
                 {/* ── Gradient showcase panel ───────────────── */}
-                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-100 via-violet-200 to-indigo-400 p-6 sm:p-10 lg:p-14">
+                <div className="relative overflow-hidden rounded-3xl bg-zinc-800 p-6 sm:p-10 lg:p-14">
                     {/* soft glow accents */}
                     <div
                         aria-hidden="true"
-                        className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-white/60 blur-3xl"
-                    />
-                    <div
-                        aria-hidden="true"
-                        className="pointer-events-none absolute -bottom-24 -right-16 h-80 w-80 rounded-full bg-indigo-500/30 blur-3xl"
+                        className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full blur-3xl"
                     />
 
                     {/* inset glass card */}
-                    <div className="relative mx-auto max-w-2xl rounded-2xl border border-white/60 bg-white/80 p-4 shadow-xl backdrop-blur-md sm:p-6">
+                    <div className="relative mx-auto max-w-2xl rounded-2xl border border-gray-300 bg-white p-4 shadow-xl backdrop-blur-md sm:p-6">
                         <img
                             src={heroImg}
                             alt="Vigyan Jagat laboratory equipment"
-                            className="h-64 w-full rounded-xl object-cover sm:h-80 lg:h-[26rem]"
+                            className="h-64 w-full rounded-xl object-cover sm:h-80 border border-gray-400 lg:h-[26rem]"
                             loading="lazy"
                         />
                         <p className="mt-4 px-1 text-sm leading-relaxed text-neutral-600">
