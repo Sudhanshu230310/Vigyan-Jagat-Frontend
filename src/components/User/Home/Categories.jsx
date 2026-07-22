@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
-import LEImage from "../../images/laboratory-equipments-and-instruments.png";
-import GWImage from "../../images/glassware.png"
-import CRImage from "../../images/chemical-reagents.png"
-import LCImage from "../../images/laboratory-consumables.png"
-import RightArrow from '../../icons/RightArrow';
+import LEImage from "../../../images/laboratory-equipments-and-instruments.png";
+import GWImage from "../../../images/glassware.png"
+import CRImage from "../../../images/chemical-reagents.png"
+import LCImage from "../../../images/laboratory-consumables.png"
+import RightArrow from '../../../icons/RightArrow';
 import { useNavigate } from 'react-router-dom';
 
 const categories = [
@@ -59,6 +59,7 @@ const cardHoverVariants = {
   hover: {
     scale: 1.03,
     y: -6,
+
   },
 }
 
@@ -98,9 +99,7 @@ function AmbientBackground() {
       <motion.div
         className="absolute inset-0"
         style={{
-          background:
-            "linear-gradient(120deg, rgba(15,23,42,0) 0%, rgba(30,58,138,0.18) 40%, rgba(8,47,73,0.14) 70%, rgba(15,23,42,0) 100%)",
-          backgroundSize: "300% 300%",
+
         }}
         animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
         transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
@@ -158,11 +157,11 @@ function AmbientBackground() {
 
 function CategoryCard({ app, onClick, index }) {
   return (
-    <motion.div variants={cardEntranceVariants} className="h-full w-full">
+    <motion.div variants={cardEntranceVariants} className="h-full w-full ">
       {/* 📦 Gently floating card + 💡 breathing shadow (idle loop lives on this
           wrapper so it never fights the hover variants on the inner card) */}
       <motion.div
-        className="h-full w-full rounded-2xl"
+        className="h-full w-full rounded-2xl border border-gray-500"
         animate={{
           y: [0, -5, 0],
           boxShadow: [
@@ -259,11 +258,11 @@ export function Categories() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-[90vh] rounded-t-3xl md:rounded-t-4xl -my-4 relative pb-20 bg-zinc-900 flex items-center justify-center">
+    <div className="min-h-[90vh] max-w-[95vw] mx-auto rounded-3xl md:rounded-t-4xl relative pb-20 bg-white flex items-center justify-center mt-12">
       {/* Ambient animated backdrop */}
       <AmbientBackground />
 
-      <section className="w-full pt-16 sm:pt-24 md:pt-30 px-6 md:px-8 pb-10 xl:pb-0 text-white @container relative z-10">
+      <section className="w-full pt-6 sm:pt-10 md:pt-20 px-3 md:px-8 lg:px-10 pb-10 xl:pb-0 text-black @container relative z-10">
         <div className="flex flex-col items-center justify-center pb-10">
           {/* 📝 Floating heading — entrance once, then a gentle idle bob */}
           <motion.div
@@ -276,7 +275,7 @@ export function Categories() {
             <motion.h2
               animate={{ y: [0, -4, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-              className="text-3xl lg:text-4xl font-sans text-white text-center"
+              className="text-3xl lg:text-4xl font-sans text-black text-center"
             >
               Explore Categories
             </motion.h2>

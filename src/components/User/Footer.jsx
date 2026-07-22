@@ -260,32 +260,6 @@ export function Footer() {
             </div>
           </motion.div>
         </motion.div>
-
-        {/* ---- Bottom bar ---- */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6 border-t border-zinc-100">
-          <p className="text-xs text-zinc-400 text-center sm:text-left">
-            © {new Date().getFullYear()} Vigyan Jagat. All rights reserved.
-          </p>
-
-          {/* 💙 Social icons with blue hover */}
-          <div className="flex items-center gap-3">
-            {socials.map((s) => (
-              <motion.a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.label}
-                whileHover={{ y: -3, scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className="w-9 h-9 flex items-center justify-center rounded-full border border-zinc-200 text-zinc-500 hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-colors"
-              >
-                {s.icon}
-              </motion.a>
-            ))}
-          </div>
-        </div>
       </div>
     </footer>
   )

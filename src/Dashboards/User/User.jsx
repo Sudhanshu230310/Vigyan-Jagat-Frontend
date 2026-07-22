@@ -1,8 +1,9 @@
-import { HeroBanner } from '../../components/User/HeroBanner'
-import AboutUs from '../../components/User/AboutUs'
-import { Categories } from '../../components/User/Categories'
-import { WhyVigyanJagat } from '../../components/User/WhyVigyanJagat'
-import Contact from '../../components/User/Contact'
+import { Contact } from "../../components/User/Home/Contact";
+import AboutUs from "../../components/User/Home/AboutUs";
+import { Categories } from "../../components/User/Home/Categories";
+import { HeroBanner } from "../../components/User/Home/HeroBanner";
+import WhyVigyanJagat from "../../components/User/Home/WhyVigyanJagat";
+
 
 export default function UserDashboard({ sidebarOpen }) {
     return (
@@ -10,11 +11,13 @@ export default function UserDashboard({ sidebarOpen }) {
             <div className="">
                 <HeroBanner sidebarOpen={sidebarOpen} />
             </div>
-            <div>
+            <div className=''>
+                {/* <StatsBar /> */}
                 <Categories />
+                <WhyVigyanJagat />
                 <AboutUs />
                 <Contact />
-                <WhyVigyanJagat />
+
             </div>
         </main>
     )
