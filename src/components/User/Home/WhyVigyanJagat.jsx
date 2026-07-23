@@ -39,6 +39,28 @@ const features = [
   },
 ]
 
+// Column color themes, cycling like the three reference cards (blue / green / orange)
+const themes = [
+  {
+    tint: 'bg-indigo-50/70',
+    eyebrow: 'text-indigo-600',
+    check: 'text-indigo-500',
+    link: 'text-indigo-600',
+  },
+  {
+    tint: 'bg-emerald-50/70',
+    eyebrow: 'text-emerald-600',
+    check: 'text-emerald-500',
+    link: 'text-emerald-600',
+  },
+  {
+    tint: 'bg-orange-50/70',
+    eyebrow: 'text-orange-600',
+    check: 'text-orange-500',
+    link: 'text-orange-600',
+  },
+]
+
 const containerVariants = {
   hidden: {},
   visible: {
@@ -55,61 +77,104 @@ const itemVariants = {
   },
 }
 
+// Group the 6 features into 3 columns of 2, so each column reads as one
+// themed card with a checklist, matching the reference layout.
+function groupIntoColumns(items, columnCount) {
+  const columns = Array.from({ length: columnCount }, () => [])
+  items.forEach((item, i) => {
+    columns[i % columnCount].push(item)
+  })
+  return columns
+}
+
 export function WhyVigyanJagat() {
+  const columns = groupIntoColumns(features, 3)
+
   return (
-    <section className="w-full mt-20 bg-[#0f1219] px-6 md:px-12 lg:px-20 py-20 md:py-28">
-      <div className="max-w-[1600px] mx-auto">
+    <section className="w-full  bg-cyan-800 px-6 md:px-12 lg:px-20 py-8 md:py-20 mt-20">
+      <div className="w-full h-full mx-auto">
 
-        {/* Eyebrow */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.4 }}
-          className="text-xs font-bold tracking-[0.2em] text-teal-400 uppercase mb-5"
-        >
-          Why Vigyan Jagat
-        </motion.p>
+        <div className="flex flex-col items-center text-center mb-14 md:mb-16">
 
-        {/* Heading */}
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] max-w-3xl"
-        >
-          Why Vigyan Jagat?
-        </motion.h2>
+          {/* Heading */}
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.1] max-w-3xl"
+          >
+            Why choose Vigyan Jagat?
+          </motion.h2>
 
-        {/* Feature grid with dividers (3 cols x 2 rows on desktop, like the reference) */}
+          {/* Subheading */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.14 }}
+            className="text-slate-500 text-base md:text-lg mt-5 max-w-2xl"
+          >
+            Trusted lab sourcing since 1962 — quality, compliance, and support
+            in every order.
+          </motion.p>
+        </div>
+
+        {/* Themed columns, each holding a checklist of features (like the
+            reference's three role-based cards) */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}
-          className="mt-16 md:mt-20 grid grid-cols-1 lg:grid-cols-3 divide-y divide-white/10 lg:divide-y-0"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-6"
         >
-          {features.map((f, i) => {
-            const col = i % 3
-            const row = Math.floor(i / 3)
+          {columns.map((columnItems, colIndex) => {
+            const theme = themes[colIndex % themes.length]
+            const headline = columnItems[0]
             return (
               <motion.div
-                key={f.number}
+                key={colIndex}
                 variants={itemVariants}
-                className={`
-                  py-8 lg:py-10 px-0 lg:px-10
-                  ${col !== 0 ? 'lg:border-l lg:border-white/10' : ''}
-                  ${row !== 0 ? 'lg:border-t lg:border-white/10 lg:pt-10' : ''}
-                `}
+                className="rounded-2xl border border-slate-200 overflow-hidden bg-white flex flex-col"
               >
-                <p className="text-2xl font-bold text-indigo-400 mb-4">{f.number}</p>
-                <h3 className="text-lg font-bold text-white mb-2 leading-snug">
-                  {f.title}
-                </h3>
-                <p className="text-sm text-zinc-400 leading-relaxed">
-                  {f.description}
-                </p>
+                {/* Colored header zone */}
+                <div className={`${theme.tint} px-6 py-8`}>
+                  <p className={`text-xs font-bold tracking-[0.15em] uppercase mb-3 ${theme.eyebrow}`}>
+                    Feature {headline.number}
+                  </p>
+                  <h3 className="text-xl font-bold text-slate-900 leading-snug">
+                    {headline.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+                    {headline.description}
+                  </p>
+                </div>
+
+                {/* Checklist body */}
+                <div className="px-6 py-6 flex-grow border-t border-slate-100">
+                  <ul className="space-y-4">
+                    {columnItems.map((f) => (
+                      <li key={f.number} className="flex gap-3">
+                        <span className={`mt-0.5 font-bold ${theme.check}`}>✓</span>
+                        <span className="text-sm text-slate-600 leading-relaxed">
+                          <span className="font-semibold text-slate-800">{f.title}: </span>
+                          {f.description}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* CTA footer */}
+                <div className="px-6 py-5 border-t border-slate-100">
+                  <a
+                    href="#"
+                    className={`text-sm font-bold ${theme.link} hover:underline underline-offset-2`}
+                  >
+                    Learn more →
+                  </a>
+                </div>
               </motion.div>
             )
           })}

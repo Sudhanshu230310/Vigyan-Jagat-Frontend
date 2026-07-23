@@ -9,7 +9,7 @@ export function Contact() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 to-blue-800 px-8 md:px-14 py-10 md:py-14 flex flex-col md:flex-row md:items-center justify-between gap-8"
+                className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-cyan-600 to-cyan-800 px-8 md:px-14 py-10 md:py-14 flex flex-col md:flex-row md:items-center justify-between gap-8"
             >
                 {/* Decorative glow circle, bleeding off the right edge like the reference */}
                 <div className="absolute -right-16 top-1/2 -translate-y-1/2 w-72 h-72 md:w-96 md:h-96 rounded-full bg-white/10 pointer-events-none" />

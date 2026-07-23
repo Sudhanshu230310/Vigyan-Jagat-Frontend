@@ -77,7 +77,7 @@ export function Navbar({ onToggleSidebar, onOpenMobileMenu }) {
   };
 
   return (
-    <header className="sticky top-0 z-50 h-16 px-4 flex items-center justify-between bg-white/95 backdrop-blur-xl border-b border-zinc-200">
+    <header className="sticky top-0 z-50 h-16 px-4 flex items-center justify-between bg-white backdrop-blur-xl border-b border-zinc-200">
       {/* ===== Mobile search overlay (< lg), YT Music style ===== */}
       {mobileSearchOpen && (
         <div className="absolute inset-0 z-10 flex lg:hidden items-center gap-2 px-2 bg-white">
@@ -146,7 +146,7 @@ export function Navbar({ onToggleSidebar, onOpenMobileMenu }) {
           onClick={() => navigate("/")}
           className="cursor-pointer flex items-center gap-2"
         >
-          <div className="w-9 h-9 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-600 flex items-center justify-center text-white font-bold">
             S
           </div>
 

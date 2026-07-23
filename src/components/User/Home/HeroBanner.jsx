@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import EquipImg from '../../../images/main2.png'
+import EquipImg from '../../../images/main4.png'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
@@ -20,7 +20,7 @@ const TRUST_LABELS = [
 
 export function HeroBanner() {
   return (
-    <div className="w-full bg-white min-h-[92vh] flex items-center overflow-hidden relative">
+    <div className="w-full bg-gradient-to-br from-cyan-100 via-cyan-100 via-40% to-cyan-200 min-h-[90vh] flex items-center overflow-hidden relative">
 
       {/* Ambient glow blobs, kept subtle so the layout reads clean like the reference */}
       <div className="absolute -top-32 -left-32 w-[420px] h-[420px] bg-blue-100/50 rounded-full blur-[100px] pointer-events-none" />
@@ -33,8 +33,8 @@ export function HeroBanner() {
 
           {/* Trust badge pill */}
           <motion.div {...fadeUp(0.05)}>
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 bg-blue-50 text-xs font-semibold text-blue-700">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 bg-blue-50 text-xs font-semibold text-cyan-600">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-600" />
               Trusted since 1962 — labs across India
             </span>
           </motion.div>
@@ -42,13 +42,13 @@ export function HeroBanner() {
           {/* Heading */}
           <motion.h1
             {...fadeUp(0.12)}
-            className="text-5xl md:text-6xl font-bold text-zinc-900 tracking-tight leading-[1.05]"
+            className="text-5xl md:text-6xl font-serif font-semibold text-black tracking-tight leading-[1.05]"
           >
-            <span className="text-blue-600">S</span>hodhix
+            Shodh<span className="text-cyan-500">IX</span>
           </motion.h1>
 
           {/* Tagline / description */}
-          <motion.p {...fadeUp(0.18)} className="text-lg md:text-xl text-zinc-600 leading-relaxed">
+          <motion.p {...fadeUp(0.18)} className="text-lg md:text-xl text-zinc-800 leading-relaxed font-sans">
             Laboratory equipment, chemicals &amp; glassware — since 1962.
             Trusted by universities, research institutes, hospitals, industries,
             government labs, pharma firms and defence labs across India.
@@ -60,7 +60,7 @@ export function HeroBanner() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3.5 rounded-xl shadow-md shadow-blue-600/20 transition-all text-sm cursor-pointer"
+                className="bg-cyan-700 hover:bg-cyan-600 text-white font-semibold px-8 py-3.5 rounded-xl shadow-md shadow-blue-600/20 transition-all text-sm cursor-pointer"
               >
                 Contact Us
               </motion.button>
@@ -92,7 +92,7 @@ export function HeroBanner() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-          className="relative h-[420px] md:h-[520px]"
+          className="relative h-[300px] md:h-[400px]"
         >
           <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/15 bg-gradient-to-br from-blue-50 to-indigo-100 border border-gray-300">
             <img src={EquipImg} alt="Vigyan Jagat laboratory equipment" className="w-full h-full object-cover " />

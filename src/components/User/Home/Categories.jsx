@@ -74,8 +74,8 @@ const textVariants = {
 }
 
 const arrowVariants = {
-  rest: { x: 0, color: "black" },
-  hover: { x: 4, color: "black" },
+  rest: { x: 0, color: "white" },
+  hover: { x: 4, color: "white" },
 }
 
 // ---- Deterministic particle positions (computed once, not per render) ----
@@ -90,67 +90,88 @@ const particles = Array.from({ length: 14 }, (_, i) => ({
   drift: (i % 2 === 0 ? 1 : -1) * (8 + (i % 4) * 5),
 }))
 
-// ---- Ambient background: gradient + blobs + rings + particles ----
+// ---- Ambient background: molecule/hex network + dot grid + rings + corner wave ----
 
 function AmbientBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden rounded-t-3xl md:rounded-t-4xl pointer-events-none" aria-hidden="true">
-      {/* 🌈 Subtle dark animated gradient overlay */}
-      <motion.div
+      {/* Soft cyan wash */}
+      <div
         className="absolute inset-0"
         style={{
-
+          background: "linear-gradient(160deg, #eafbfc 0%, #f5fdfd 35%, #ffffff 55%)",
         }}
-        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* 🔵 Floating blurred blobs */}
+      {/* Molecule / hexagon network, top-left */}
+      <svg className="absolute -top-6 -left-10 w-80 h-72 opacity-40" viewBox="0 0 320 260">
+        <g stroke="#5eead4" strokeWidth="1.4" fill="none">
+          <polygon points="60,20 100,42 100,86 60,108 20,86 20,42" />
+          <polygon points="140,60 180,82 180,126 140,148 100,126 100,82" />
+          <polygon points="40,120 80,142 80,186 40,208 0,186 0,142" />
+          <line x1="100" y1="64" x2="140" y2="82" />
+          <line x1="60" y1="108" x2="40" y2="120" />
+        </g>
+        <g fill="#2dd4bf">
+          <circle cx="60" cy="20" r="3" />
+          <circle cx="100" cy="42" r="2.5" />
+          <circle cx="140" cy="60" r="3" />
+          <circle cx="80" cy="142" r="2.5" />
+          <circle cx="40" cy="208" r="3" />
+        </g>
+      </svg>
+
+      {/* Dot grid, top-right */}
+      <svg className="absolute top-8 right-10 w-36 h-28 opacity-60" viewBox="0 0 120 90">
+        <defs>
+          <pattern id="dotPattern" width="14" height="14" patternUnits="userSpaceOnUse">
+            <circle cx="2" cy="2" r="2" fill="#22d3ee" />
+          </pattern>
+        </defs>
+        <rect width="120" height="90" fill="url(#dotPattern)" />
+      </svg>
+
+      {/* Soft rings, top-right */}
       <motion.div
-        className="absolute -top-20 -left-24 w-[28rem] h-[28rem] rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(59,130,246,0.22), transparent 70%)" }}
+        className="absolute -top-28 right-0 w-96 h-96 rounded-full border border-cyan-200/60"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
+      />
+      <div className="absolute top-0 right-0 w-72 h-72 rounded-full opacity-40"
+        style={{ background: "radial-gradient(circle, rgba(94,234,212,0.35), transparent 70%)" }}
+      />
+
+      {/* Floating blurred blobs, kept subtle */}
+      <motion.div
+        className="absolute -top-20 -left-24 w-[26rem] h-[26rem] rounded-full blur-3xl"
+        style={{ background: "radial-gradient(circle, rgba(45,212,191,0.12), transparent 70%)" }}
         animate={{ x: [0, 50, -20, 0], y: [0, 30, 60, 0], scale: [1, 1.15, 0.95, 1] }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div
-        className="absolute top-1/3 -right-32 w-[30rem] h-[30rem] rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(103,232,249,0.20), transparent 70%)" }}
-        animate={{ x: [0, -60, 20, 0], y: [0, -40, 30, 0], scale: [1, 0.9, 1.1, 1] }}
-        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute bottom-[-6rem] left-1/3 w-[24rem] h-[24rem] rounded-full blur-3xl"
-        style={{ background: "radial-gradient(circle, rgba(165,180,252,0.18), transparent 70%)" }}
-        animate={{ x: [0, 40, -40, 0], y: [0, -50, 20, 0] }}
-        transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-      />
 
-      {/* 🪐 Rotating rings */}
-      <motion.div
-        className="absolute -top-32 right-[10%] w-[22rem] h-[22rem] rounded-full border border-blue-200/40"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-      >
-        <div className="absolute top-0 left-1/2 w-2 h-2 -ml-1 rounded-full bg-blue-300/60" />
-      </motion.div>
-      <motion.div
-        className="absolute bottom-[-8rem] left-[6%] w-[26rem] h-[26rem] rounded-full border border-cyan-200/40 border-dashed"
-        animate={{ rotate: -360 }}
-        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-      >
-        <div className="absolute bottom-0 left-1/2 w-2 h-2 -ml-1 rounded-full bg-cyan-300/60" />
-      </motion.div>
-
-      {/* ✨ Floating particles */}
+      {/* Floating particles */}
       {particles.map((p) => (
         <motion.span
           key={p.id}
-          className="absolute rounded-full bg-blue-400/25"
+          className="absolute rounded-full bg-cyan-400/25"
           style={{ left: p.left, top: p.top, width: p.size, height: p.size }}
           animate={{ y: [0, -30, 0], x: [0, p.drift, 0], opacity: [0.15, 0.5, 0.15] }}
           transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
+
+      {/* Bottom-right corner wave, tucked into the corner like the reference */}
+      <svg
+        className="absolute bottom-0 right-0 w-1/2 h-40"
+        viewBox="0 0 720 220"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M720,220 L720,60 C600,20 520,120 400,90 C300,66 260,140 180,150 C110,158 60,190 0,220 Z"
+          fill="#5eead4"
+          opacity="0.45"
+        />
+      </svg>
     </div>
   )
 }
@@ -158,16 +179,15 @@ function AmbientBackground() {
 function CategoryCard({ app, onClick, index }) {
   return (
     <motion.div variants={cardEntranceVariants} className="h-full w-full ">
-      {/* 📦 Gently floating card + 💡 breathing shadow (idle loop lives on this
+      {/* Gently floating card + breathing shadow (idle loop lives on this
           wrapper so it never fights the hover variants on the inner card) */}
       <motion.div
-        className="h-full w-full rounded-2xl border border-gray-500"
+        className="h-full w-full rounded-2xl border border-gray-300 "
         animate={{
-          y: [0, -5, 0],
           boxShadow: [
-            "0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03)",
-            "0 12px 24px -6px rgba(59,130,246,0.12), 0 6px 12px -4px rgba(0,0,0,0.04)",
-            "0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03)",
+            "0 4px 6px -1px rgba(13,148,136,0.08), 0 2px 4px -1px rgba(13,148,136,0.05)",
+            "0 16px 28px -8px rgba(13,148,136,0.22), 0 6px 12px -4px rgba(13,148,136,0.08)",
+            "0 4px 6px -1px rgba(13,148,136,0.08), 0 2px 4px -1px rgba(13,148,136,0.05)",
           ],
         }}
         transition={{
@@ -185,15 +205,15 @@ function CategoryCard({ app, onClick, index }) {
           variants={cardHoverVariants}
           onClick={onClick}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="flex flex-col h-full w-full bg-white rounded-2xl overflow-hidden  cursor-pointer"
+          className="flex flex-col h-full w-full bg-white hover:bg-cyan-100/50  rounded-2xl overflow-visible cursor-pointer shadow-sm"
         >
           {/* Image container — fixed aspect ratio so cards stay even at every breakpoint */}
-          <div className="overflow-hidden w-full relative aspect-[4/3]">
-            {/* 🖼️ Slowly moving image (Ken Burns) — idle loop on a wrapper,
+          <div className="overflow-hidden w-full relative aspect-[4/3] rounded-t-2xl">
+            {/* Slowly moving image (Ken Burns) — idle loop on a wrapper,
                 hover zoom stays on the img itself */}
             <motion.div
               className="w-full h-full"
-              animate={{ scale: [1, 1.07, 1], x: [0, 6, 0] }}
+
               transition={{
                 duration: 14 + index * 2,
                 repeat: Infinity,
@@ -205,31 +225,31 @@ function CategoryCard({ app, onClick, index }) {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 src={app.image}
                 alt={app.name}
-                className="w-full h-full object-cover rounded-t-2xl"
+                className="w-full h-full object-cover"
               />
             </motion.div>
+
           </div>
 
           {/* Text & CTA */}
-          <div className="flex flex-col justify-between items-center text-center p-5 sm:p-6 w-full flex-grow gap-4">
+          <div className="flex flex-col justify-between items-center text-center px-5 sm:px-6 pt-11 pb-6 w-full flex-grow gap-4">
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-[oklch(0.12_0_0)] mb-2 capitalize leading-snug">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2 capitalize leading-snug">
                 {app.name}
               </h3>
-              <p className="text-sm text-zinc-500 leading-relaxed line-clamp-2">
+              <p className="text-sm text-slate-500 leading-relaxed line-clamp-2">
                 {app.description}
               </p>
             </div>
 
-            <div className="flex items-center justify-center font-bold text-sm sm:text-base">
+            <div className="flex items-center justify-center font-bold text-sm sm:text-base text-white bg-cyan-600 px-4 py-2 rounded-lg">
+              <span className="mr-1">View Products</span>
               <motion.span
                 variants={textVariants}
                 transition={{ duration: 0.25, ease: "easeOut" }}
-                className="inline-block overflow-hidden whitespace-nowrap text-black"
-              >
-                Open
-              </motion.span>
-              {/* ➜ Animated arrow — idle nudge loop on wrapper, hover shift on inner */}
+                className="inline-block overflow-hidden whitespace-nowrap"
+              />
+              {/* Animated arrow — idle nudge loop on wrapper, hover shift on inner */}
               <motion.div
                 animate={{ x: [0, 3, 0] }}
                 transition={{
@@ -258,13 +278,14 @@ export function Categories() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-[90vh] max-w-[95vw] mx-auto rounded-3xl md:rounded-t-4xl relative pb-20 bg-white flex items-center justify-center mt-12">
-      {/* Ambient animated backdrop */}
-      <AmbientBackground />
+    <div className="min-h-[80vh] mx-auto  md:rounded-t-4xl relative pb-20 bg-white flex items-center justify-center overflow-hidden">
 
-      <section className="w-full pt-6 sm:pt-10 md:pt-20 px-3 md:px-8 lg:px-10 pb-10 xl:pb-0 text-black @container relative z-10">
+      <section className="w-[95%] pt-2 sm:pt-10 md:pt-30 px-3 md:px-8 lg:px-10 pb-10 xl:pb-0 text-black @container relative z-10">
         <div className="flex flex-col items-center justify-center pb-10">
-          {/* 📝 Floating heading — entrance once, then a gentle idle bob */}
+          {/* Eyebrow pill */}
+
+
+          {/* Floating heading — entrance once, then a gentle idle bob */}
           <motion.div
             className="pb-4"
             initial={{ opacity: 0, y: 20 }}
@@ -273,37 +294,20 @@ export function Categories() {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <motion.h2
-              animate={{ y: [0, -4, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-              className="text-3xl lg:text-4xl font-sans text-black text-center"
+              className="text-3xl lg:text-5xl font-extrabold font-serif text-center"
             >
-              Explore Categories
+              <span className="text-cyan-700">Explore </span>
+              <span className="text-black">Categories</span>
             </motion.h2>
-          </motion.div>
-
-          {/* 📏 Animated underline — draws in on view, then shimmers */}
-          <motion.div
-            initial={{ scaleX: 0, opacity: 0 }}
-            whileInView={{ scaleX: 1, opacity: 1 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="h-1 w-24 rounded-full mt-3 mb-8 md:mb-10 origin-center overflow-hidden"
-            style={{ background: "linear-gradient(90deg, #93c5fd, #22d3ee, #93c5fd)" }}
-          >
-            <motion.div
-              className="h-full w-full"
-              style={{
-                background:
-                  "linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent)",
-              }}
-              animate={{ x: ["-100%", "100%"] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 }}
-            />
+            <p className="text-center text-slate-500 mt-3 text-sm sm:text-base max-w-xl mx-auto">
+              Discover a wide range of laboratory products for research, analysis and everyday experiments.
+            </p>
           </motion.div>
         </div>
 
         <motion.div
-          variants={containerVariants}
+
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.15 }}

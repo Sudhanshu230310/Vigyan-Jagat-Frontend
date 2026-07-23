@@ -86,7 +86,7 @@ const socials = [
 function FooterAmbient() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-      {/* 🔵 Soft animated blue gradient blobs */}
+      {/* 🔵 Soft animated cyan gradient blobs */}
       <motion.div
         className="absolute -top-32 -left-32 w-[30rem] h-[30rem] rounded-full blur-3xl"
         style={{ background: "radial-gradient(circle, rgba(59,130,246,0.10), transparent 70%)" }}
@@ -104,7 +104,7 @@ function FooterAmbient() {
       {particles.map((p) => (
         <motion.span
           key={p.id}
-          className="absolute rounded-full bg-blue-400/20"
+          className="absolute rounded-full bg-cyan-400/20"
           style={{ left: p.left, top: p.top, width: p.size, height: p.size }}
           animate={{ y: [0, -24, 0], x: [0, p.drift, 0], opacity: [0.1, 0.4, 0.1] }}
           transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
@@ -113,7 +113,7 @@ function FooterAmbient() {
 
       {/* 🌫️ Large faded watermark */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center overflow-hidden select-none">
-        <span className="font-sans font-black tracking-tight leading-none whitespace-nowrap text-[16vw] lg:text-[13rem] text-transparent bg-clip-text bg-gradient-to-b from-blue-100/80 to-transparent translate-y-[28%]">
+        <span className="font-sans font-black tracking-tight leading-none whitespace-nowrap text-[16vw] lg:text-[13rem] text-transparent bg-clip-text bg-gradient-to-b from-cyan-100/80 to-transparent translate-y-[28%]">
           VIGYAN JAGAT
         </span>
       </div>
@@ -128,9 +128,9 @@ function FooterLink({ to, children }) {
     <li>
       <Link
         to={to}
-        className="group inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-blue-600 transition-colors"
+        className="group inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-cyan-600 transition-colors"
       >
-        <span className="h-px w-0 group-hover:w-3 bg-blue-500 transition-all duration-300" />
+        <span className="h-px w-0 group-hover:w-3 bg-cyan-500 transition-all duration-300" />
         {children}
       </Link>
     </li>
@@ -183,7 +183,7 @@ export function Footer() {
           <motion.div variants={columnVariants} className="space-y-4">
             <Link to="/" className="inline-block">
               <span className="text-xl font-bold text-zinc-900">
-                Vigyan <span className="text-blue-600">Jagat</span>
+                Vigyan <span className="text-cyan-600">Jagat</span>
               </span>
             </Link>
             <p className="text-sm text-zinc-500 leading-relaxed">
@@ -227,18 +227,18 @@ export function Footer() {
             </h4>
             <ul className="space-y-3 text-sm text-zinc-500">
               <li className="flex items-start gap-2.5">
-                <span className="text-blue-500 mt-0.5"><PinIcon /></span>
+                <span className="text-cyan-500 mt-0.5"><PinIcon /></span>
                 <span>Head Office — Muzaffarpur, Bihar</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <span className="text-blue-500 mt-0.5"><PhoneIcon /></span>
-                <a href="tel:+910000000000" className="hover:text-blue-600 transition-colors">
+                <span className="text-cyan-500 mt-0.5"><PhoneIcon /></span>
+                <a href="tel:+910000000000" className="hover:text-cyan-600 transition-colors">
                   +91 00000 00000
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
-                <span className="text-blue-500 mt-0.5"><MailIcon /></span>
-                <a href="mailto:info@vigyanjagat.com" className="hover:text-blue-600 transition-colors">
+                <span className="text-cyan-500 mt-0.5"><MailIcon /></span>
+                <a href="mailto:info@vigyanjagat.com" className="hover:text-cyan-600 transition-colors">
                   info@vigyanjagat.com
                 </a>
               </li>
@@ -251,7 +251,7 @@ export function Footer() {
                 {offices.map((city) => (
                   <span
                     key={city}
-                    className="text-xs text-zinc-500 bg-zinc-100 hover:bg-blue-50 hover:text-blue-600 transition-colors rounded-full px-2.5 py-1 cursor-default"
+                    className="text-xs text-zinc-500 bg-zinc-100 hover:bg-cyan-50 hover:text-cyan-600 transition-colors rounded-full px-2.5 py-1 cursor-default"
                   >
                     {city}
                   </span>
