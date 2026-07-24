@@ -17,7 +17,6 @@ export default function UserDashboard({ sidebarOpen }) {
                 <WhyVigyanJagat />
                 <AboutUs />
                 <Contact />
-
             </div>
         </main>
     )

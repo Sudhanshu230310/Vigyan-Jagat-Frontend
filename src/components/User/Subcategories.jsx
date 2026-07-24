@@ -6,63 +6,109 @@ import axios from "axios";
 
 const BackendURL = import.meta.env.VITE_BACKEND_URL;
 
-const HUES = [255, 165, 275, 75, 20, 230, 280, 190, 55];
+/* ---- Design tokens ------------------------------------------------
+   Subject: a laboratory supplier's catalog index. The card is styled
+   as a specimen/reagent tag — a punched paper label you'd find tied
+   to a sample — pinned at a slight, individual angle and straightening
+   when picked up (hovered). Page background is faint lab-notebook
+   graph paper. Numbers read as batch/index codes, not process steps.
+--------------------------------------------------------------------- */
+const INK = "#182430";
+const INK_SOFT = "#5B6670";
+const BLUE = "#1D4E89";
+const TEAL = "#0F8F86";
+const AMBER = "#B8791F";
+const PAPER = "#F7F8F4";
+const SKY_TOP = "#E4F7FB";
+const SKY_MID = "#D3EEF6";
+const SKY_BOTTOM = "#EAF9F6";
+const LINE = "rgba(29,78,137,0.12)";
+const LINE_SOFT = "rgba(29,78,137,0.10)";
 
-const cardVariants = {
-    initial: { y: 0, boxShadow: "0 1px 2px rgba(15,23,42,0.04)" },
-    hover: { y: -4, boxShadow: "0 12px 28px rgba(37,99,235,0.10)" }
-};
-
-const arrowVariants = {
-    initial: { x: 0 },
-    hover: { x: 5 }
-};
+const FONT_STYLE = `
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;500;600&display=swap');
+  .vj-display { font-family: 'Space Grotesk', sans-serif; }
+  .vj-mono { font-family: 'IBM Plex Mono', monospace; }
+  .vj-body { font-family: 'Inter', sans-serif; }
+`;
 
 function SubcategoryCard({ item, index, onClick }) {
-    const tagLabel = String(index + 1).padStart(2, "0");
-    const hue = HUES[index % HUES.length];
+    const code = `VJ.${String(index + 1).padStart(2, "0")}`;
 
     return (
         <motion.article
             initial="initial"
             whileHover="hover"
-            whileTap={{ scale: 0.985 }}
-            variants={cardVariants}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            whileTap={{ scale: 0.98 }}
+            variants={{
+                initial: { y: 0, boxShadow: "0 1px 2px rgba(24,36,48,0.06)" },
+                hover: { y: -6, boxShadow: "0 18px 32px rgba(29,78,137,0.14)" },
+            }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             onClick={onClick}
-            className="group relative flex flex-col h-full min-h-[220px] rounded-xl border cursor-pointer overflow-hidden"
+            className="group vj-body relative flex flex-col h-full min-h-[228px] cursor-pointer overflow-hidden bg-white"
             style={{
-                borderColor: `oklch(90% 0.01 260)`,
-                background: `linear-gradient(150deg, oklch(96% 0.03 ${hue}) 0%, oklch(99% 0.01 ${hue}) 55%, oklch(98% 0.005 260) 100%)`
+                border: `1px solid ${LINE}`,
+                borderRadius: "20px",
             }}
         >
-            <div className="relative flex flex-col flex-grow gap-3.5 p-6">
-                <div className="flex items-center gap-2.5">
-                    <span
-                        className="font-mono text-[13px] font-bold"
-                        style={{ color: "oklch(50% 0.18 255)" }}
-                    >
-                        {tagLabel}
-                    </span>
-                    <span className="w-px h-3.5" style={{ background: "oklch(70% 0.02 260 / 0.4)" }} />
+            {/* punch hole */}
+            <span
+                className="absolute left-4 top-4 w-3 h-3 rounded-full"
+                style={{ border: `1.5px solid ${BLUE}`, background: PAPER }}
+            />
+            <span
+                className="absolute left-[19px] top-[19px] w-[3px] h-[3px] rounded-full"
+                style={{ background: BLUE, opacity: 0.5 }}
+            />
+
+            {/* stamp, appears on hover */}
+            <motion.span
+                initial={{ opacity: 0, rotate: -14, scale: 0.85 }}
+                whileHover={{ opacity: 1 }}
+                animate={{}}
+                className="pointer-events-none absolute right-4 top-4 flex items-center justify-center w-11 h-11 rounded-full text-[9px] font-bold tracking-wider vj-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                    border: `1.5px double ${AMBER}`,
+                    color: AMBER,
+                    transform: "rotate(-14deg)",
+                }}
+            >
+                VJ&nbsp;LAB
+            </motion.span>
+
+            <div className="relative flex flex-col flex-grow gap-3 px-6 pt-9 pb-5">
+                <div
+                    className="vj-mono text-[12px] font-semibold tracking-wide"
+                    style={{ color: BLUE }}
+                >
+                    {code}
                 </div>
 
-                <h3 className="text-[19px] font-bold text-zinc-900 capitalize leading-snug tracking-tight">
-                    {item.name}
-                </h3>
+                <div style={{ borderBottom: `1px dashed ${LINE}` }} className="pb-3">
+                    <h3 className="vj-display text-[19px] font-semibold text-zinc-900 capitalize leading-snug tracking-tight">
+                        {item.name}
+                    </h3>
+                </div>
 
                 {item.description && (
-                    <p className="text-sm text-zinc-500 leading-relaxed line-clamp-3">
+                    <p className="text-sm leading-relaxed line-clamp-3" style={{ color: INK_SOFT }}>
                         {item.description}
                     </p>
                 )}
 
                 <div
-                    className="mt-auto pt-1 flex items-center gap-1.5 text-[13.5px] font-semibold"
-                    style={{ color: "oklch(50% 0.18 255)" }}
+                    className="mt-auto pt-1 flex items-center gap-1.5 text-[13.5px] font-semibold vj-mono"
+                    style={{ color: TEAL }}
                 >
-                    Open
-                    <motion.span variants={arrowVariants} transition={{ duration: 0.25 }}>
+                    <span className="group-hover:hidden">OPEN INDEX</span>
+                    <span className="hidden group-hover:inline" style={{ color: AMBER }}>
+                        OPEN INDEX
+                    </span>
+                    <motion.span
+                        variants={{ initial: { x: 0 }, hover: { x: 5 } }}
+                        transition={{ duration: 0.25 }}
+                    >
                         →
                     </motion.span>
                 </div>
@@ -103,16 +149,30 @@ export default function Subcategory() {
     const filtered = useMemo(() => {
         const q = query.trim().toLowerCase();
         if (!q) return subcategories;
-        return subcategories.filter((s) =>
-            s.name.toLowerCase().includes(q)
-        );
+        return subcategories.filter((s) => s.name.toLowerCase().includes(q));
     }, [subcategories, query]);
+
+    const gridBg = {
+        backgroundColor: SKY_MID,
+        backgroundImage: `linear-gradient(180deg, ${SKY_TOP} 0%, ${SKY_MID} 45%, ${SKY_BOTTOM} 100%), linear-gradient(${LINE_SOFT} 1px, transparent 1px), linear-gradient(90deg, ${LINE_SOFT} 1px, transparent 1px)`,
+        backgroundSize: "auto, 28px 28px, 28px 28px",
+        backgroundAttachment: "fixed, scroll, scroll",
+    };
 
     /* Loading state */
     if (loading) {
         return (
-            <div className="w-full min-h-screen flex items-center justify-center" style={{ background: "oklch(98% 0.004 260)" }}>
-                <div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: "oklch(90% 0.03 255)", borderTopColor: "oklch(55% 0.18 255)" }} />
+            <div className="w-full min-h-screen flex flex-col items-center justify-center gap-4 vj-body" style={gridBg}>
+                <style>{FONT_STYLE}</style>
+                <motion.div
+                    animate={{ scaleY: [0.15, 1, 0.15] }}
+                    transition={{ duration: 1.3, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-2.5 h-10 rounded-full origin-bottom"
+                    style={{ background: TEAL }}
+                />
+                <p className="vj-mono text-xs tracking-widest uppercase" style={{ color: INK_SOFT }}>
+                    Loading index…
+                </p>
             </div>
         );
     }
@@ -120,12 +180,14 @@ export default function Subcategory() {
     /* Error state */
     if (error) {
         return (
-            <div className="w-full min-h-screen pt-20 flex items-center justify-center" style={{ background: "oklch(98% 0.004 260)" }}>
+            <div className="w-full min-h-screen flex items-center justify-center vj-body" style={gridBg}>
+                <style>{FONT_STYLE}</style>
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="text-center text-red-500 font-medium"
+                    className="text-center font-medium px-6 py-4 rounded"
+                    style={{ color: "#B4432E", border: "1px solid rgba(180,67,46,0.25)", background: "#FFF8F6" }}
                 >
                     {error}
                 </motion.div>
@@ -136,30 +198,36 @@ export default function Subcategory() {
     /* Empty category state */
     if (subcategories.length === 0) {
         return (
-            <div className="w-full min-h-screen pt-20 flex items-center justify-center" style={{ background: "oklch(98% 0.004 260)" }}>
+            <div className="w-full min-h-screen flex items-center justify-center vj-body" style={gridBg}>
+                <style>{FONT_STYLE}</style>
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4 }}
-                    className="text-center text-zinc-400 text-lg"
+                    className="text-center text-lg"
+                    style={{ color: INK_SOFT }}
                 >
-                    No subcategories found for{" "}
-                    <span className="font-semibold text-zinc-600">"{categoryName}"</span>.
+                    No entries logged yet under{" "}
+                    <span className="font-semibold" style={{ color: INK }}>
+                        "{categoryName}"
+                    </span>
+                    .
                 </motion.div>
             </div>
         );
     }
 
     return (
-        <div className="w-full min-h-screen" style={{ background: "oklch(98% 0.004 260)", fontFamily: "Helvetica, Arial, sans-serif" }}>
+        <div className="w-full min-h-screen vj-body" style={gridBg}>
+            <style>{FONT_STYLE}</style>
             <div className="mx-auto w-full px-6 md:px-14 pb-24">
                 <motion.button
                     initial={{ opacity: 0, x: -8 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
                     onClick={() => navigate(-1)}
-                    className="mt-9 flex items-center gap-1.5 text-sm font-medium transition-colors"
-                    style={{ color: "oklch(50% 0.01 260)" }}
+                    className=" pt-10 flex items-center gap-1.5 text-xs font-semibold tracking-wide vj-mono uppercase text-cyan-900 cursor-pointer"
+
                 >
                     <motion.span whileHover={{ x: -3 }} transition={{ duration: 0.2 }} className="inline-block">
                         ←
@@ -168,21 +236,17 @@ export default function Subcategory() {
                 </motion.button>
 
                 <header
-                    className="sticky top-16 z-40 -mx-6 md:-mx-14 px-6 md:px-14 pb-6 pt-5 border-b"
+                    className="z-40 -mx-6 md:-mx-14 px-6 md:px-14 pb-6 pt-5 border-b"
                     style={{
-                        background: "linear-gradient(180deg, oklch(98.5% 0.01 260 / 0.92) 0%, oklch(97.5% 0.012 260 / 0.92) 100%)",
-                        backdropFilter: "blur(16px)",
-                        borderColor: "oklch(90% 0.01 260)"
+                        background: "linear-gradient(180deg, rgba(228,247,251,0.92) 0%, rgba(211,238,246,0.86) 100%)",
+                        backdropFilter: "blur(10px)",
+                        borderColor: LINE,
                     }}
                 >
-                    <p
-                        className="font-mono text-xs tracking-[0.2em] uppercase font-bold"
-                        style={{ color: "oklch(55% 0.16 255)" }}
-                    >
-                        Catalog
-                    </p>
                     <div className="mt-3 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                        <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-zinc-900 capitalize max-w-3xl leading-[1.1]">
+                        <h1
+                            className="vj-display max-w-3xl bg-gradient-to-r from-cyan-600 via-cyan-800  to-slate-900 bg-clip-text text-3xl font-semibold leading-[1.1] tracking-tight text-transparent capitalize lg:text-4xl"
+                        >
                             {categoryName}
                         </h1>
 
@@ -191,23 +255,24 @@ export default function Subcategory() {
                                 type="text"
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                placeholder="Search subcategories"
-                                className="w-full rounded-xl border bg-white px-4 py-2.5 pr-9 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition"
-                                style={{ borderColor: "oklch(88% 0.01 260)" }}
+                                placeholder="Search this index"
+                                className="w-full bg-white px-4 py-2.5 pr-9 text-sm placeholder:text-zinc-400 border border-gray-300 rounded-3xl outline-none transition vj-body"
                             />
-                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400">
+                            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" style={{ color: INK_SOFT }}>
                                 <SearchIcon className="size-4" />
                             </span>
                         </div>
                     </div>
 
-                    <p className="mt-5 text-sm text-zinc-500">
-                        <span className="font-medium text-zinc-700">{filtered.length}</span>{" "}
-                        {filtered.length === 1 ? "subcategory" : "subcategories"}
+                    <p className="mt-5 text-sm vj-mono" style={{ color: INK_SOFT }}>
+                        <span className="font-semibold" style={{ color: INK }}>
+                            {String(filtered.length).padStart(2, "0")}
+                        </span>{" "}
+                        {filtered.length === 1 ? "entry" : "entries"} logged
                         {query && (
                             <>
-                                {" "}matching{" "}
-                                <span className="text-zinc-700">"{query}"</span>
+                                {" "}
+                                for "<span style={{ color: INK }}>{query}</span>"
                             </>
                         )}
                     </p>
@@ -219,10 +284,14 @@ export default function Subcategory() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="text-center py-28 text-zinc-400 text-lg"
+                            className="text-center py-28 text-lg"
+                            style={{ color: INK_SOFT }}
                         >
-                            No subcategories match{" "}
-                            <span className="font-semibold text-zinc-600">"{query}"</span>.
+                            No entries match{" "}
+                            <span className="font-semibold" style={{ color: INK }}>
+                                "{query}"
+                            </span>
+                            .
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -231,8 +300,8 @@ export default function Subcategory() {
                     <motion.div
                         initial="hidden"
                         animate="show"
-                        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.04 } } }}
-                        className="mt-10 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-2 lg:grid-cols-3"
+                        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.045 } } }}
+                        className="mt-12 grid grid-cols-1 gap-x-7 gap-y-9 sm:grid-cols-2 lg:grid-cols-3"
                     >
                         {filtered.map((item, idx) => (
                             <motion.div

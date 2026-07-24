@@ -1,4 +1,4 @@
-import heroImg from "../../../images/main2.png"
+import heroImg from "../../../images/main5.png"
 
 const stats = [
     { value: "1962", label: "Established" },

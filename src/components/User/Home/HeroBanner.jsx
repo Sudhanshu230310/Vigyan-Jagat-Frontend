@@ -20,7 +20,7 @@ const TRUST_LABELS = [
 
 export function HeroBanner() {
   return (
-    <div className="w-full bg-gradient-to-br from-cyan-100 via-cyan-100 via-40% to-cyan-200 min-h-[90vh] flex items-center overflow-hidden relative">
+    <div className="w-full bg-gradient-to-br from-cyan-100 via-cyan-100 via-40% to-cyan-200 min-h-[80vh] flex items-center overflow-hidden relative">
 
       {/* Ambient glow blobs, kept subtle so the layout reads clean like the reference */}
       <div className="absolute -top-32 -left-32 w-[420px] h-[420px] bg-blue-100/50 rounded-full blur-[100px] pointer-events-none" />
