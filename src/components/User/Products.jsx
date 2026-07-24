@@ -4,6 +4,23 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { SearchIcon } from "lucide-react";
 
+const SKY_TOP = "#E4F7FB";
+const SKY_MID = "#D3EEF6";
+const SKY_BOTTOM = "#EAF9F6";
+const LINE_SOFT = "rgba(29,78,137,0.10)";
+
+const pageBg = {
+    backgroundColor: SKY_MID,
+    backgroundImage: `linear-gradient(180deg, ${SKY_TOP} 0%, ${SKY_MID} 45%, ${SKY_BOTTOM} 100%), linear-gradient(${LINE_SOFT} 1px, transparent 1px), linear-gradient(90deg, ${LINE_SOFT} 1px, transparent 1px)`,
+    backgroundSize: "auto, 28px 28px, 28px 28px",
+    backgroundAttachment: "fixed, scroll, scroll",
+};
+
+const headerBg = {
+    background: "linear-gradient(180deg, rgba(228,247,251,0.92) 0%, rgba(211,238,246,0.86) 100%)",
+    backdropFilter: "blur(16px)",
+};
+
 const cardVariants = {
     initial: {
         y: 0,
@@ -163,7 +180,7 @@ export default function Products() {
     };
 
     return (
-        <div className="w-full min-h-screen bg-gradient-to-b from-white to-zinc-50/60 pt-6">
+        <div className="w-full min-h-screen pt-6" style={pageBg}>
             <div className="mx-auto w-full px-6 md:px-10 pb-24">
                 {/* Back link */}
                 <motion.button
@@ -184,7 +201,10 @@ export default function Products() {
                 </motion.button>
 
                 {/* Header block — sticky below Navbar (h-16 = 4rem) */}
-                <header className="sticky top-16 z-40 bg-white/90 backdrop-blur-xl border-b border-zinc-200/80 -mx-6 md:-mx-10 px-6 md:px-10 pb-5 pt-4">
+                <header
+                    className="sticky top-16 z-40 border-b border-zinc-300 -mx-6 md:-mx-10 px-6 md:px-10 pb-5 pt-4"
+                    style={headerBg}
+                >
                     <p className="font-mono text-xs tracking-[0.2em] uppercase text-cyan-600">
                         Catalog
                     </p>
