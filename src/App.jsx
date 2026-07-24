@@ -1,83 +1,46 @@
-import { useState, useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import './App.css'
-import { Navbar } from './components/User/Navbar'
-import { Sidebar } from './components/User/Sidebar'
-import { Footer } from './components/User/Footer'
-import UserDashboard from './Dashboards/User/User'
-import Subcategory from './components/User/Subcategories'
-import { ScrollToTop } from './components/User/ScrollToTop'
-import Products from './components/User/Products'
-import Item from './components/User/Item'
-import AboutUs from './components/User/AboutUs/AboutUs'
-import Contact from './components/User/Contact/conact'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
+
+import UserDashboard from "./Dashboards/User/User";
+import Subcategory from "./components/User/Subcategories";
+import Products from "./components/User/Products";
+import Item from "./components/User/Item";
+import AboutUs from "./components/User/AboutUs/AboutUs";
+import Contact from "./components/User/Contact/contact";
+import Login from "./components/Admin/Login";
+import AdminDashboard from "./Dashboards/Admin/Admin";
 
 function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isMd, setIsMd] = useState(window.innerWidth >= 768)
-
-  useEffect(() => {
-    const onResize = () => {
-      const isDesktop = window.innerWidth >= 768
-      setIsMd(isDesktop)
-      if (isDesktop) {
-        setMobileMenuOpen(false)
-      }
-    }
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
-
   return (
-    <div className="min-h-screen bg-[oklch(0.99_0_0)] text-zinc-900">
-      <BrowserRouter>
-        <ScrollToTop />
-        {/* Desktop Sidebar */}
-        <Sidebar
-          isOpen={sidebarOpen}
-          isMobile={false}
-          onClose={() => setSidebarOpen(false)}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<UserDashboard />} />
+
+        <Route
+          path="/subcategory/:categoryName"
+          element={<Subcategory />}
         />
 
-        {/* Mobile Sidebar */}
-        <Sidebar
-          isOpen={mobileMenuOpen}
-          isMobile={true}
-          onClose={() => setMobileMenuOpen(false)}
+        <Route
+          path="/products/:SubcategoryName"
+          element={<Products />}
         />
 
-        {/* Main Content Layout Wrapper */}
-        <div
-          className="transition-all duration-300 ease-in-out min-h-screen flex flex-col justify-between"
-          style={{ paddingLeft: isMd && sidebarOpen ? '16rem' : '0' }}
-        >
-          <div>
-            <Navbar
-              sidebarOpen={sidebarOpen}
-              onToggleSidebar={() => setSidebarOpen((v) => !v)}
-              onOpenMobileMenu={() => setMobileMenuOpen(true)}
-            />
+        <Route
+          path="/products/:SubcategoryName/:itemName"
+          element={<Item />}
+        />
 
-            <Routes>
-              <Route
-                path="/"
-                element={<UserDashboard sidebarOpen={sidebarOpen} />}
-              />
-              <Route path="/AboutUs" element={<AboutUs />} />
-              <Route path="/subcategory/:categoryName" element={<Subcategory />} />
-              <Route path="/products/:SubcategoryName" element={<Products />} />
-              <Route path="/products/:SubcategoryName/:itemName" element={<Item />} />
-              <Route path="/contact" element={<Contact />} />
-            </Routes>
-          </div>
+        <Route path="/about" element={<AboutUs />} />
 
-          <Footer />
-        </div>
-      </BrowserRouter>
-    </div>
-  )
+        <Route path="/contact" element={<Contact />} />
+
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/admin" element={<AdminDashboard />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
-
+export default App;

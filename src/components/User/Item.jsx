@@ -2,13 +2,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
-import { 
-    ArrowLeft, 
-    Maximize2, 
-    X, 
-    Send, 
-    CheckCircle2, 
-    Search, 
+import {
+    ArrowLeft,
+    Maximize2,
+    X,
+    Send,
+    CheckCircle2,
+    Search,
     Inbox,
     Package,
     Shield,
@@ -19,6 +19,18 @@ import {
 const BackendURL = import.meta.env.VITE_BACKEND_URL;
 // Where the product_images/... files are served from. Falls back to the API host.
 const IMAGE_BASE = import.meta.env.VITE_IMAGE_BASE_URL || BackendURL;
+
+const SKY_TOP = "#E4F7FB";
+const SKY_MID = "#D3EEF6";
+const SKY_BOTTOM = "#EAF9F6";
+const LINE_SOFT = "rgba(29,78,137,0.08)";
+
+const pageBg = {
+    backgroundColor: SKY_MID,
+    backgroundImage: `linear-gradient(180deg, ${SKY_TOP} 0%, ${SKY_MID} 45%, ${SKY_BOTTOM} 100%), linear-gradient(${LINE_SOFT} 1px, transparent 1px), linear-gradient(90deg, ${LINE_SOFT} 1px, transparent 1px)`,
+    backgroundSize: "auto, 28px 28px, 28px 28px",
+    backgroundAttachment: "fixed, scroll, scroll",
+};
 
 // Union of keys across all rows, preserving first-seen order.
 function deriveColumns(rows) {
@@ -41,8 +53,8 @@ function SpecTable({ title, rows }) {
     const filteredRows = useMemo(() => {
         const q = filterQuery.trim().toLowerCase();
         if (!q) return rows;
-        return rows.filter((row) => 
-            columns.some((col) => 
+        return rows.filter((row) =>
+            columns.some((col) =>
                 String(row[col] ?? "").toLowerCase().includes(q)
             )
         );
@@ -80,9 +92,8 @@ function SpecTable({ title, rows }) {
                                 {columns.map((col) => (
                                     <th
                                         key={col}
-                                        className={`whitespace-nowrap px-6 py-4 text-[11px] uppercase tracking-wider font-mono font-semibold ${
-                                            isPriceCol(col) ? "text-right" : ""
-                                        }`}
+                                        className={`whitespace-nowrap px-6 py-4 text-[11px] uppercase tracking-wider font-mono font-semibold ${isPriceCol(col) ? "text-right" : ""
+                                            }`}
                                     >
                                         {col}
                                     </th>
@@ -103,13 +114,11 @@ function SpecTable({ title, rows }) {
                                         {columns.map((col) => (
                                             <td
                                                 key={col}
-                                                className={`whitespace-nowrap px-6 py-3.5 text-zinc-700 ${
-                                                    isCodeCol(col) ? "font-mono text-zinc-900 font-semibold text-xs" : ""
-                                                } ${
-                                                    isPriceCol(col)
+                                                className={`whitespace-nowrap px-6 py-3.5 text-zinc-700 ${isCodeCol(col) ? "font-mono text-zinc-900 font-semibold text-xs" : ""
+                                                    } ${isPriceCol(col)
                                                         ? "text-right font-semibold text-cyan-600 tabular-nums text-sm"
                                                         : ""
-                                                }`}
+                                                    }`}
                                             >
                                                 {isPriceCol(col) && row[col] != null
                                                     ? `\u20B9 ${row[col]}`
@@ -147,8 +156,8 @@ const pageVariants = {
 
 const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    show: { 
-        opacity: 1, 
+    show: {
+        opacity: 1,
         y: 0,
         transition: {
             duration: 0.6,
@@ -163,14 +172,14 @@ export default function Item() {
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    
+
     const [activeImgIndex, setActiveImgIndex] = useState(0);
     const [isLightboxOpen, setIsLightboxOpen] = useState(false);
     const [isInquiryOpen, setIsInquiryOpen] = useState(false);
     const [inquirySuccess, setInquirySuccess] = useState(false);
     const [submittingInquiry, setSubmittingInquiry] = useState(false);
     const [submitError, setSubmitError] = useState(null);
-    
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -244,23 +253,23 @@ export default function Item() {
 
     if (loading) {
         return (
-            <div className="w-full min-h-screen bg-gradient-to-b from-white to-zinc-50/60 flex flex-col items-center justify-center relative overflow-hidden">
+            <div className="w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden" style={pageBg}>
                 <div className="absolute top-[-10%] left-[-10%] w-[30vw] h-[30vw] bg-cyan-200/20 rounded-full blur-[120px] pointer-events-none" />
                 <div className="absolute bottom-[20%] right-[-10%] w-[25vw] h-[25vw] bg-indigo-200/20 rounded-full blur-[100px] pointer-events-none" />
-                
+
                 <div className="relative flex items-center justify-center">
-                    <motion.div 
+                    <motion.div
                         animate={{ rotate: 360 }}
                         transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
                         className="w-16 h-16 border-4 border-zinc-200 border-t-cyan-500 rounded-full"
                     />
-                    <motion.div 
+                    <motion.div
                         animate={{ rotate: -360 }}
                         transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
                         className="absolute w-10 h-10 border-4 border-zinc-200 border-t-indigo-500 rounded-full"
                     />
                 </div>
-                <motion.p 
+                <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: [0.4, 1, 0.4] }}
                     transition={{ repeat: Infinity, duration: 2 }}
@@ -274,10 +283,10 @@ export default function Item() {
 
     if (error) {
         return (
-            <div className="w-full min-h-screen bg-gradient-to-b from-white to-zinc-50/60 flex flex-col items-center justify-center relative overflow-hidden px-6 text-center">
+            <div className="w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-6 text-center" style={pageBg}>
                 <div className="absolute top-[-10%] left-[-10%] w-[30vw] h-[30vw] bg-red-200/10 rounded-full blur-[120px] pointer-events-none" />
-                
-                <motion.div 
+
+                <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="bg-white/80 backdrop-blur-xl border border-zinc-200 rounded-3xl p-8 max-w-md shadow-xl shadow-zinc-200/30"
@@ -310,12 +319,12 @@ export default function Item() {
     const images = Array.isArray(item.images) ? item.images : [];
 
     return (
-        <div className="relative w-full min-h-screen bg-gradient-to-b from-zinc-50/40 to-zinc-100/50 pt-16 overflow-hidden">
+        <div className="relative w-full min-h-screen pt-16 overflow-hidden" style={pageBg}>
             {/* Ambient Background Glows */}
             <div className="absolute top-[-10%] left-[-10%] w-[35vw] h-[35vw] bg-cyan-200/20 rounded-full blur-[140px] pointer-events-none" />
             <div className="absolute bottom-[20%] right-[-10%] w-[30vw] h-[30vw] bg-indigo-205/15 rounded-full blur-[120px] pointer-events-none" />
 
-            <motion.div 
+            <motion.div
                 variants={pageVariants}
                 initial="hidden"
                 animate="show"
@@ -325,7 +334,7 @@ export default function Item() {
                 <motion.div variants={itemVariants} className="mt-6">
                     <button
                         onClick={() => navigate(-1)}
-                        className="group flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-cyan-700 transition-colors"
+                        className="group flex items-center gap-2 text-sm font-medium text-zinc-900 cursor-pointer hover:text-cyan-700 transition-colors"
                     >
                         <motion.span
                             whileHover={{ x: -3 }}
@@ -339,12 +348,12 @@ export default function Item() {
                 </motion.div>
 
                 {/* Main Identity & Showcase Area */}
-                <motion.div 
-                    variants={itemVariants} 
+                <motion.div
+                    variants={itemVariants}
                     className="mt-8 bg-white/70 backdrop-blur-xl border border-zinc-200/80 shadow-xl shadow-zinc-200/40 rounded-3xl p-6 md:p-10"
                 >
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-                        
+
                         {/* Image Showcase Component (LHS) */}
                         <div className="lg:col-span-5 flex flex-col gap-4">
                             <div className="relative group/image overflow-hidden bg-white rounded-2xl border border-zinc-200/70 p-8 flex items-center justify-center min-h-[320px] max-h-[380px] shadow-sm hover:shadow-md transition-shadow duration-300">
@@ -368,9 +377,9 @@ export default function Item() {
                                         <span className="text-xs text-zinc-400 font-mono">No Image Available</span>
                                     </div>
                                 )}
-                                
+
                                 {images.length > 0 && (
-                                    <motion.button 
+                                    <motion.button
                                         whileHover={{ scale: 1.08 }}
                                         whileTap={{ scale: 0.92 }}
                                         onClick={() => setIsLightboxOpen(true)}
@@ -388,13 +397,12 @@ export default function Item() {
                                         <button
                                             key={i}
                                             onClick={() => setActiveImgIndex(i)}
-                                            className={`relative size-16 rounded-xl border-2 overflow-hidden p-1.5 bg-white cursor-pointer transition-all duration-200 shrink-0 ${
-                                                activeImgIndex === i ? "border-cyan-500 scale-102" : "border-zinc-200/80 hover:border-zinc-300"
-                                            }`}
+                                            className={`relative size-16 rounded-xl border-2 overflow-hidden p-1.5 bg-white cursor-pointer transition-all duration-200 shrink-0 ${activeImgIndex === i ? "border-cyan-500 scale-102" : "border-zinc-200/80 hover:border-zinc-300"
+                                                }`}
                                         >
                                             <img src={`${IMAGE_BASE}/${img}`} alt={`Thumbnail ${i}`} className="h-full w-full object-contain" />
                                             {activeImgIndex === i && (
-                                                <motion.div 
+                                                <motion.div
                                                     layoutId="activeIndicator"
                                                     className="absolute inset-0 border-2 border-cyan-500 rounded-lg pointer-events-none"
                                                 />
@@ -414,11 +422,11 @@ export default function Item() {
                                         {item.brand}
                                     </div>
                                 )}
-                                
+
                                 <h1 className="mt-3.5 text-3xl lg:text-4xl font-semibold tracking-tight text-zinc-900 capitalize leading-snug">
                                     {item.name}
                                 </h1>
-                                
+
                                 {item.description && (
                                     <p className="mt-4 text-zinc-600 leading-relaxed text-sm md:text-base max-w-3xl">
                                         {item.description}
@@ -484,8 +492,8 @@ export default function Item() {
 
                 {/* Table Entries (Variants / ASTM specs) */}
                 {tableEntries.length > 0 && (
-                    <motion.section 
-                        variants={itemVariants} 
+                    <motion.section
+                        variants={itemVariants}
                         className="mt-12 space-y-10"
                     >
                         <div className="border-b border-zinc-200/85 pb-4">
@@ -516,7 +524,7 @@ export default function Item() {
                         className="fixed inset-0 z-50 bg-zinc-950/90 backdrop-blur-md flex items-center justify-center p-6"
                         onClick={() => setIsLightboxOpen(false)}
                     >
-                        <button 
+                        <button
                             onClick={() => setIsLightboxOpen(false)}
                             className="absolute top-6 right-6 text-white/70 hover:text-white hover:bg-white/10 size-10 rounded-full flex items-center justify-center transition-colors cursor-pointer"
                         >
@@ -550,7 +558,7 @@ export default function Item() {
                                 setInquirySuccess(false);
                             }}
                         />
-                        
+
                         <motion.div
                             initial={{ opacity: 0, scale: 0.96, y: 15 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -559,7 +567,7 @@ export default function Item() {
                             className="relative bg-white border border-zinc-200 shadow-2xl rounded-3xl w-full max-w-lg p-6 md:p-8 z-10 overflow-hidden"
                         >
                             <span className="absolute inset-x-0 top-0 h-[4px] bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500" />
-                            
+
                             <button
                                 onClick={() => {
                                     setIsInquiryOpen(false);
@@ -579,12 +587,12 @@ export default function Item() {
                                     <p className="text-zinc-500 text-xs mt-1 mb-6">
                                         Fill out your requirement summary below, and we will get back to you with custom catalog pricing.
                                     </p>
-                                    
+
                                     <form onSubmit={handleInquirySubmit} className="space-y-4">
                                         <div>
                                             <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Contact Person Name</label>
-                                            <input 
-                                                type="text" 
+                                            <input
+                                                type="text"
                                                 required
                                                 value={formData.name}
                                                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
@@ -595,8 +603,8 @@ export default function Item() {
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div>
                                                 <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Business Email</label>
-                                                <input 
-                                                    type="email" 
+                                                <input
+                                                    type="email"
                                                     required
                                                     value={formData.email}
                                                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
@@ -606,8 +614,8 @@ export default function Item() {
                                             </div>
                                             <div>
                                                 <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Mobile Number</label>
-                                                <input 
-                                                    type="tel" 
+                                                <input
+                                                    type="tel"
                                                     required
                                                     value={formData.phone}
                                                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
@@ -619,8 +627,8 @@ export default function Item() {
                                         </div>
                                         <div>
                                             <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Organization</label>
-                                            <input 
-                                                type="text" 
+                                            <input
+                                                type="text"
                                                 required
                                                 value={formData.org}
                                                 onChange={(e) => setFormData(prev => ({ ...prev, org: e.target.value }))}
@@ -630,8 +638,8 @@ export default function Item() {
                                         </div>
                                         <div>
                                             <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Estimated Qty Needed</label>
-                                            <input 
-                                                type="text" 
+                                            <input
+                                                type="text"
                                                 required
                                                 value={formData.qty}
                                                 onChange={(e) => setFormData(prev => ({ ...prev, qty: e.target.value }))}
@@ -641,7 +649,7 @@ export default function Item() {
                                         </div>
                                         <div>
                                             <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Inquiry details</label>
-                                            <textarea 
+                                            <textarea
                                                 required
                                                 rows={4}
                                                 value={formData.message}
@@ -649,11 +657,11 @@ export default function Item() {
                                                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100 resize-none"
                                             />
                                         </div>
-                                        
+
                                         {submitError && (
                                             <p className="text-red-500 text-xs font-medium text-center">{submitError}</p>
                                         )}
-                                        
+
                                         <motion.button
                                             whileHover={{ scale: 1.01 }}
                                             whileTap={{ scale: 0.99 }}
@@ -672,7 +680,7 @@ export default function Item() {
                                     </form>
                                 </>
                             ) : (
-                                <motion.div 
+                                <motion.div
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     className="text-center py-8 flex flex-col items-center"

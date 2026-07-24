@@ -21,9 +21,9 @@ const sidebarItems = [
     ),
     items: [
       { title: 'Laboratory Equipments', url: '/subcategory/Laboratory Equipments and Instruments' },
-      { title: 'Glassware & Plasticware', url: '/subcategory/Glassware & Plasticware' },
-      { title: 'Chemical & Reagent', url: '/subcategory/chemical & reagent' },
-      { title: 'Laboratory Consumables', url: '/subcategory/laboratory consumables' },
+      { title: 'Glassware & Plasticware', url: '/subcategory/Laboratory Glassware & Plasticware' },
+      { title: 'Chemical & Reagent', url: '/subcategory/Chemical & Reagent' },
+      { title: 'Laboratory Consumables', url: '/subcategory/Laboratory Consumables' },
     ],
   },
   {
@@ -92,7 +92,7 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
             onClick={() => { navigate('/'); onClose(); }}
             className="flex items-center gap-2 cursor-pointer"
           >
-            <div className="w-9 h-9 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-600 flex items-center justify-center text-white font-bold">
               V
             </div>
             <h1 className="text-zinc-900 font-semibold text-lg">Vigyan Jagat</h1>
@@ -155,6 +155,24 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
         })}
       </nav>
 
+      {/* Login button — pinned to bottom */}
+      <div className="border-t border-zinc-200 p-3">
+        <button
+          onClick={() => {
+            navigate('/login')
+            if (isMobile) onClose()
+          }}
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-600 px-3 py-2.5 text-[15px] font-medium text-white transition-colors hover:bg-cyan-700 cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+            <polyline points="10 17 15 12 10 7" />
+            <line x1="15" y1="12" x2="3" y2="12" />
+          </svg>
+          Admin Login
+        </button>
+      </div>
+
     </div>
   )
 
@@ -192,6 +210,7 @@ export function Sidebar({ isOpen, isMobile, onClose }) {
       }}
     >
       {sidebarContent}
+
     </aside>
   )
 }

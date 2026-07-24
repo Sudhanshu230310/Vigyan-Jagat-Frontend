@@ -160,23 +160,38 @@ export default function Subcategory() {
     };
 
     /* Loading state */
+    /* Loading state */
     if (loading) {
         return (
             <div className="w-full min-h-screen flex flex-col items-center justify-center gap-4 vj-body" style={gridBg}>
                 <style>{FONT_STYLE}</style>
-                <motion.div
-                    animate={{ scaleY: [0.15, 1, 0.15] }}
-                    transition={{ duration: 1.3, repeat: Infinity, ease: "easeInOut" }}
-                    className="w-2.5 h-10 rounded-full origin-bottom"
-                    style={{ background: TEAL }}
-                />
+                <div className="flex items-end gap-2 h-12">
+                    {[
+                        { color: BLUE, delay: 0 },
+                        { color: TEAL, delay: 0.15 },
+                        { color: AMBER, delay: 0.3 },
+                        { color: INK, delay: 0.45 },
+                    ].map((bar, i) => (
+                        <motion.span
+                            key={i}
+                            animate={{ scaleY: [0.2, 1, 0.2] }}
+                            transition={{
+                                duration: 1.1,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: bar.delay,
+                            }}
+                            className="w-2.5 h-10 rounded-full origin-bottom"
+                            style={{ background: bar.color }}
+                        />
+                    ))}
+                </div>
                 <p className="vj-mono text-xs tracking-widest uppercase" style={{ color: INK_SOFT }}>
                     Loading index…
                 </p>
             </div>
         );
     }
-
     /* Error state */
     if (error) {
         return (
@@ -226,7 +241,7 @@ export default function Subcategory() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
                     onClick={() => navigate(-1)}
-                    className=" pt-10 flex items-center gap-1.5 text-xs font-semibold tracking-wide vj-mono uppercase text-cyan-900 cursor-pointer"
+                    className=" pt-10 flex items-center gap-1.5 text-xs font-semibold tracking-wide vj-mono uppercase text-cyan-900"
 
                 >
                     <motion.span whileHover={{ x: -3 }} transition={{ duration: 0.2 }} className="inline-block">
