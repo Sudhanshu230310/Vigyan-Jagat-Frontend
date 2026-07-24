@@ -70,7 +70,7 @@ export default function Login() {
                 </div>
 
                 {/* Right column - form card */}
-                <div className="bg-white h-[95vh] flex flex-col justify-center rounded-2xl shadow-sm p-8 md:p-9">
+                <div className="bg-white h-[95vh] w-full flex flex-col justify-center rounded-2xl shadow-sm p-8 md:p-9 ">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <Field label="Email">
                             <input

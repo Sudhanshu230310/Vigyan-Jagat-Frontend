@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 
-import UserDashboard from "./Dashboards/User/User";
+import UserDashboard, { UserHome } from "./Dashboards/User/User";
 import Subcategory from "./components/User/Subcategories";
 import Products from "./components/User/Products";
 import Item from "./components/User/Item";
@@ -14,26 +14,28 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<UserDashboard />} />
+        <Route path="/" element={<UserDashboard />}>
+          <Route index element={<UserHome />} />
 
-        <Route
-          path="/subcategory/:categoryName"
-          element={<Subcategory />}
-        />
+          <Route
+            path="subcategory/:categoryName"
+            element={<Subcategory />}
+          />
 
-        <Route
-          path="/products/:SubcategoryName"
-          element={<Products />}
-        />
+          <Route
+            path="products/:SubcategoryName"
+            element={<Products />}
+          />
 
-        <Route
-          path="/products/:SubcategoryName/:itemName"
-          element={<Item />}
-        />
+          <Route
+            path="products/:SubcategoryName/:itemName"
+            element={<Item />}
+          />
 
-        <Route path="/about" element={<AboutUs />} />
+          <Route path="about" element={<AboutUs />} />
 
-        <Route path="/contact" element={<Contact />} />
+          <Route path="contact" element={<Contact />} />
+        </Route>
 
         <Route path="/login" element={<Login />} />
 

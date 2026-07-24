@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Outlet } from "react-router-dom";
 
 import { Navbar } from "../../components/User/Navbar";
 import { Sidebar } from "../../components/User/Sidebar";
@@ -10,6 +11,18 @@ import { Categories } from "../../components/User/Home/Categories";
 import WhyVigyanJagat from "../../components/User/Home/WhyVigyanJagat";
 import AboutUs from "../../components/User/Home/AboutUs";
 import { Contact } from "../../components/User/Home/Contact";
+
+export function UserHome() {
+    return (
+        <div>
+            <HeroBanner />
+            <Categories />
+            <WhyVigyanJagat />
+            <AboutUs />
+            <Contact />
+        </div>
+    );
+}
 
 export default function UserDashboard() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -62,12 +75,7 @@ export default function UserDashboard() {
                         onOpenMobileMenu={() => setMobileMenuOpen(true)}
                     />
 
-                    <HeroBanner sidebarOpen={sidebarOpen} />
-
-                    <Categories />
-                    <WhyVigyanJagat />
-                    <AboutUs />
-                    <Contact />
+                    <Outlet />
                 </div>
 
                 <Footer />

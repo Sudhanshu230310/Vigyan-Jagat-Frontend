@@ -26,7 +26,7 @@ export default function Contact() {
     };
 
     return (
-        <div className="min-w-screen flex items-center justify-center w-[100vw]">
+        <div className="w-full flex items-center justify-center py-6">
             <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                 {/* Left column */}
                 <div className="px-10 h-[95vh] flex flex-col justify-center w-full bg-cyan-100">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Navbar from "../../components/Admin/Navbar";
-import { HeroBanner } from "../../components/User/Home/HeroBanner";
+import { HeroBanner } from "../../components/Admin/HeroBanner";
 
 export default function AdminDashboard() {
 
