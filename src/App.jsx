@@ -7,6 +7,7 @@ import Products from "./components/User/Products";
 import Item from "./components/User/Item";
 import AboutUs from "./components/User/AboutUs/AboutUs";
 import Contact from "./components/User/Contact/contact";
+import SearchResults from "./components/User/SearchResults";
 import Login from "./components/Admin/Login";
 import AdminDashboard from "./Dashboards/Admin/Admin";
 
@@ -31,6 +32,8 @@ function App() {
             path="products/:SubcategoryName/:itemName"
             element={<Item />}
           />
+
+          <Route path="search" element={<SearchResults />} />
 
           <Route path="about" element={<AboutUs />} />
 
