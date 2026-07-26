@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
@@ -13,11 +13,19 @@ import {
     Package,
     Shield,
     Sparkles,
-    Globe
+    Globe,
+    Tag,
+    ChevronRight,
+    Copy,
+    Check,
+    FileText,
+    Building2,
+    Layers,
+    SlidersHorizontal,
+    PhoneCall
 } from "lucide-react";
 
 const BackendURL = import.meta.env.VITE_BACKEND_URL;
-// Where the product_images/... files are served from. Falls back to the API host.
 const IMAGE_BASE = import.meta.env.VITE_IMAGE_BASE_URL || BackendURL;
 
 const SKY_TOP = "#E4F7FB";
@@ -46,8 +54,9 @@ function deriveColumns(rows) {
 const isPriceCol = (c) => /price/i.test(c);
 const isCodeCol = (c) => /item code/i.test(c);
 
-function SpecTable({ title, rows }) {
+function SpecTable({ title, rows, onRequestVariantQuote }) {
     const [filterQuery, setFilterQuery] = useState("");
+    const [copiedCode, setCopiedCode] = useState(null);
     const columns = useMemo(() => deriveColumns(rows), [rows]);
 
     const filteredRows = useMemo(() => {
@@ -60,12 +69,19 @@ function SpecTable({ title, rows }) {
         );
     }, [rows, columns, filterQuery]);
 
+    const handleCopyCode = (code) => {
+        if (!code) return;
+        navigator.clipboard.writeText(code);
+        setCopiedCode(code);
+        setTimeout(() => setCopiedCode(null), 2000);
+    };
+
     return (
         <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 {title && (
-                    <h3 className="text-sm font-mono uppercase tracking-wider text-zinc-500 flex items-center gap-2 font-semibold">
-                        <span className="w-1.5 h-3.5 bg-cyan-500 rounded-full" />
+                    <h3 className="text-sm font-mono uppercase tracking-wider text-cyan-900 flex items-center gap-2 font-bold">
+                        <span className="w-2 h-4 bg-cyan-600 rounded-full" />
                         {title}
                     </h3>
                 )}
@@ -75,63 +91,100 @@ function SpecTable({ title, rows }) {
                             type="text"
                             value={filterQuery}
                             onChange={(e) => setFilterQuery(e.target.value)}
-                            placeholder="Filter variants..."
-                            className="w-full rounded-xl border border-zinc-200 bg-white/70 px-3 py-1.5 pl-8 text-xs text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:bg-white focus:ring-4 focus:ring-cyan-100"
+                            placeholder="Filter technical variants..."
+                            className="w-full rounded-2xl border border-zinc-200 bg-white/90 px-4 py-2 pl-9 text-xs text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-500 focus:bg-white focus:ring-4 focus:ring-cyan-100 shadow-xs"
                         />
-                        <span className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400">
-                            <Search className="size-3.5" />
-                        </span>
+                        <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 size-3.5" />
                     </div>
                 )}
             </div>
-            <div className="overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/70 backdrop-blur-md shadow-sm">
+
+            <div className="overflow-hidden rounded-2xl border border-zinc-200/90 bg-white/90 backdrop-blur-xl shadow-md">
                 <div className="overflow-x-auto">
                     <table className="w-full border-collapse text-sm text-left">
                         <thead>
-                            <tr className="bg-zinc-50/70 border-b border-zinc-200/80 text-zinc-500 font-medium">
+                            <tr className="bg-zinc-50/80 border-b border-zinc-200/90 text-zinc-500 font-semibold font-mono text-[11px] uppercase tracking-wider">
                                 {columns.map((col) => (
                                     <th
                                         key={col}
-                                        className={`whitespace-nowrap px-6 py-4 text-[11px] uppercase tracking-wider font-mono font-semibold ${isPriceCol(col) ? "text-right" : ""
-                                            }`}
+                                        className={`whitespace-nowrap px-6 py-4 ${isPriceCol(col) ? "text-right" : ""}`}
                                     >
                                         {col}
                                     </th>
                                 ))}
+                                <th className="px-6 py-4 text-right">Quote</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="divide-y divide-zinc-100">
                             <AnimatePresence initial={false}>
-                                {filteredRows.map((row, i) => (
-                                    <motion.tr
-                                        key={i}
-                                        initial={{ opacity: 0, y: 6 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0 }}
-                                        transition={{ duration: 0.25, delay: Math.min(i * 0.02, 0.2) }}
-                                        className="border-b border-zinc-100 last:border-0 hover:bg-cyan-50/20 transition-colors"
-                                    >
-                                        {columns.map((col) => (
-                                            <td
-                                                key={col}
-                                                className={`whitespace-nowrap px-6 py-3.5 text-zinc-700 ${isCodeCol(col) ? "font-mono text-zinc-900 font-semibold text-xs" : ""
-                                                    } ${isPriceCol(col)
-                                                        ? "text-right font-semibold text-cyan-600 tabular-nums text-sm"
-                                                        : ""
-                                                    }`}
-                                            >
-                                                {isPriceCol(col) && row[col] != null
-                                                    ? `\u20B9 ${row[col]}`
-                                                    : row[col] ?? "\u2014"}
+                                {filteredRows.map((row, i) => {
+                                    const codeVal = columns.find(c => isCodeCol(c)) ? row[columns.find(c => isCodeCol(c))] : null;
+                                    return (
+                                        <motion.tr
+                                            key={i}
+                                            initial={{ opacity: 0, y: 4 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ duration: 0.2, delay: Math.min(i * 0.015, 0.15) }}
+                                            className="hover:bg-cyan-50/30 transition-colors group"
+                                        >
+                                            {columns.map((col) => {
+                                                const val = row[col];
+                                                const isCode = isCodeCol(col);
+                                                const isPrice = isPriceCol(col);
+
+                                                return (
+                                                    <td
+                                                        key={col}
+                                                        className={`whitespace-nowrap px-6 py-3.5 text-zinc-700 ${isCode
+                                                            ? "font-mono text-zinc-900 font-semibold text-xs"
+                                                            : ""
+                                                            } ${isPrice
+                                                                ? "text-right font-semibold text-cyan-700 tabular-nums text-sm"
+                                                                : ""
+                                                            }`}
+                                                    >
+                                                        {isCode && val ? (
+                                                            <div className="flex items-center gap-2">
+                                                                <span>{val}</span>
+                                                                <button
+                                                                    onClick={() => handleCopyCode(val)}
+                                                                    title="Copy item code"
+                                                                    className="text-zinc-300 hover:text-zinc-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                                >
+                                                                    {copiedCode === val ? (
+                                                                        <Check className="size-3.5 text-emerald-600" />
+                                                                    ) : (
+                                                                        <Copy className="size-3.5" />
+                                                                    )}
+                                                                </button>
+                                                            </div>
+                                                        ) : isPrice && val != null ? (
+                                                            `₹ ${val}`
+                                                        ) : (
+                                                            val ?? "—"
+                                                        )}
+                                                    </td>
+                                                );
+                                            })}
+                                            <td className="px-6 py-3.5 text-right whitespace-nowrap">
+                                                <button
+                                                    onClick={() => onRequestVariantQuote && onRequestVariantQuote(row)}
+                                                    className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-700 hover:text-cyan-900 hover:underline cursor-pointer"
+                                                >
+                                                    Inquire
+                                                    <ChevronRight className="size-3" />
+                                                </button>
                                             </td>
-                                        ))}
-                                    </motion.tr>
-                                ))}
+                                        </motion.tr>
+                                    );
+                                })}
                             </AnimatePresence>
+
                             {filteredRows.length === 0 && (
                                 <tr>
-                                    <td colSpan={columns.length} className="text-center py-10 text-zinc-400 text-sm">
-                                        No matching items found.
+                                    <td colSpan={columns.length + 1} className="text-center py-10 text-zinc-400 text-sm">
+                                        No matching variants found.
                                     </td>
                                 </tr>
                             )}
@@ -160,7 +213,7 @@ const itemVariants = {
         opacity: 1,
         y: 0,
         transition: {
-            duration: 0.6,
+            duration: 0.5,
             ease: [0.22, 1, 0.36, 1]
         }
     }
@@ -218,7 +271,7 @@ export default function Item() {
         if (item) {
             setFormData(prev => ({
                 ...prev,
-                message: `Hi, I would like to request a quote for "${item.name}" (Brand: ${item.brand || "N/A"}). Please provide pricing, packaging variants, and lead time information.`
+                message: `Hi, I would like to request a quote for "${item.name}" (Brand: ${item.brand || "N/A"}). Please provide wholesale pricing, packaging variants, and lead time information.`
             }));
         }
     }, [item]);
@@ -251,56 +304,50 @@ export default function Item() {
             .finally(() => setSubmittingInquiry(false));
     };
 
+    const handleVariantInquire = (row) => {
+        const rowDetails = Object.entries(row)
+            .map(([k, v]) => `${k}: ${v}`)
+            .join(", ");
+
+        setFormData(prev => ({
+            ...prev,
+            message: `Hi, I would like to request a wholesale quote for "${item?.name}" variant (${rowDetails}). Please share availability and pricing tier details.`
+        }));
+        setIsInquiryOpen(true);
+    };
+
+    /* Loading State */
     if (loading) {
         return (
             <div className="w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden" style={pageBg}>
-                <div className="absolute top-[-10%] left-[-10%] w-[30vw] h-[30vw] bg-cyan-200/20 rounded-full blur-[120px] pointer-events-none" />
-                <div className="absolute bottom-[20%] right-[-10%] w-[25vw] h-[25vw] bg-indigo-200/20 rounded-full blur-[100px] pointer-events-none" />
-
-                <div className="relative flex items-center justify-center">
-                    <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                        className="w-16 h-16 border-4 border-zinc-200 border-t-cyan-500 rounded-full"
-                    />
-                    <motion.div
-                        animate={{ rotate: -360 }}
-                        transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
-                        className="absolute w-10 h-10 border-4 border-zinc-200 border-t-indigo-500 rounded-full"
-                    />
+                <div className="bg-white/80 backdrop-blur-xl border border-zinc-200/80 rounded-3xl p-10 shadow-lg text-center flex flex-col items-center max-w-sm w-full">
+                    <div className="w-12 h-12 border-4 border-cyan-100 border-t-cyan-600 rounded-full animate-spin mb-4" />
+                    <h3 className="text-base font-bold text-zinc-900">Loading Product Catalog</h3>
+                    <p className="text-xs text-zinc-500 mt-1 font-mono">Fetching specifications for "{itemName}"...</p>
                 </div>
-                <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: [0.4, 1, 0.4] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
-                    className="mt-6 text-xs font-mono text-zinc-500 tracking-widest uppercase"
-                >
-                    Securing Catalog Details...
-                </motion.p>
             </div>
         );
     }
 
+    /* Error State */
     if (error) {
         return (
             <div className="w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-6 text-center" style={pageBg}>
-                <div className="absolute top-[-10%] left-[-10%] w-[30vw] h-[30vw] bg-red-200/10 rounded-full blur-[120px] pointer-events-none" />
-
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="bg-white/80 backdrop-blur-xl border border-zinc-200 rounded-3xl p-8 max-w-md shadow-xl shadow-zinc-200/30"
+                    className="bg-white/90 backdrop-blur-xl border border-zinc-200 rounded-3xl p-8 max-w-md shadow-2xl"
                 >
                     <div className="w-14 h-14 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <X className="size-6" />
                     </div>
-                    <h2 className="text-xl font-semibold text-zinc-900 mb-2">Item Unavailable</h2>
+                    <h2 className="text-xl font-bold text-zinc-900 mb-2">Item Unavailable</h2>
                     <p className="text-zinc-500 text-sm leading-relaxed mb-6">{error}</p>
                     <button
                         onClick={() => navigate(-1)}
-                        className="bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm rounded-xl py-3 px-6 transition-colors inline-flex items-center gap-2"
+                        className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium text-xs rounded-xl py-3 px-6 transition-colors inline-flex items-center gap-2 cursor-pointer shadow-md"
                     >
-                        <ArrowLeft className="size-4" /> Go back
+                        <ArrowLeft className="size-4" /> Back to Catalog
                     </button>
                 </motion.div>
             </div>
@@ -319,44 +366,36 @@ export default function Item() {
     const images = Array.isArray(item.images) ? item.images : [];
 
     return (
-        <div className="relative w-full min-h-screen pt-16 overflow-hidden" style={pageBg}>
-            {/* Ambient Background Glows */}
-            <div className="absolute top-[-10%] left-[-10%] w-[35vw] h-[35vw] bg-cyan-200/20 rounded-full blur-[140px] pointer-events-none" />
-            <div className="absolute bottom-[20%] right-[-10%] w-[30vw] h-[30vw] bg-indigo-205/15 rounded-full blur-[120px] pointer-events-none" />
-
+        <div className="relative w-full min-h-screen pb-24 overflow-hidden" style={pageBg}>
             <motion.div
                 variants={pageVariants}
                 initial="hidden"
                 animate="show"
-                className="mx-auto w-full px-6 md:px-12 pb-24 relative z-10"
+                className=" mx-auto px-6 md:px-12 lg:px-16 pt-8 relative z-10"
             >
-                {/* Navigation Back */}
-                <motion.div variants={itemVariants} className="mt-6">
+                {/* Breadcrumbs Navigation */}
+                <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-2 text-xs font-medium text-zinc-500 mb-6">
                     <button
                         onClick={() => navigate(-1)}
-                        className="group flex items-center gap-2 text-sm font-medium text-zinc-900 cursor-pointer hover:text-cyan-700 transition-colors"
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/80 border border-zinc-200 text-cyan-900 hover:bg-white hover:border-cyan-400 transition cursor-pointer shadow-xs"
                     >
-                        <motion.span
-                            whileHover={{ x: -3 }}
-                            transition={{ duration: 0.2 }}
-                            className="inline-block"
-                        >
-                            <ArrowLeft className="size-4" />
-                        </motion.span>
+                        <ArrowLeft className="size-3.5" />
                         Back to {SubcategoryName}
                     </button>
+                    <span className="text-zinc-300">/</span>
+                    <span className="text-zinc-600 font-semibold truncate max-w-xs">{item.name}</span>
                 </motion.div>
 
-                {/* Main Identity & Showcase Area */}
+                {/* Main Product Showcase Card */}
                 <motion.div
                     variants={itemVariants}
-                    className="mt-8 bg-white/70 backdrop-blur-xl border border-zinc-200/80 shadow-xl shadow-zinc-200/40 rounded-3xl p-6 md:p-10"
+                    className="bg-white/85 backdrop-blur-xl border border-zinc-200/90 shadow-xl shadow-cyan-900/5 rounded-3xl p-6 md:p-10"
                 >
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
 
-                        {/* Image Showcase Component (LHS) */}
+                        {/* Image Showcase Gallery (LHS) */}
                         <div className="lg:col-span-5 flex flex-col gap-4">
-                            <div className="relative group/image overflow-hidden bg-white rounded-2xl border border-zinc-200/70 p-8 flex items-center justify-center min-h-[320px] max-h-[380px] shadow-sm hover:shadow-md transition-shadow duration-300">
+                            <div className="relative group/image overflow-hidden bg-white rounded-2xl border border-zinc-200/80 p-8 flex items-center justify-center min-h-[340px] max-h-[400px] shadow-xs hover:shadow-md transition-shadow duration-300">
                                 {images.length > 0 ? (
                                     <AnimatePresence mode="wait">
                                         <motion.img
@@ -364,17 +403,17 @@ export default function Item() {
                                             initial={{ opacity: 0, scale: 0.96 }}
                                             animate={{ opacity: 1, scale: 1 }}
                                             exit={{ opacity: 0, scale: 0.96 }}
-                                            transition={{ duration: 0.25 }}
+                                            transition={{ duration: 0.2 }}
                                             src={`${IMAGE_BASE}/${images[activeImgIndex]}`}
                                             alt={item.name}
-                                            className="max-h-64 w-auto object-contain cursor-zoom-in select-none"
+                                            className="max-h-72 w-auto object-contain cursor-zoom-in select-none"
                                             onClick={() => setIsLightboxOpen(true)}
                                         />
                                     </AnimatePresence>
                                 ) : (
-                                    <div className="flex flex-col items-center gap-3">
-                                        <div className="text-zinc-300 text-6xl">⚗</div>
-                                        <span className="text-xs text-zinc-400 font-mono">No Image Available</span>
+                                    <div className="flex flex-col items-center gap-3 py-10">
+                                        <Package className="size-16 text-zinc-300" />
+                                        <span className="text-xs text-zinc-400 font-mono">No Image Preview Available</span>
                                     </div>
                                 )}
 
@@ -383,68 +422,74 @@ export default function Item() {
                                         whileHover={{ scale: 1.08 }}
                                         whileTap={{ scale: 0.92 }}
                                         onClick={() => setIsLightboxOpen(true)}
-                                        className="absolute bottom-4 right-4 bg-zinc-900/80 backdrop-blur-md hover:bg-zinc-950 text-white size-8 rounded-full flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 shadow-md cursor-pointer"
+                                        className="absolute bottom-4 right-4 bg-zinc-900/80 backdrop-blur-md hover:bg-zinc-950 text-white size-9 rounded-xl flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-opacity duration-300 shadow-md cursor-pointer"
+                                        title="Zoom image"
                                     >
                                         <Maximize2 className="size-4" />
                                     </motion.button>
                                 )}
                             </div>
 
-                            {/* Thumbnail Row selector */}
+                            {/* Thumbnail Selector */}
                             {images.length > 1 && (
                                 <div className="flex gap-3 overflow-x-auto py-1 shrink-0 scrollbar-none">
                                     {images.map((img, i) => (
                                         <button
                                             key={i}
                                             onClick={() => setActiveImgIndex(i)}
-                                            className={`relative size-16 rounded-xl border-2 overflow-hidden p-1.5 bg-white cursor-pointer transition-all duration-200 shrink-0 ${activeImgIndex === i ? "border-cyan-500 scale-102" : "border-zinc-200/80 hover:border-zinc-300"
+                                            className={`relative size-16 rounded-xl border-2 overflow-hidden p-1.5 bg-white cursor-pointer transition-all duration-200 shrink-0 ${activeImgIndex === i
+                                                ? "border-cyan-500 ring-4 ring-cyan-100 scale-102"
+                                                : "border-zinc-200/80 hover:border-zinc-300"
                                                 }`}
                                         >
                                             <img src={`${IMAGE_BASE}/${img}`} alt={`Thumbnail ${i}`} className="h-full w-full object-contain" />
-                                            {activeImgIndex === i && (
-                                                <motion.div
-                                                    layoutId="activeIndicator"
-                                                    className="absolute inset-0 border-2 border-cyan-500 rounded-lg pointer-events-none"
-                                                />
-                                            )}
                                         </button>
                                     ))}
                                 </div>
                             )}
                         </div>
 
-                        {/* Product Detail Text & Actions (RHS) */}
+                        {/* Product Information & Actions (RHS) */}
                         <div className="lg:col-span-7 flex flex-col h-full justify-between">
                             <div>
-                                {item.brand && (
-                                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-cyan-50 border border-cyan-100 text-cyan-700 text-xs font-mono font-semibold rounded-full uppercase">
-                                        <Sparkles className="size-3" />
-                                        {item.brand}
-                                    </div>
-                                )}
+                                {/* Badges */}
+                                <div className="flex flex-wrap items-center gap-2">
+                                    {item.brand && (
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-cyan-50 border border-cyan-100 text-cyan-800 text-xs font-mono font-semibold rounded-full uppercase">
+                                            <Sparkles className="size-3 text-cyan-600" />
+                                            Brand: {item.brand}
+                                        </span>
+                                    )}
+                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-zinc-100 border border-zinc-200/80 text-zinc-700 text-xs font-mono font-semibold rounded-full uppercase">
+                                        <Tag className="size-3 text-zinc-500" />
+                                        {SubcategoryName}
+                                    </span>
+                                </div>
 
-                                <h1 className="mt-3.5 text-3xl lg:text-4xl font-semibold tracking-tight text-zinc-900 capitalize leading-snug">
+                                {/* Title */}
+                                <h1 className="mt-3.5 text-3xl lg:text-4xl font-bold tracking-tight text-zinc-900 capitalize leading-snug">
                                     {item.name}
                                 </h1>
 
+                                {/* Description */}
                                 {item.description && (
                                     <p className="mt-4 text-zinc-600 leading-relaxed text-sm md:text-base max-w-3xl">
                                         {item.description}
                                     </p>
                                 )}
 
-                                {/* Scalar specs cards */}
+                                {/* Scalar Specification Cards */}
                                 {scalarEntries.length > 0 && (
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8">
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 mt-8">
                                         {scalarEntries.map(([key, value]) => (
                                             <div
                                                 key={key}
-                                                className="bg-white/50 backdrop-blur-sm border border-zinc-200/50 rounded-2xl p-4 flex flex-col hover:border-cyan-500/25 hover:shadow-lg hover:shadow-zinc-200/25 transition-all duration-300"
+                                                className="bg-zinc-50/80 border border-zinc-200/80 rounded-2xl p-3.5 flex flex-col hover:border-cyan-400/50 hover:bg-white transition-all duration-200"
                                             >
                                                 <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-semibold mb-1">
                                                     {key}
                                                 </span>
-                                                <span className="font-semibold text-zinc-800 text-sm sm:text-base capitalize">
+                                                <span className="font-bold text-zinc-800 text-sm capitalize truncate">
                                                     {value}
                                                 </span>
                                             </div>
@@ -453,33 +498,33 @@ export default function Item() {
                                 )}
                             </div>
 
-                            {/* Trust elements & CTA block */}
+                            {/* B2B Procurement Trust Bar & CTA */}
                             <div className="mt-10 pt-8 border-t border-zinc-200/80">
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                                    <div className="flex items-center gap-2.5 text-xs text-zinc-500">
-                                        <div className="size-7 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-600">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                                    <div className="flex items-center gap-2.5 text-xs text-zinc-600 font-medium">
+                                        <div className="size-8 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
                                             <Shield className="size-4" />
                                         </div>
                                         <span>Certified Quality</span>
                                     </div>
-                                    <div className="flex items-center gap-2.5 text-xs text-zinc-500">
-                                        <div className="size-7 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-600">
+                                    <div className="flex items-center gap-2.5 text-xs text-zinc-600 font-medium">
+                                        <div className="size-8 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
                                             <Package className="size-4" />
                                         </div>
-                                        <span>Standard Packaging</span>
+                                        <span>Bulk Packaging</span>
                                     </div>
-                                    <div className="flex items-center gap-2.5 text-xs text-zinc-500">
-                                        <div className="size-7 rounded-lg bg-zinc-100 flex items-center justify-center text-zinc-600">
+                                    <div className="flex items-center gap-2.5 text-xs text-zinc-600 font-medium">
+                                        <div className="size-8 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
                                             <Globe className="size-4" />
                                         </div>
-                                        <span>Pan India Delivery</span>
+                                        <span>Pan India Express</span>
                                     </div>
                                 </div>
 
-                                <div className="flex gap-4">
+                                <div className="flex flex-col sm:flex-row items-center gap-4">
                                     <button
                                         onClick={() => setIsInquiryOpen(true)}
-                                        className="flex-1 sm:flex-initial bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-xl py-3.5 px-8 text-sm font-semibold shadow-lg shadow-cyan-600/15 flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all"
+                                        className="w-full sm:w-auto flex-1 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-2xl py-3.5 px-8 text-sm font-semibold shadow-lg shadow-cyan-600/20 flex items-center justify-center gap-2.5 cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all"
                                     >
                                         <Inbox className="size-4.5" /> Request Wholesale Quote
                                     </button>
@@ -490,15 +535,16 @@ export default function Item() {
                     </div>
                 </motion.div>
 
-                {/* Table Entries (Variants / ASTM specs) */}
+                {/* Table Specifications & Variants */}
                 {tableEntries.length > 0 && (
                     <motion.section
                         variants={itemVariants}
                         className="mt-12 space-y-10"
                     >
-                        <div className="border-b border-zinc-200/85 pb-4">
-                            <h2 className="text-xs font-mono uppercase tracking-[0.2em] text-zinc-400 font-bold">
-                                Technical Specifications & Variants
+                        <div className="flex items-center gap-3 border-b border-zinc-200/90 pb-4">
+                            <SlidersHorizontal className="size-5 text-cyan-600" />
+                            <h2 className="text-sm font-mono uppercase tracking-[0.15em] text-zinc-800 font-bold">
+                                Technical Specifications &amp; Catalog Variants
                             </h2>
                         </div>
                         <div className="space-y-10">
@@ -507,6 +553,7 @@ export default function Item() {
                                     key={title}
                                     title={tableEntries.length > 1 ? title : null}
                                     rows={rows}
+                                    onRequestVariantQuote={handleVariantInquire}
                                 />
                             ))}
                         </div>
@@ -514,19 +561,16 @@ export default function Item() {
                 )}
             </motion.div>
 
-            {/* Lightbox / Zoom Modal */}
+            {/* Lightbox / Image Zoom Modal */}
             <AnimatePresence>
                 {isLightboxOpen && images.length > 0 && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                    <div
                         className="fixed inset-0 z-50 bg-zinc-950/90 backdrop-blur-md flex items-center justify-center p-6"
                         onClick={() => setIsLightboxOpen(false)}
                     >
                         <button
                             onClick={() => setIsLightboxOpen(false)}
-                            className="absolute top-6 right-6 text-white/70 hover:text-white hover:bg-white/10 size-10 rounded-full flex items-center justify-center transition-colors cursor-pointer"
+                            className="absolute top-6 right-6 text-white/80 hover:text-white hover:bg-white/10 size-10 rounded-full flex items-center justify-center transition-colors cursor-pointer"
                         >
                             <X className="size-6" />
                         </button>
@@ -537,14 +581,14 @@ export default function Item() {
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
                             src={`${IMAGE_BASE}/${images[activeImgIndex]}`}
                             alt={item.name}
-                            className="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl bg-white p-4"
+                            className="max-h-[85vh] max-w-full object-contain rounded-2xl shadow-2xl bg-white p-6"
                             onClick={(e) => e.stopPropagation()}
                         />
-                    </motion.div>
+                    </div>
                 )}
             </AnimatePresence>
 
-            {/* Inquiry / Quote Slideout Modal */}
+            {/* Wholesale Quote Request Modal */}
             <AnimatePresence>
                 {isInquiryOpen && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
@@ -580,13 +624,24 @@ export default function Item() {
 
                             {!inquirySuccess ? (
                                 <>
-                                    <h3 className="text-xl font-semibold text-zinc-900 flex items-center gap-2">
-                                        <Inbox className="size-5 text-cyan-600" />
-                                        Request Wholesale Quote
-                                    </h3>
-                                    <p className="text-zinc-500 text-xs mt-1 mb-6">
-                                        Fill out your requirement summary below, and we will get back to you with custom catalog pricing.
-                                    </p>
+                                    <div className="flex items-center gap-3 mb-1">
+                                        <div className="w-10 h-10 rounded-2xl bg-cyan-100 text-cyan-700 flex items-center justify-center">
+                                            <Inbox className="size-5" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-lg font-bold text-zinc-900">
+                                                Request Wholesale Quote
+                                            </h3>
+                                            <p className="text-zinc-500 text-xs">
+                                                Custom B2B pricing &amp; procurement info
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="my-4 p-3 bg-zinc-50 border border-zinc-200/80 rounded-xl text-xs text-zinc-700 flex items-center gap-2">
+                                        <Tag className="size-4 text-cyan-600 shrink-0" />
+                                        <span className="truncate font-semibold">{item.name}</span>
+                                    </div>
 
                                     <form onSubmit={handleInquirySubmit} className="space-y-4">
                                         <div>
@@ -597,9 +652,10 @@ export default function Item() {
                                                 value={formData.name}
                                                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                                                 placeholder="e.g. Sudhanshu Gaur"
-                                                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                                                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
                                             />
                                         </div>
+
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div>
                                                 <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Business Email</label>
@@ -609,7 +665,7 @@ export default function Item() {
                                                     value={formData.email}
                                                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                                                     placeholder="name@company.com"
-                                                    className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                                                    className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
                                                 />
                                             </div>
                                             <div>
@@ -621,21 +677,23 @@ export default function Item() {
                                                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                                                     placeholder="+91 98765 43210"
                                                     pattern="[+]?[0-9\s\-]{7,15}"
-                                                    className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                                                    className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
                                                 />
                                             </div>
                                         </div>
+
                                         <div>
-                                            <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Organization</label>
+                                            <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Organization / Firm Name</label>
                                             <input
                                                 type="text"
                                                 required
                                                 value={formData.org}
                                                 onChange={(e) => setFormData(prev => ({ ...prev, org: e.target.value }))}
                                                 placeholder="Vigyan Jagat Corp"
-                                                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
+                                                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100"
                                             />
                                         </div>
+
                                         <div>
                                             <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Estimated Qty Needed</label>
                                             <input
@@ -647,14 +705,15 @@ export default function Item() {
                                                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100"
                                             />
                                         </div>
+
                                         <div>
-                                            <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Inquiry details</label>
+                                            <label className="block text-[10px] font-semibold text-zinc-500 mb-1.5 uppercase font-mono tracking-wider">Inquiry Details</label>
                                             <textarea
                                                 required
-                                                rows={4}
+                                                rows={3}
                                                 value={formData.message}
                                                 onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                                                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-400 focus:ring-4 focus:ring-cyan-100 resize-none"
+                                                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none transition focus:border-cyan-500 focus:ring-4 focus:ring-cyan-100 resize-none"
                                             />
                                         </div>
 
@@ -692,7 +751,7 @@ export default function Item() {
                                     >
                                         <CheckCircle2 className="size-16 text-emerald-500 mb-4" />
                                     </motion.div>
-                                    <h3 className="text-xl font-semibold text-zinc-950 mb-2">Request Submitted</h3>
+                                    <h3 className="text-xl font-bold text-zinc-950 mb-2">Request Submitted</h3>
                                     <p className="text-zinc-500 text-sm max-w-sm leading-relaxed mb-6">
                                         We have received your catalog quote request for <span className="font-semibold text-zinc-800">"{item.name}"</span> and will send wholesale pricing to <span className="font-semibold text-zinc-800">{formData.email}</span> shortly.
                                     </p>
@@ -701,9 +760,9 @@ export default function Item() {
                                             setIsInquiryOpen(false);
                                             setInquirySuccess(false);
                                         }}
-                                        className="bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-sm rounded-xl py-3 px-8 transition-colors cursor-pointer"
+                                        className="bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs rounded-xl py-3 px-8 transition-colors cursor-pointer shadow-md"
                                     >
-                                        Return to Catalog
+                                        Return to Product Page
                                     </button>
                                 </motion.div>
                             )}
