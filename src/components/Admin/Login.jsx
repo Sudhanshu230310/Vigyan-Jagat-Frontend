@@ -10,21 +10,30 @@ export default function Login() {
         password: "",
     });
     const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState("");
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
+        setError("");
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setSubmitted(true);
-        // Wire this up to your auth backend of choice.
-        // Navigate only after the login actually succeeds.
-        setTimeout(() => {
-            setSubmitted(false);
-            navigate('/admin');
-        }, 1000);
+        
+        const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || import.meta.env.ADMIN_EMAIL;
+        const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || import.meta.env.ADMIN_PASSWORD;
+
+        if (form.email.trim() === adminEmail && form.password.trim() === adminPassword) {
+            setSubmitted(true);
+            setError("");
+            setTimeout(() => {
+                setSubmitted(false);
+                navigate('/admin');
+            }, 800);
+        } else {
+            setError("Invalid email or password. Please check your credentials.");
+        }
     };
 
     return (
@@ -72,6 +81,12 @@ export default function Login() {
                 {/* Right column - form card */}
                 <div className="bg-white h-[95vh] w-full flex flex-col justify-center rounded-2xl shadow-sm p-8 md:p-9 ">
                     <form onSubmit={handleSubmit} className="space-y-6">
+                        {error && (
+                            <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
+                                {error}
+                            </div>
+                        )}
+
                         <Field label="Email">
                             <input
                                 type="email"
