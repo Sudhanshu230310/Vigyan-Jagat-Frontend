@@ -199,7 +199,6 @@ export default function Products() {
     return (
         <div className="w-full min-h-screen pb-24 pt-6" style={pageBg}>
             <div className="mx-auto px-6 md:px-12 lg:px-16 pt-8">
-
                 {/* Header Section */}
                 <motion.div
                     variants={pageVariants}

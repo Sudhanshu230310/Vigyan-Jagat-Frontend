@@ -11,6 +11,7 @@ import { Categories } from "../../components/User/Home/Categories";
 import WhyVigyanJagat from "../../components/User/Home/WhyVigyanJagat";
 import AboutUs from "../../components/User/Home/AboutUs";
 import { Contact } from "../../components/User/Home/Contact";
+import BrandsPage from "../../components/User/Home/Brand";
 
 export function UserHome() {
     return (
@@ -19,6 +20,7 @@ export function UserHome() {
             <Categories />
             <WhyVigyanJagat />
             <AboutUs />
+            <BrandsPage />
             <Contact />
         </div>
     );
