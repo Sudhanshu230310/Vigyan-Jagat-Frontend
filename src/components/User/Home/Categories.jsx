@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const categories = [
   {
-    name: "Laboratory Equipments and Instruments",
+    name: "Laboratory Equipment & Instruments",
     image: LEImage,
     description: "Balances, centrifuges, microscopes, analytical instruments and more for every lab.",
   },

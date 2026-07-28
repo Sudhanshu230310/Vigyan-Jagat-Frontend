@@ -20,7 +20,7 @@ const sidebarItems = [
       </svg>
     ),
     items: [
-      { title: 'Laboratory Equipments', url: '/subcategory/Laboratory Equipments and Instruments' },
+      { title: 'Laboratory Equipments', url: '/subcategory/Laboratory Equipment & Instruments' },
       { title: 'Glassware & Plasticware', url: '/subcategory/Laboratory Glassware & Plasticware' },
       { title: 'Chemical & Reagent', url: '/subcategory/Chemical & Reagent' },
       { title: 'Laboratory Consumables', url: '/subcategory/Laboratory Consumables' },

@@ -1,14 +1,12 @@
-import React, { useState } from "react";
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin, Send } from "lucide-react";
 
 export default function Contact() {
     const [form, setForm] = useState({
         fullName: "",
-        businessName: "",
         email: "",
         phone: "",
-        region: "",
-        category: "Laboratory Instruments",
         message: "",
     });
     const [submitted, setSubmitted] = useState(false);
@@ -26,47 +24,78 @@ export default function Contact() {
     };
 
     return (
-        <div className="w-full flex items-center justify-center py-6">
-            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                {/* Left column */}
-                <div className="px-10 h-[95vh] flex flex-col justify-center w-full bg-cyan-100">
-                    <p className="text-[13px] font-semibold tracking-widest text-[#3FAE8C] mb-4">
-                        APPLY NOW
-                    </p>
-                    <h1 className="text-4xl md:text-5xl font-bold text-[#1C1C1C] leading-tight mb-6">
-                        Contact Us
-                    </h1>
-                    <p className="text-[15px] leading-relaxed text-[#6B6B6B] max-w-md mb-10">
-                        Tell us about your business and region. Our partnerships team
-                        responds within 48 hours with catalog access and pricing tiers.
-                    </p>
+        <div className="py-10  bg-white text-slate-900 font-body">
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+                .font-display { font-family: 'Space Grotesk', sans-serif; }
+                .font-mono-lab { font-family: 'JetBrains Mono', monospace; }
+                .font-body { font-family: 'Inter', sans-serif; }
+                .input-field {
+                    width: 100%;
+                    padding: 0.7rem 0.9rem;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 0.5rem;
+                    font-size: 0.9rem;
+                    color: #0f172a;
+                    outline: none;
+                    background: #fff;
+                    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+                }
+                .input-field::placeholder { color: #94a3b8; }
+                .input-field:focus {
+                    border-color: #22d3ee;
+                    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.15);
+                }
+            `}</style>
 
-                    <div className="space-y-6">
-                        <ContactRow
-                            color="#5B4FE9"
-                            Icon={Mail}
-                            label="Email"
-                            value="sampark@vigyanjagat.com"
-                        />
-                        <ContactRow
-                            color="#3FAE8C"
-                            Icon={Phone}
-                            label="Phone"
-                            value="+91 000 000 0000"
-                        />
-                        <ContactRow
-                            color="#D9694F"
-                            Icon={MapPin}
-                            label="Head Office"
-                            value="Muzaffarpur, Bihar, India"
-                        />
-                    </div>
-                </div>
+            {/* faint graph-paper field, consistent across the site */}
+            <div
+                className="pointer-events-none fixed inset-0 opacity-[0.035]"
+                style={{
+                    backgroundImage:
+                        "linear-gradient(#0f172a 1px, transparent 1px), linear-gradient(90deg, #0f172a 1px, transparent 1px)",
+                    backgroundSize: "36px 36px",
+                }}
+            />
 
-                {/* Right column - form card */}
-                <div className="bg-white h-[95vh] flex flex-col justify-center rounded-2xl shadow-sm p-8 md:p-9">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="relative mx-auto  px-6 sm:px-20 py-16">
+                <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+                    {/* Left column — info */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="lg:col-span-2"
+                    >
+                        <div className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 text-sky-700 px-3 py-1 text-[11px] font-mono-lab font-medium tracking-widest uppercase mb-5">
+                            Get in Touch
+                        </div>
+                        <h1 className="font-display text-4xl sm:text-5xl font-semibold tracking-tight text-slate-900">
+                            Contact{" "}
+                            <span className="bg-gradient-to-r from-sky-600 to-cyan-500 bg-clip-text text-transparent">
+                                us
+                            </span>
+                        </h1>
+                        <p className="mt-4 text-slate-500 leading-relaxed max-w-sm">
+                            Have a question about a product, an order, or anything else?
+                            Send us a message and our team will get back to you shortly.
+                        </p>
+
+                        <div className="mt-10 space-y-5">
+                            <ContactRow Icon={Mail} label="Email" value="connect@shodhix.com" />
+                            <ContactRow Icon={Phone} label="Phone" value="+91 000 000 0000" />
+                            <ContactRow Icon={MapPin} label="Head Office" value="Muzaffarpur, Bihar, India" />
+                        </div>
+                    </motion.div>
+
+                    {/* Right column — form card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        className="lg:col-span-3 rounded-xl border border-slate-200 bg-white shadow-sm p-6 sm:p-8"
+                    >
+                        <form onSubmit={handleSubmit} className="space-y-5">
                             <Field label="Full name">
                                 <input
                                     name="fullName"
@@ -74,109 +103,64 @@ export default function Contact() {
                                     onChange={handleChange}
                                     placeholder="Your name"
                                     className="input-field"
+                                    required
                                 />
                             </Field>
-                            <Field label="Business name">
-                                <input
-                                    name="businessName"
-                                    value={form.businessName}
-                                    onChange={handleChange}
-                                    placeholder="Company / firm"
-                                    className="input-field"
-                                />
-                            </Field>
-                        </div>
 
-                        <Field label="Email">
-                            <input
-                                type="email"
-                                name="email"
-                                value={form.email}
-                                onChange={handleChange}
-                                placeholder="you@company.com"
-                                className="input-field"
-                            />
-                        </Field>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <Field label="Email">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={form.email}
+                                        onChange={handleChange}
+                                        placeholder="you@company.com"
+                                        className="input-field"
+                                        required
+                                    />
+                                </Field>
+                                <Field label="Mobile number">
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        value={form.phone}
+                                        onChange={handleChange}
+                                        placeholder="+91"
+                                        className="input-field"
+                                        required
+                                    />
+                                </Field>
+                            </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <Field label="Phone">
-                                <input
-                                    name="phone"
-                                    value={form.phone}
+                            <Field label="Message">
+                                <textarea
+                                    name="message"
+                                    value={form.message}
                                     onChange={handleChange}
-                                    placeholder="+91"
-                                    className="input-field"
+                                    placeholder="Tell us what you're looking for"
+                                    rows={5}
+                                    className="input-field resize-none"
+                                    required
                                 />
                             </Field>
-                            <Field label="Region / State">
-                                <input
-                                    name="region"
-                                    value={form.region}
-                                    onChange={handleChange}
-                                    placeholder="e.g. Maharashtra"
-                                    className="input-field"
-                                />
-                            </Field>
-                        </div>
 
-                        <Field label="Category of interest">
-                            <select
-                                name="category"
-                                value={form.category}
-                                onChange={handleChange}
-                                className="input-field appearance-none bg-white"
+                            <button
+                                type="submit"
+                                className="w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-lg text-white font-semibold text-[15px] bg-gradient-to-r from-sky-500 to-cyan-500 hover:brightness-110 shadow-sm hover:shadow-md transition-all"
                             >
-                                <option>Laboratory Instruments</option>
-                                <option>Laboratory Chemicals</option>
-                                <option>Glassware</option>
-                                <option>Consumables</option>
-                                <option>Other</option>
-                            </select>
-                        </Field>
-
-                        <Field label="Message">
-                            <textarea
-                                name="message"
-                                value={form.message}
-                                onChange={handleChange}
-                                placeholder="Tell us about your business"
-                                rows={4}
-                                className="input-field resize-none"
-                            />
-                        </Field>
-
-                        <button
-                            type="submit"
-                            className="w-full py-3.5 rounded-xl text-white font-semibold text-[15px] hover:scale-102 transition-all duration-100"
-                            style={{ background: "#20B6C7" }}
-                            onMouseOver={(e) => (e.currentTarget.style.background = "#20B6C0")}
-                            onMouseOut={(e) => (e.currentTarget.style.background = "#20B6C7")}
-                        >
-                            {submitted ? "Application Sent ✓" : "Submit Application"}
-                        </button>
-                    </form>
+                                {submitted ? (
+                                    "Message Sent ✓"
+                                ) : (
+                                    <>
+                                        Send Message
+                                        <Send className="h-4 w-4" />
+                                    </>
+                                )}
+                            </button>
+                        </form>
+                    </motion.div>
                 </div>
             </div>
-
-            <style>{`
-        .input-field {
-          width: 100%;
-          padding: 0.7rem 0.9rem;
-          border: 1px solid #E4E1D9;
-          border-radius: 0.65rem;
-          font-size: 0.9rem;
-          color: #1C1C1C;
-          outline: none;
-          transition: border-color 0.15s ease;
-        }
-        .input-field::placeholder {
-          color: #A9A69E;
-        }
-        .input-field:focus {
-          border-color: #5B4FE9;
-          box-shadow: 0 0 0 3px rgba(91, 79, 233, 0.12);
-        }
-      `}</style>
         </div>
     );
 }
@@ -184,7 +168,7 @@ export default function Contact() {
 function Field({ label, children }) {
     return (
         <label className="block">
-            <span className="block text-[13px] font-semibold text-[#1C1C1C] mb-2">
+            <span className="block text-[13px] font-medium text-slate-700 mb-1.5 font-display">
                 {label}
             </span>
             {children}
@@ -192,18 +176,17 @@ function Field({ label, children }) {
     );
 }
 
-function ContactRow({ color, Icon, label, value }) {
+function ContactRow({ Icon, label, value }) {
     return (
         <div className="flex items-center gap-4">
-            <div
-                className="w-9 h-9 flex-shrink-0 rounded-full flex items-center justify-center"
-                style={{ background: `${color}1A` }}
-            >
-                <Icon size={16} color={color} />
+            <div className="w-9 h-9 flex-shrink-0 rounded-full flex items-center justify-center bg-cyan-50 border border-cyan-100">
+                <Icon size={16} className="text-cyan-600" />
             </div>
             <div>
-                <p className="text-[14px] font-semibold text-[#1C1C1C]">{label}</p>
-                <p className="text-[13px] text-[#6B6B6B]">{value}</p>
+                <p className="font-mono-lab text-[11px] uppercase tracking-wide text-slate-400">
+                    {label}
+                </p>
+                <p className="text-[14px] font-medium text-slate-800">{value}</p>
             </div>
         </div>
     );
