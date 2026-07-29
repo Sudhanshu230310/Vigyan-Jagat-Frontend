@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
+import axios from "axios";
+
+const BackendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 export default function Contact() {
     const [form, setForm] = useState({
@@ -9,18 +12,30 @@ export default function Contact() {
         phone: "",
         message: "",
     });
+    const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
-        // Wire this up to your backend / form endpoint of choice.
-        setTimeout(() => setSubmitted(false), 3000);
+        setSubmitting(true);
+        setErrorMsg("");
+        try {
+            await axios.post(`${BackendURL}/contact`, form);
+            setSubmitted(true);
+            setForm({ fullName: "", email: "", phone: "", message: "" });
+            setTimeout(() => setSubmitted(false), 5000);
+        } catch (err) {
+            console.error("Failed to submit contact message:", err);
+            setErrorMsg(err.response?.data?.detail || "Failed to send message. Please try again.");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -144,11 +159,21 @@ export default function Contact() {
                                 />
                             </Field>
 
+                            {errorMsg && (
+                                <p className="text-red-500 text-xs font-medium text-center">{errorMsg}</p>
+                            )}
+
                             <button
                                 type="submit"
-                                className="w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-lg text-white font-semibold text-[15px] bg-gradient-to-r from-sky-500 to-cyan-500 hover:brightness-110 shadow-sm hover:shadow-md transition-all"
+                                disabled={submitting}
+                                className="w-full inline-flex items-center justify-center gap-2 py-3.5 rounded-lg text-white font-semibold text-[15px] bg-gradient-to-r from-sky-500 to-cyan-500 hover:brightness-110 shadow-sm hover:shadow-md transition-all cursor-pointer disabled:opacity-75"
                             >
-                                {submitted ? (
+                                {submitting ? (
+                                    <>
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        Sending...
+                                    </>
+                                ) : submitted ? (
                                     "Message Sent ✓"
                                 ) : (
                                     <>
