@@ -13,12 +13,12 @@ export default function AboutUs() {
 
                 {/* ── Text column ───────────────────────────── */}
                 <div className="flex flex-col justify-center ">
-                    <h2 className=" text-3xl font-sans leading-tight tracking-tight text-black sm:text-4xl lg:text-5xl">
+                    <h2 className=" text-3xl font-lora font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-5xl">
                         <span className='text-cyan-600'>Trusted</span> by labs
                         <br className="hidden sm:block" /> since 1962
                     </h2>
 
-                    <p className="mt-8 max-w-lg text-lg leading-relaxed text-zinc-800">
+                    <p className="mt-8 max-w-lg text-lg font-sans leading-relaxed text-zinc-800">
                         Vigyan Jagat is an authorized dealer and supplier of laboratory
                         equipment, chemicals, glassware, and consumables. Headquartered
                         in Muzaffarpur with offices across India, we bring world-class

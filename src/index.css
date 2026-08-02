@@ -10,7 +10,10 @@
   --color-border: oklch(0.90 0 0);
   --color-sidebar: oklch(0.98 0 0);
   --color-sidebar-accent: oklch(0.94 0.02 270);
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: "Public Sans", system-ui, -apple-system, sans-serif;
+  --font-serif: "Lora", Georgia, serif;
+  --font-lora: "Lora", Georgia, serif;
+  --font-public: "Public Sans", system-ui, -apple-system, sans-serif;
 }
 
 @layer base {
@@ -24,6 +27,9 @@
     background: var(--color-background);
     color: var(--color-foreground);
     -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
   }
 }
 

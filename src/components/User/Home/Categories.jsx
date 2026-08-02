@@ -234,10 +234,10 @@ function CategoryCard({ app, onClick, index }) {
           {/* Text & CTA */}
           <div className="flex flex-col justify-between items-center text-center px-5 sm:px-6 pt-11 pb-6 w-full flex-grow gap-4">
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-2 capitalize leading-snug">
+              <h3 className="text-base sm:text-lg font-bold text-black font-lora mb-2 capitalize leading-snug">
                 {app.name}
               </h3>
-              <p className="text-sm text-slate-500 leading-relaxed line-clamp-2">
+              <p className="text-sm text-slate-500 font-sans leading-relaxed line-clamp-2">
                 {app.description}
               </p>
             </div>
@@ -295,13 +295,13 @@ export function Categories() {
           >
             <motion.h2
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
-              className="text-3xl lg:text-5xl font-extrabold font-serif text-center"
+              className="text-3xl lg:text-5xl font-lora font-bold text-center"
             >
               <span className="text-cyan-700">Explore </span>
               <span className="text-black">Categories</span>
             </motion.h2>
-            <p className="text-center text-slate-500 mt-3 text-sm sm:text-base max-w-xl mx-auto">
-              Discover a wide range of laboratory products for research, analysis and everyday experiments.
+            <p className="text-center font-sans text-slate-500 mt-3 text-sm sm:text-base max-w-xl mx-auto">
+              Discover our wide range of laboratory products for research, analysis and everyday experiments.
             </p>
           </motion.div>
         </div>

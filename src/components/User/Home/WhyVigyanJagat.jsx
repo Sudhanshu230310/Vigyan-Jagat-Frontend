@@ -102,7 +102,7 @@ export function WhyVigyanJagat() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.1] max-w-3xl"
+            className="text-3xl md:text-4xl lg:text-5xl font-lora font-bold text-white tracking-tight leading-[1.1] max-w-3xl"
           >
             Why choose Vigyan Jagat?
           </motion.h2>
@@ -113,7 +113,7 @@ export function WhyVigyanJagat() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.5, delay: 0.14 }}
-            className="text-slate-500 text-base md:text-lg mt-5 max-w-2xl"
+            className="text-slate-200 font-sans text-base md:text-lg mt-5 max-w-2xl"
           >
             Trusted lab sourcing since 1962 — quality, compliance, and support
             in every order.
@@ -143,10 +143,10 @@ export function WhyVigyanJagat() {
                   <p className={`text-xs font-bold tracking-[0.15em] uppercase mb-3 ${theme.eyebrow}`}>
                     Feature {headline.number}
                   </p>
-                  <h3 className="text-xl font-bold text-slate-900 leading-snug">
+                  <h3 className="text-xl font-lora font-bold text-slate-900 leading-snug">
                     {headline.title}
                   </h3>
-                  <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+                  <p className="text-sm text-slate-500 font-sans mt-2 leading-relaxed">
                     {headline.description}
                   </p>
                 </div>

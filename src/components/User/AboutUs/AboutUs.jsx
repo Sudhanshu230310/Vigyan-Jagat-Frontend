@@ -27,10 +27,10 @@ export default function AboutPage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-cyan-100 to-white text-slate-900 font-body">
             <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
-                .font-display { font-family: 'Space Grotesk', sans-serif; }
-                .font-mono-lab { font-family: 'JetBrains Mono', monospace; }
-                .font-body { font-family: 'Inter', sans-serif; }
+                @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Public+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+                .font-display { font-family: 'Lora', Georgia, serif; }
+                .font-mono-lab { font-family: 'Public Sans', sans-serif; }
+                .font-body { font-family: 'Public Sans', sans-serif; }
             `}</style>
 
             {/* faint graph-paper field, consistent across the site */}

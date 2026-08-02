@@ -41,10 +41,10 @@ export default function Contact() {
     return (
         <div className="py-10  bg-white text-slate-900 font-body">
             <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
-                .font-display { font-family: 'Space Grotesk', sans-serif; }
-                .font-mono-lab { font-family: 'JetBrains Mono', monospace; }
-                .font-body { font-family: 'Inter', sans-serif; }
+                @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Public+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+                .font-display { font-family: 'Lora', Georgia, serif; }
+                .font-mono-lab { font-family: 'Public Sans', sans-serif; }
+                .font-body { font-family: 'Public Sans', sans-serif; }
                 .input-field {
                     width: 100%;
                     padding: 0.7rem 0.9rem;
@@ -98,7 +98,7 @@ export default function Contact() {
 
                         <div className="mt-10 space-y-5">
                             <ContactRow Icon={Mail} label="Email" value="connect@shodhix.com" />
-                            <ContactRow Icon={Phone} label="Phone" value="+91 000 000 0000" />
+                            <ContactRow Icon={Phone} label="Phone" value="+91 83405 07175" />
                             <ContactRow Icon={MapPin} label="Head Office" value="Muzaffarpur, Bihar, India" />
                         </div>
                     </motion.div>

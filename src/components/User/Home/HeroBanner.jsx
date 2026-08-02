@@ -42,7 +42,7 @@ export function HeroBanner() {
           {/* Heading */}
           <motion.h1
             {...fadeUp(0.12)}
-            className="text-5xl md:text-6xl font-serif font-semibold text-black tracking-tight leading-[1.05]"
+            className="text-5xl md:text-6xl font-lora font-bold text-black tracking-tight leading-[1.05]"
           >
             Shodh<span className="text-cyan-500">IX</span>
           </motion.h1>
@@ -65,7 +65,7 @@ export function HeroBanner() {
                 Contact Us
               </motion.button>
             </Link>
-            <Link to="/AboutUs">
+            <Link to="/about">
               <motion.button
                 whileHover={{ x: 3 }}
                 className="flex cursor-pointer items-center gap-2 text-zinc-900 font-semibold text-sm transition-colors border-b border-zinc-900 pb-1"

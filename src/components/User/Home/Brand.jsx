@@ -77,13 +77,13 @@ export default function BrandsPage() {
                         <Beaker className="h-3.5 w-3.5 text-cyan-600" />
                         Our Brands
                     </div>
-                    <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 tracking-tight">
+                    <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 font-lora tracking-tight">
                         Brands we{" "}
                         <span className="bg-gradient-to-r from-sky-600 to-cyan-600 bg-clip-text text-transparent">
                             supply
                         </span>
                     </h1>
-                    <p className="mt-3 text-zinc-600 max-w-xl">
+                    <p className="mt-3 font-sans text-zinc-600 max-w-xl">
                         Every manufacturer represented in our laboratory equipment,
                         chemicals, and glassware catalog. Tap a brand to see its products.
                     </p>
@@ -170,7 +170,7 @@ export default function BrandsPage() {
                                     >
                                         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-50 to-sky-50 opacity-0 group-hover:opacity-100 transition-opacity" />
                                         <div className="relative">
-                                            <h3 className="text-base font-semibold text-zinc-800 group-hover:text-cyan-700 transition-colors truncate">
+                                            <h3 className="text-base font-semibold text-zinc-800 group-hover:text-cyan-700 transition-colors truncate font-sans">
                                                 {b.brand}
                                             </h3>
                                             <p className="mt-1 text-xs text-zinc-400">

@@ -114,7 +114,7 @@ function FooterAmbient() {
       {/* 🌫️ Large faded watermark */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full flex justify-center overflow-hidden select-none">
         <span className="font-sans font-black tracking-tight leading-none whitespace-nowrap text-[16vw] lg:text-[13rem] text-transparent bg-clip-text bg-gradient-to-b from-cyan-100/80 to-transparent translate-y-[28%]">
-          VIGYAN JAGAT
+          ShodhIX
         </span>
       </div>
     </div>
@@ -183,7 +183,7 @@ export function Footer() {
           <motion.div variants={columnVariants} className="space-y-4">
             <Link to="/" className="inline-block">
               <span className="text-xl font-bold text-zinc-900">
-                Vigyan <span className="text-cyan-600">Jagat</span>
+                Shodh<span className="text-cyan-600">IX</span>
               </span>
             </Link>
             <p className="text-sm text-zinc-500 leading-relaxed">
@@ -232,14 +232,14 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-2.5">
                 <span className="text-cyan-500 mt-0.5"><PhoneIcon /></span>
-                <a href="tel:+910000000000" className="hover:text-cyan-600 transition-colors">
-                  +91 00000 00000
+                <a href="tel:+918340507175" className="hover:text-cyan-600 transition-colors">
+                  +91 83405 07175
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <span className="text-cyan-500 mt-0.5"><MailIcon /></span>
-                <a href="mailto:info@vigyanjagat.com" className="hover:text-cyan-600 transition-colors">
-                  info@vigyanjagat.com
+                <a href="mailto:connect@shodhix.com" className="hover:text-cyan-600 transition-colors">
+                  connect@shodhix.com
                 </a>
               </li>
             </ul>

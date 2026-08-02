@@ -34,14 +34,14 @@ export function HeroBanner() {
                     <motion.div {...fadeUp(0.05)}>
                         <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 bg-blue-50 text-xs font-semibold text-cyan-600">
                             <span className="w-1.5 h-1.5 rounded-full bg-cyan-600" />
-                            Trusted since 1962 — labs across India
+                            Trusted since 1962 — Labs Across India
                         </span>
                     </motion.div>
 
                     {/* Heading */}
                     <motion.h1
                         {...fadeUp(0.12)}
-                        className="text-5xl md:text-6xl font-serif font-semibold text-black tracking-tight leading-[1.05]"
+                        className="text-5xl md:text-6xl font-semibold text-black tracking-tight leading-[1.05]"
                     >
                         Shodh<span className="text-cyan-500">IX</span>
                     </motion.h1>

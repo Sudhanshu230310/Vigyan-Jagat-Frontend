@@ -297,7 +297,7 @@ export function Navbar({ onToggleSidebar, onOpenMobileMenu }) {
 
           <div className="hidden sm:block">
             <h1 className="text-zinc-900 font-semibold text-lg">
-              Shodhix
+              Shodh<span className="text-cyan-600">IX</span>
             </h1>
           </div>
         </div>
@@ -368,9 +368,8 @@ export function Navbar({ onToggleSidebar, onOpenMobileMenu }) {
                             key={idx}
                             onClick={() => handleSelectProduct(item)}
                             onMouseEnter={() => setSelectedIndex(idx)}
-                            className={`px-5 py-3 flex items-center gap-4 cursor-pointer transition-colors ${
-                              isSelected ? "bg-cyan-50/80 text-cyan-900" : "hover:bg-zinc-50 text-zinc-800"
-                            }`}
+                            className={`px-5 py-3 flex items-center gap-4 cursor-pointer transition-colors ${isSelected ? "bg-cyan-50/80 text-cyan-900" : "hover:bg-zinc-50 text-zinc-800"
+                              }`}
                           >
                             <div className="w-10 h-10 rounded-xl bg-zinc-50 border border-zinc-200/80 p-1 flex items-center justify-center shrink-0 overflow-hidden">
                               {item.images && item.images.length > 0 ? (
