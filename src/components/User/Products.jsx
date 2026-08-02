@@ -99,7 +99,7 @@ function ProductCard({ product, index, onClick }) {
             <div className="flex flex-col flex-grow p-6">
                 <div className="flex flex-wrap items-center gap-2 mb-3">
                     {product.brand && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-cyan-50 border border-cyan-100 text-cyan-700 text-[10px] font-mono font-semibold rounded-md uppercase">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-cyan-50 border border-cyan-100 text-cyan-700 text-[10px] font-semibold rounded-md uppercase font-sans">
                             <Sparkles className="size-3" /> {product.brand}
                         </span>
                     )}
@@ -110,12 +110,12 @@ function ProductCard({ product, index, onClick }) {
                     )}
                 </div>
 
-                <h3 className="text-lg font-bold text-zinc-900 leading-snug mb-2 line-clamp-2 group-hover:text-cyan-700 transition-colors">
+                <h3 className="text-lg font-bold text-zinc-900 leading-snug mb-2 line-clamp-2 group-hover:text-cyan-700 transition-colors font-lora">
                     {name}
                 </h3>
 
                 {product.description && (
-                    <p className="text-xs text-zinc-500 line-clamp-2 mb-4 leading-relaxed">
+                    <p className="text-xs text-zinc-500 line-clamp-2 mb-4 leading-relaxed font-sans">
                         {product.description}
                     </p>
                 )}
@@ -216,7 +216,7 @@ export default function Products() {
                             Back to Categories
                         </button>
                         <span className="text-zinc-300">/</span>
-                        <span className="text-zinc-600 font-semibold truncate max-w-xs">{SubcategoryName}</span>
+                        <span className="text-zinc-600 font-sans font-semibold truncate max-w-xs">{SubcategoryName}</span>
                     </motion.div>
 
                     <motion.div variants={headerVariants} className="bg-white/80 backdrop-blur-xl border border-zinc-200/90 rounded-3xl p-6 md:p-10 shadow-xl shadow-cyan-900/5 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
@@ -225,10 +225,10 @@ export default function Products() {
                                 <Layers className="size-3.5 text-cyan-600" />
                                 Catalog
                             </div>
-                            <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-zinc-900 capitalize leading-tight">
+                            <h1 className="text-3xl md:text-5xl font-lora font-semibold tracking-tight text-zinc-900 capitalize leading-tight">
                                 {SubcategoryName}
                             </h1>
-                            <p className="mt-3 text-sm md:text-base text-zinc-500 max-w-2xl leading-relaxed">
+                            <p className="mt-3 text-sm md:text-base text-zinc-600 max-w-2xl leading-relaxed font-sans">
                                 Browse our complete range of {SubcategoryName.toLowerCase()} products. Select an item below to view detailed technical specifications, variants, and request wholesale quotes.
                             </p>
                         </div>

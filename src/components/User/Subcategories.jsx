@@ -56,17 +56,17 @@ function SubcategoryCard({ item, index, onClick }) {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-xl font-bold text-zinc-900 group-hover:text-cyan-700 transition-colors leading-snug tracking-tight">
+                <h3 className="text-xl font-sans font-semibold text-zinc-900 group-hover:text-cyan-700 transition-colors leading-snug tracking-tight">
                     {item.name}
                 </h3>
 
                 {/* Optional Description */}
                 {item.description ? (
-                    <p className="text-sm text-zinc-500 mt-2.5 line-clamp-2 leading-relaxed font-sans">
+                    <p className="text-sm text-zinc-700 mt-2.5 line-clamp-2 leading-relaxed font-sans">
                         {item.description}
                     </p>
                 ) : (
-                    <p className="text-xs text-zinc-400 mt-2 font-mono">
+                    <p className="text-xs text-zinc-600 mt-2 font-mono">
                         Explore verified instruments &amp; equipment in this index.
                     </p>
                 )}
@@ -196,10 +196,10 @@ export default function Subcategory() {
                                     <Boxes className="size-3" /> Catalog Category
                                 </span>
                             </div>
-                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900 capitalize leading-tight">
+                            <h1 className="text-3xl md:text-4xl lg:text-5xl font-lora font-semibold tracking-tight text-zinc-900 capitalize leading-tight">
                                 {categoryName}
                             </h1>
-                            <p className="text-sm text-zinc-600 mt-2 max-w-xl leading-relaxed">
+                            <p className="text-sm font-sans text-zinc-700 mt-2 max-w-xl leading-relaxed">
                                 Browse specialized subcategories, products, and technical specifications for {categoryName}.
                             </p>
                         </div>

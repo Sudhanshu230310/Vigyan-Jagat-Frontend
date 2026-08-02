@@ -413,7 +413,7 @@ export default function Item() {
                                 ) : (
                                     <div className="flex flex-col items-center gap-3 py-10">
                                         <Package className="size-16 text-zinc-300" />
-                                        <span className="text-xs text-zinc-400 font-mono">No Image Preview Available</span>
+                                        <span className="text-xs text-zinc-400 font-sans">No Image Preview Available</span>
                                     </div>
                                 )}
 
@@ -467,7 +467,7 @@ export default function Item() {
                                 </div>
 
                                 {/* Title */}
-                                <h1 className="mt-3.5 text-3xl lg:text-4xl font-bold tracking-tight text-zinc-900 capitalize leading-snug">
+                                <h1 className="mt-3.5 text-3xl lg:text-4xl font-lora font-semibold tracking-tight text-zinc-900 capitalize leading-snug">
                                     {item.name}
                                 </h1>
 
