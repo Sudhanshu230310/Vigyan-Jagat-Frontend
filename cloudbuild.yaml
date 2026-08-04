@@ -1,0 +1,17 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_AR_HOSTNAME}/${PROJECT_ID}/${_REPOSITORY}/${_SERVICE_NAME}:${_REVISION}'
+      - '--build-arg'
+      - 'VITE_BACKEND_URL=${_VITE_BACKEND_URL}'
+      - '--build-arg'
+      - 'VITE_ADMIN_EMAIL=${_VITE_ADMIN_EMAIL}'
+      - '--build-arg'
+      - 'VITE_ADMIN_PASSWORD=${_VITE_ADMIN_PASSWORD}'
+      - '.'
+images:
+  - '${_AR_HOSTNAME}/${PROJECT_ID}/${_REPOSITORY}/${_SERVICE_NAME}:${_REVISION}'
+options:
+  substitutionOption: ALLOW_LOOSE
