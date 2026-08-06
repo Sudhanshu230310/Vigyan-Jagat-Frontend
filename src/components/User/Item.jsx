@@ -363,7 +363,8 @@ export default function Item() {
     const tableEntries = Object.entries(specs).filter(([, v]) =>
         Array.isArray(v)
     );
-    const images = Array.isArray(item.images) ? item.images : [];
+    const images = (Array.isArray(item.images) ? item.images : []).filter(Boolean);
+    const hasImages = images.length > 0;
 
     return (
         <div className="relative w-full min-h-screen pb-24 overflow-hidden" style={pageBg}>
@@ -391,12 +392,12 @@ export default function Item() {
                     variants={itemVariants}
                     className="bg-white/85 backdrop-blur-xl border border-zinc-200/90 shadow-xl shadow-cyan-900/5 rounded-3xl p-6 md:p-10"
                 >
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+                    <div className={hasImages ? "grid grid-cols-1 lg:grid-cols-12 gap-10 items-start" : "flex flex-col h-full justify-between"}>
 
                         {/* Image Showcase Gallery (LHS) */}
-                        <div className="lg:col-span-5 flex flex-col gap-4">
-                            <div className="relative group/image overflow-hidden bg-white rounded-2xl border border-zinc-200/80 p-8 flex items-center justify-center min-h-[340px] max-h-[400px] shadow-xs hover:shadow-md transition-shadow duration-300">
-                                {images.length > 0 ? (
+                        {hasImages && (
+                            <div className="lg:col-span-5 flex flex-col gap-4">
+                                <div className="relative group/image overflow-hidden bg-white rounded-2xl border border-zinc-200/80 p-8 flex items-center justify-center min-h-[340px] max-h-[400px] shadow-xs hover:shadow-md transition-shadow duration-300">
                                     <AnimatePresence mode="wait">
                                         <motion.img
                                             key={activeImgIndex}
@@ -410,14 +411,7 @@ export default function Item() {
                                             onClick={() => setIsLightboxOpen(true)}
                                         />
                                     </AnimatePresence>
-                                ) : (
-                                    <div className="flex flex-col items-center gap-3 py-10">
-                                        <Package className="size-16 text-zinc-300" />
-                                        <span className="text-xs text-zinc-400 font-sans">No Image Preview Available</span>
-                                    </div>
-                                )}
 
-                                {images.length > 0 && (
                                     <motion.button
                                         whileHover={{ scale: 1.08 }}
                                         whileTap={{ scale: 0.92 }}
@@ -427,30 +421,30 @@ export default function Item() {
                                     >
                                         <Maximize2 className="size-4" />
                                     </motion.button>
+                                </div>
+
+                                {/* Thumbnail Selector */}
+                                {images.length > 1 && (
+                                    <div className="flex gap-3 overflow-x-auto py-1 shrink-0 scrollbar-none">
+                                        {images.map((img, i) => (
+                                            <button
+                                                key={i}
+                                                onClick={() => setActiveImgIndex(i)}
+                                                className={`relative size-16 rounded-xl border-2 overflow-hidden p-1.5 bg-white cursor-pointer transition-all duration-200 shrink-0 ${activeImgIndex === i
+                                                    ? "border-cyan-500 ring-4 ring-cyan-100 scale-102"
+                                                    : "border-zinc-200/80 hover:border-zinc-300"
+                                                    }`}
+                                            >
+                                                <img src={`${IMAGE_BASE}/${img}`} alt={`Thumbnail ${i}`} className="h-full w-full object-contain" />
+                                            </button>
+                                        ))}
+                                    </div>
                                 )}
                             </div>
-
-                            {/* Thumbnail Selector */}
-                            {images.length > 1 && (
-                                <div className="flex gap-3 overflow-x-auto py-1 shrink-0 scrollbar-none">
-                                    {images.map((img, i) => (
-                                        <button
-                                            key={i}
-                                            onClick={() => setActiveImgIndex(i)}
-                                            className={`relative size-16 rounded-xl border-2 overflow-hidden p-1.5 bg-white cursor-pointer transition-all duration-200 shrink-0 ${activeImgIndex === i
-                                                ? "border-cyan-500 ring-4 ring-cyan-100 scale-102"
-                                                : "border-zinc-200/80 hover:border-zinc-300"
-                                                }`}
-                                        >
-                                            <img src={`${IMAGE_BASE}/${img}`} alt={`Thumbnail ${i}`} className="h-full w-full object-contain" />
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
+                        )}
 
                         {/* Product Information & Actions (RHS) */}
-                        <div className="lg:col-span-7 flex flex-col h-full justify-between">
+                        <div className={hasImages ? "lg:col-span-7 flex flex-col h-full justify-between" : "flex flex-col h-full justify-between"}>
                             <div>
                                 {/* Badges */}
                                 <div className="flex flex-wrap items-center gap-2">
@@ -473,14 +467,14 @@ export default function Item() {
 
                                 {/* Description */}
                                 {item.description && (
-                                    <p className="mt-4 text-zinc-600 leading-relaxed text-sm md:text-base max-w-3xl">
+                                    <p className="mt-4 text-zinc-600 leading-relaxed text-sm md:text-base max-w-4xl">
                                         {item.description}
                                     </p>
                                 )}
 
                                 {/* Scalar Specification Cards */}
                                 {scalarEntries.length > 0 && (
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 mt-8">
+                                    <div className={`grid grid-cols-2 sm:grid-cols-3 ${hasImages ? "" : "md:grid-cols-4 lg:grid-cols-5"} gap-3.5 mt-8`}>
                                         {scalarEntries.map(([key, value]) => (
                                             <div
                                                 key={key}
@@ -500,7 +494,7 @@ export default function Item() {
 
                             {/* B2B Procurement Trust Bar & CTA */}
                             <div className="mt-10 pt-8 border-t border-zinc-200/80">
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 max-w-2xl">
                                     <div className="flex items-center gap-2.5 text-xs text-zinc-600 font-medium">
                                         <div className="size-8 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center">
                                             <Shield className="size-4" />
@@ -524,7 +518,7 @@ export default function Item() {
                                 <div className="flex flex-col sm:flex-row items-center gap-4">
                                     <button
                                         onClick={() => setIsInquiryOpen(true)}
-                                        className="w-full sm:w-auto flex-1 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-2xl py-3.5 px-8 text-sm font-semibold shadow-lg shadow-cyan-600/20 flex items-center justify-center gap-2.5 cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all"
+                                        className="w-full sm:w-auto flex-1 max-w-md bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-2xl py-3.5 px-8 text-sm font-semibold shadow-lg shadow-cyan-600/20 flex items-center justify-center gap-2.5 cursor-pointer hover:scale-[1.01] active:scale-[0.99] transition-all"
                                     >
                                         <Inbox className="size-4.5" /> Request Wholesale Quote
                                     </button>
