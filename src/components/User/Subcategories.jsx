@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     Search,
@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 
 const BackendURL = import.meta.env.VITE_BACKEND_URL;
+const BATCH_SIZE = 12;
 
 const SKY_TOP = "#E4F7FB";
 const SKY_MID = "#D3EEF6";
@@ -93,6 +94,10 @@ export default function Subcategory() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const observerTargetRef = useRef(null);
+
     useEffect(() => {
         if (!categoryName) return;
         setLoading(true);
@@ -119,6 +124,37 @@ export default function Subcategory() {
         if (!q) return subcategories;
         return subcategories.filter((s) => s.name.toLowerCase().includes(q));
     }, [subcategories, query]);
+
+    useEffect(() => {
+        setVisibleCount(BATCH_SIZE);
+    }, [query, subcategories]);
+
+    const visibleSubcategories = useMemo(() => {
+        return filtered.slice(0, visibleCount);
+    }, [filtered, visibleCount]);
+
+    const hasMore = visibleCount < filtered.length;
+
+    useEffect(() => {
+        const element = observerTargetRef.current;
+        if (!element || !hasMore) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && !isLoadingMore) {
+                    setIsLoadingMore(true);
+                    setTimeout(() => {
+                        setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, filtered.length));
+                        setIsLoadingMore(false);
+                    }, 300);
+                }
+            },
+            { rootMargin: "200px" }
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [hasMore, isLoadingMore, filtered.length]);
 
     /* Loading State */
     if (loading) {
@@ -230,7 +266,7 @@ export default function Subcategory() {
                     {/* Subcategory Count Badge */}
                     <div className="mt-6 pt-4 border-t border-zinc-100 flex items-center justify-between text-xs text-zinc-500 font-mono">
                         <div>
-                            Showing <span className="font-bold text-zinc-800">{filtered.length}</span> of {subcategories.length} subcategories
+                            Showing <span className="font-bold text-zinc-800">{visibleSubcategories.length}</span> of {filtered.length} subcategories
                             {query && (
                                 <span> for "<span className="text-cyan-700 font-semibold">{query}</span>"</span>
                             )}
@@ -264,33 +300,51 @@ export default function Subcategory() {
 
                 {/* Subcategories Cards Grid */}
                 {filtered.length > 0 && (
-                    <motion.div
-                        initial="hidden"
-                        animate="show"
-                        variants={{
-                            hidden: {},
-                            show: { transition: { staggerChildren: 0.04 } }
-                        }}
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-                    >
-                        {filtered.map((item, idx) => (
-                            <motion.div
-                                key={item.name}
-                                variants={{
-                                    hidden: { opacity: 0, y: 16 },
-                                    show: { opacity: 1, y: 0 }
-                                }}
-                                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                                className="h-full"
-                            >
-                                <SubcategoryCard
-                                    item={item}
-                                    index={idx}
-                                    onClick={() => navigate(`/products/${encodeURIComponent(item.name)}`)}
-                                />
-                            </motion.div>
-                        ))}
-                    </motion.div>
+                    <>
+                        <motion.div
+                            initial="hidden"
+                            animate="show"
+                            variants={{
+                                hidden: {},
+                                show: { transition: { staggerChildren: 0.04 } }
+                            }}
+                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                        >
+                            {visibleSubcategories.map((item, idx) => (
+                                <motion.div
+                                    key={item.name}
+                                    variants={{
+                                        hidden: { opacity: 0, y: 16 },
+                                        show: { opacity: 1, y: 0 }
+                                    }}
+                                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                                    className="h-full"
+                                >
+                                    <SubcategoryCard
+                                        item={item}
+                                        index={idx}
+                                        onClick={() => navigate(`/products/${encodeURIComponent(item.name)}`)}
+                                    />
+                                </motion.div>
+                            ))}
+                        </motion.div>
+
+                        {/* Infinite Scroll Trigger & Loader */}
+                        {hasMore && (
+                            <div ref={observerTargetRef} className="py-12 flex items-center justify-center">
+                                <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/90 border border-zinc-200/90 shadow-md text-xs font-semibold text-cyan-800 backdrop-blur-md">
+                                    <RefreshCw className="size-4 text-cyan-600 animate-spin" />
+                                    <span>Loading more subcategories...</span>
+                                </div>
+                            </div>
+                        )}
+
+                        {!hasMore && filtered.length > BATCH_SIZE && (
+                            <div className="py-8 text-center text-xs font-mono text-zinc-500">
+                                Showing all {filtered.length} subcategories
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>

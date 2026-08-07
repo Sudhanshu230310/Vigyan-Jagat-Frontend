@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
-import { Search, ArrowLeft, Package, Sparkles, Tag, ChevronRight, Layers, Box } from "lucide-react";
+import { Search, ArrowLeft, Package, Sparkles, Tag, ChevronRight, Layers, Box, RefreshCw } from "lucide-react";
 
 const BackendURL = import.meta.env.VITE_BACKEND_URL;
 const IMAGE_BASE = import.meta.env.VITE_IMAGE_BASE_URL || BackendURL;
+const BATCH_SIZE = 12;
 
 const SKY_TOP = "#E4F7FB";
 const SKY_MID = "#D3EEF6";
@@ -62,10 +63,42 @@ const cardVariants = {
     }
 };
 
-function ProductCard({ product, index, onClick }) {
+const NO_IMAGE_CATEGORIES = [
+    "chemical & reagent",
+    "chemical & reagents",
+    "chemicals & reagents",
+    "chemical and reagent",
+    "laboratory consumables",
+    "lab consumables",
+    "consumables"
+];
+
+function checkIsNoImageCategory(catName, subcatName) {
+    const c1 = (catName || "").toLowerCase().trim();
+    const c2 = (subcatName || "").toLowerCase().trim();
+
+    return (
+        NO_IMAGE_CATEGORIES.some((target) => c1.includes(target) || c2.includes(target)) ||
+        (c1.includes("chemical") && c1.includes("reagent")) ||
+        (c2.includes("chemical") && c2.includes("reagent")) ||
+        c1.includes("consumables") ||
+        c2.includes("consumables")
+    );
+}
+
+function ProductCard({ product, index, onClick, subcategoryName }) {
     const name = product.name || product.product_name || "Unnamed Product";
     const material = product.specifications?.Material;
-    const hasImages = Array.isArray(product.images) && product.images.length > 0;
+    const images = (Array.isArray(product.images) ? product.images : []).filter(Boolean);
+    const [imgError, setImgError] = useState(false);
+
+    // Conditional check for Chemical & Reagent and Laboratory Consumables categories
+    const categoryToTest = product.category || subcategoryName || "";
+    const isNoImageCategory = checkIsNoImageCategory(categoryToTest, product.subcategory || subcategoryName);
+    
+    // Omit image section for Chemical & Reagent and Laboratory Consumables
+    const showImageSection = !isNoImageCategory;
+    const hasImages = images.length > 0 && !imgError;
 
     return (
         <motion.article
@@ -75,29 +108,44 @@ function ProductCard({ product, index, onClick }) {
             onClick={onClick}
             className="group relative flex flex-col h-full bg-white/85 backdrop-blur-xl rounded-3xl border border-zinc-200/90 overflow-hidden cursor-pointer shadow-lg shadow-cyan-900/5 transition-all"
         >
-            {/* Top Image / Placeholder Section */}
-            <div className="relative h-56 w-full bg-zinc-50/50 flex items-center justify-center overflow-hidden border-b border-zinc-100 p-6">
-                {hasImages ? (
-                    <img
-                        src={`${IMAGE_BASE}/${product.images[0]}`}
-                        alt={name}
-                        className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
-                    />
-                ) : (
-                    <div className="flex flex-col items-center justify-center text-zinc-300 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-500">
-                        <Box className="size-16 mb-2 stroke-[1.5]" />
-                    </div>
-                )}
+            {/* Top Accent Bar when image section is omitted */}
+            {!showImageSection && (
+                <div className="h-1.5 w-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500" />
+            )}
 
-                {/* Index Badge */}
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm border border-zinc-200/80 text-zinc-500 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow-sm group-hover:bg-cyan-50 group-hover:text-cyan-700 transition-colors">
-                    {String(index + 1).padStart(2, '0')}
+            {/* Top Image / Placeholder Section - Rendered conditionally based on Category */}
+            {showImageSection && (
+                <div className="relative h-56 w-full bg-zinc-50/50 flex items-center justify-center overflow-hidden border-b border-zinc-100 p-6">
+                    {hasImages ? (
+                        <img
+                            src={`${IMAGE_BASE}/${images[0]}`}
+                            alt={name}
+                            onError={() => setImgError(true)}
+                            className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+                        />
+                    ) : (
+                        <div className="flex flex-col items-center justify-center text-zinc-300 group-hover:text-cyan-400 group-hover:scale-110 transition-all duration-500">
+                            <Box className="size-16 mb-2 stroke-[1.5]" />
+                        </div>
+                    )}
+
+                    {/* Index Badge */}
+                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm border border-zinc-200/80 text-zinc-500 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-widest shadow-sm group-hover:bg-cyan-50 group-hover:text-cyan-700 transition-colors">
+                        {String(index + 1).padStart(2, '0')}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Content Section */}
             <div className="flex flex-col flex-grow p-6">
                 <div className="flex flex-wrap items-center gap-2 mb-3">
+                    {/* Index badge when top image section is hidden */}
+                    {!showImageSection && (
+                        <span className="bg-cyan-50 text-cyan-800 border border-cyan-100/80 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                            #{String(index + 1).padStart(2, '0')}
+                        </span>
+                    )}
+
                     {product.brand && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-cyan-50 border border-cyan-100 text-cyan-700 text-[10px] font-semibold rounded-md uppercase font-sans">
                             <Sparkles className="size-3" /> {product.brand}
@@ -115,7 +163,7 @@ function ProductCard({ product, index, onClick }) {
                 </h3>
 
                 {product.description && (
-                    <p className="text-xs text-zinc-500 line-clamp-2 mb-4 leading-relaxed font-sans">
+                    <p className="text-xs text-zinc-500 line-clamp-3 mb-4 leading-relaxed font-sans">
                         {product.description}
                     </p>
                 )}
@@ -123,10 +171,10 @@ function ProductCard({ product, index, onClick }) {
                 {/* Additional Specs */}
                 <div className="flex flex-wrap gap-1.5 mt-auto mb-5">
                     {product.cas_no && (
-                        <span className="bg-zinc-50 text-zinc-500 text-[10px] px-2 py-1 border border-zinc-200/60 rounded font-mono">CAS: {product.cas_no}</span>
+                        <span className="bg-zinc-50 text-zinc-600 text-[10px] px-2 py-1 border border-zinc-200/60 rounded font-mono font-semibold">CAS: {product.cas_no}</span>
                     )}
                     {product.grade && (
-                        <span className="bg-zinc-50 text-zinc-500 text-[10px] px-2 py-1 border border-zinc-200/60 rounded">{product.grade}</span>
+                        <span className="bg-zinc-50 text-zinc-600 text-[10px] px-2 py-1 border border-zinc-200/60 rounded font-mono">{product.grade}</span>
                     )}
                 </div>
 
@@ -151,6 +199,10 @@ export default function Products() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [query, setQuery] = useState("");
+
+    const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const observerTargetRef = useRef(null);
 
     useEffect(() => {
         setLoading(true);
@@ -185,6 +237,37 @@ export default function Products() {
             return name.includes(q) || desc.includes(q) || brand.includes(q);
         });
     }, [products, query]);
+
+    useEffect(() => {
+        setVisibleCount(BATCH_SIZE);
+    }, [query, products]);
+
+    const visibleProducts = useMemo(() => {
+        return filtered.slice(0, visibleCount);
+    }, [filtered, visibleCount]);
+
+    const hasMore = visibleCount < filtered.length;
+
+    useEffect(() => {
+        const element = observerTargetRef.current;
+        if (!element || !hasMore) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && !isLoadingMore) {
+                    setIsLoadingMore(true);
+                    setTimeout(() => {
+                        setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, filtered.length));
+                        setIsLoadingMore(false);
+                    }, 300);
+                }
+            },
+            { rootMargin: "200px" }
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [hasMore, isLoadingMore, filtered.length]);
 
     const handleProductClick = (product) => {
         const productName = product.name || product.product_name;
@@ -247,7 +330,7 @@ export default function Products() {
                             </div>
                             {!loading && !error && (
                                 <div className="text-xs font-medium text-zinc-500 text-right px-2">
-                                    Showing <span className="text-zinc-900 font-bold">{filtered.length}</span> {filtered.length === 1 ? "product" : "products"}
+                                    Showing <span className="text-zinc-900 font-bold">{visibleProducts.length}</span> of {filtered.length} {filtered.length === 1 ? "product" : "products"}
                                 </div>
                             )}
                         </div>
@@ -301,21 +384,40 @@ export default function Products() {
 
                 {/* Product grid */}
                 {!loading && !error && filtered.length > 0 && (
-                    <motion.div
-                        variants={pageVariants}
-                        initial="hidden"
-                        animate="show"
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
-                    >
-                        {filtered.map((product, idx) => (
-                            <ProductCard
-                                key={product._id || idx}
-                                product={product}
-                                index={idx}
-                                onClick={() => handleProductClick(product)}
-                            />
-                        ))}
-                    </motion.div>
+                    <>
+                        <motion.div
+                            variants={pageVariants}
+                            initial="hidden"
+                            animate="show"
+                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8"
+                        >
+                            {visibleProducts.map((product, idx) => (
+                                <ProductCard
+                                    key={product._id || idx}
+                                    product={product}
+                                    index={idx}
+                                    subcategoryName={SubcategoryName}
+                                    onClick={() => handleProductClick(product)}
+                                />
+                            ))}
+                        </motion.div>
+
+                        {/* Scrolling Load Trigger & Indicator */}
+                        {hasMore && (
+                            <div ref={observerTargetRef} className="py-12 flex items-center justify-center">
+                                <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/90 border border-zinc-200/90 shadow-md text-xs font-semibold text-cyan-800 backdrop-blur-md">
+                                    <RefreshCw className="size-4 text-cyan-600 animate-spin" />
+                                    <span>Loading more products...</span>
+                                </div>
+                            </div>
+                        )}
+
+                        {!hasMore && filtered.length > BATCH_SIZE && (
+                            <div className="py-8 text-center text-xs font-mono text-zinc-500">
+                                Showing all {filtered.length} products
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>

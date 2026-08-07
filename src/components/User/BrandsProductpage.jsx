@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Package, AlertCircle, ImageOff } from "lucide-react";
+import { ArrowLeft, Package, AlertCircle, ImageOff, RefreshCw } from "lucide-react";
 
 // Point this at your FastAPI backend
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 const IMAGE_BASE = import.meta.env.VITE_IMAGE_BASE_URL || API_BASE_URL;
+const BATCH_SIZE = 12;
 
 const SKY_TOP = "#E4F7FB";
 const SKY_MID = "#D3EEF6";
@@ -24,6 +25,10 @@ export default function BrandProductsPage() {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [status, setStatus] = useState("loading"); // loading | success | empty | error
+
+    const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const observerTargetRef = useRef(null);
 
     const brandName = decodeURIComponent(brand || "");
 
@@ -60,6 +65,37 @@ export default function BrandProductsPage() {
         };
     }, [brandName]);
 
+    useEffect(() => {
+        setVisibleCount(BATCH_SIZE);
+    }, [products]);
+
+    const visibleProducts = useMemo(() => {
+        return products.slice(0, visibleCount);
+    }, [products, visibleCount]);
+
+    const hasMore = visibleCount < products.length;
+
+    useEffect(() => {
+        const element = observerTargetRef.current;
+        if (!element || !hasMore) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && !isLoadingMore) {
+                    setIsLoadingMore(true);
+                    setTimeout(() => {
+                        setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, products.length));
+                        setIsLoadingMore(false);
+                    }, 300);
+                }
+            },
+            { rootMargin: "200px" }
+        );
+
+        observer.observe(element);
+        return () => observer.disconnect();
+    }, [hasMore, isLoadingMore, products.length]);
+
     return (
         <div className="min-h-screen py-10" style={pageBg}>
             <div className="relative mx-auto px-6 md:px-12 lg:px-20 py-16">
@@ -89,9 +125,9 @@ export default function BrandProductsPage() {
                         </span>
                     </h1>
                     {status === "success" && (
-                        <p className="mt-3 text-zinc-500">
-                            {products.length} {products.length === 1 ? "product" : "products"}{" "}
-                            found
+                        <p className="mt-3 text-zinc-500 font-mono text-xs">
+                            Showing <span className="font-bold text-zinc-800">{visibleProducts.length}</span> of {products.length}{" "}
+                            {products.length === 1 ? "product" : "products"}
                         </p>
                     )}
                 </motion.div>
@@ -125,52 +161,70 @@ export default function BrandProductsPage() {
 
                 {/* Success state */}
                 {status === "success" && (
-                    <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        variants={{
-                            hidden: {},
-                            visible: { transition: { staggerChildren: 0.04 } },
-                        }}
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                    >
-                        {products.map((p, i) => (
-                            <motion.div
-                                key={`${p.name}-${i}`}
-                                variants={{
-                                    hidden: { opacity: 0, y: 12 },
-                                    visible: { opacity: 1, y: 0 },
-                                }}
-                                whileHover={{ y: -4 }}
-                                className="group relative rounded-3xl border border-zinc-200 bg-white/85 backdrop-blur-xl overflow-hidden shadow-md hover:shadow-lg hover:border-cyan-300 transition-all"
-                            >
-                                <div className="aspect-[4/3] bg-zinc-50/50 flex items-center justify-center overflow-hidden p-4 border-b border-zinc-100">
-                                    {p.images && p.images.length > 0 ? (
-                                        <img
-                                            src={`${IMAGE_BASE}/${p.images[0]}`}
-                                            alt={p.name}
-                                            className="h-full w-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
-                                        />
-                                    ) : (
-                                        <ImageOff className="h-6 w-6 text-zinc-300 group-hover:scale-110 transition-all duration-300" />
-                                    )}
-                                </div>
-                                <div className="p-4">
-                                    <p className="text-[9px] font-semibold uppercase tracking-wide text-cyan-600 mb-1 truncate">
-                                        {p.category} {p.subcategory ? `- ${p.subcategory}` : ""}
-                                    </p>
-                                    <h3 className="text-sm font-bold text-zinc-800 group-hover:text-cyan-700 transition-colors line-clamp-2">
-                                        {p.name}
-                                    </h3>
-                                    {p.description && (
-                                        <p className="mt-1.5 text-xs text-zinc-500 line-clamp-2">
-                                            {p.description}
+                    <>
+                        <motion.div
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                hidden: {},
+                                visible: { transition: { staggerChildren: 0.04 } },
+                            }}
+                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                        >
+                            {visibleProducts.map((p, i) => (
+                                <motion.div
+                                    key={`${p.name}-${i}`}
+                                    variants={{
+                                        hidden: { opacity: 0, y: 12 },
+                                        visible: { opacity: 1, y: 0 },
+                                    }}
+                                    whileHover={{ y: -4 }}
+                                    className="group relative rounded-3xl border border-zinc-200 bg-white/85 backdrop-blur-xl overflow-hidden shadow-md hover:shadow-lg hover:border-cyan-300 transition-all"
+                                >
+                                    <div className="aspect-[4/3] bg-zinc-50/50 flex items-center justify-center overflow-hidden p-4 border-b border-zinc-100">
+                                        {p.images && p.images.length > 0 ? (
+                                            <img
+                                                src={`${IMAGE_BASE}/${p.images[0]}`}
+                                                alt={p.name}
+                                                className="h-full w-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
+                                            />
+                                        ) : (
+                                            <ImageOff className="h-6 w-6 text-zinc-300 group-hover:scale-110 transition-all duration-300" />
+                                        )}
+                                    </div>
+                                    <div className="p-4">
+                                        <p className="text-[9px] font-semibold uppercase tracking-wide text-cyan-600 mb-1 truncate">
+                                            {p.category} {p.subcategory ? `- ${p.subcategory}` : ""}
                                         </p>
-                                    )}
+                                        <h3 className="text-sm font-bold text-zinc-800 group-hover:text-cyan-700 transition-colors line-clamp-2">
+                                            {p.name}
+                                        </h3>
+                                        {p.description && (
+                                            <p className="mt-1.5 text-xs text-zinc-500 line-clamp-2">
+                                                {p.description}
+                                            </p>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+
+                        {/* Scrolling Load Trigger & Indicator */}
+                        {hasMore && (
+                            <div ref={observerTargetRef} className="py-12 flex items-center justify-center">
+                                <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/90 border border-zinc-200/90 shadow-md text-xs font-semibold text-cyan-800 backdrop-blur-md">
+                                    <RefreshCw className="size-4 text-cyan-600 animate-spin" />
+                                    <span>Loading more products...</span>
                                 </div>
-                            </motion.div>
-                        ))}
-                    </motion.div>
+                            </div>
+                        )}
+
+                        {!hasMore && products.length > BATCH_SIZE && (
+                            <div className="py-8 text-center text-xs font-mono text-zinc-500">
+                                Showing all {products.length} products
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>
