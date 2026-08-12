@@ -15,7 +15,8 @@ import {
   X,
   Tag,
   CheckCircle2,
-  Clock
+  Clock,
+  Trash2
 } from "lucide-react";
 
 const BackendURL = import.meta.env.VITE_BACKEND_URL;
@@ -27,6 +28,27 @@ export default function QuotesManagement() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedQuote, setSelectedQuote] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
+
+  const handleDeleteQuote = async (id, e) => {
+    if (e) e.stopPropagation();
+    if (!window.confirm("Are you sure you want to delete this quotation request? This action cannot be undone.")) {
+      return;
+    }
+    setDeletingId(id);
+    try {
+      await axios.delete(`${BackendURL}/quotes/${id}`);
+      setQuotes((prev) => prev.filter((q) => q.id !== id));
+      if (selectedQuote && selectedQuote.id === id) {
+        setSelectedQuote(null);
+      }
+    } catch (err) {
+      console.error("Error deleting quote:", err);
+      alert(err.response?.data?.detail || "Failed to delete quotation request.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   const fetchQuotes = async (showRefreshSpinner = false) => {
     if (showRefreshSpinner) setIsRefreshing(true);
@@ -276,13 +298,23 @@ export default function QuotesManagement() {
                     </td>
 
                     <td className="px-6 py-4 text-right whitespace-nowrap">
-                      <button
-                        onClick={() => setSelectedQuote(q)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-xs font-medium transition cursor-pointer shadow-sm"
-                      >
-                        <Eye className="size-3.5" />
-                        View Quote
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => setSelectedQuote(q)}
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white rounded-xl text-xs font-medium transition cursor-pointer shadow-sm"
+                        >
+                          <Eye className="size-3.5" />
+                          View Quote
+                        </button>
+                        <button
+                          onClick={(e) => handleDeleteQuote(q.id, e)}
+                          disabled={deletingId === q.id}
+                          className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/80 rounded-xl text-xs font-medium transition cursor-pointer disabled:opacity-50"
+                          title="Delete Quotation"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -414,20 +446,31 @@ export default function QuotesManagement() {
               </div>
 
               {/* Action bar */}
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-100">
-                <a
-                  href={`mailto:${selectedQuote.email}?subject=Wholesale%20Quote%20Request%20-%20${encodeURIComponent(selectedQuote.product_name)}`}
-                  className="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition cursor-pointer shadow-md shadow-cyan-600/15"
-                >
-                  <Mail className="size-4" />
-                  Reply via Email
-                </a>
+              <div className="flex items-center justify-between gap-3 pt-4 border-t border-zinc-100">
                 <button
-                  onClick={() => setSelectedQuote(null)}
-                  className="px-4 py-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl text-sm font-medium transition cursor-pointer"
+                  onClick={() => handleDeleteQuote(selectedQuote.id)}
+                  disabled={deletingId === selectedQuote.id}
+                  className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/80 rounded-xl text-xs font-semibold transition cursor-pointer disabled:opacity-50"
                 >
-                  Close
+                  <Trash2 className="size-4" />
+                  <span>Delete Quotation</span>
                 </button>
+
+                <div className="flex items-center gap-3">
+                  <a
+                    href={`mailto:${selectedQuote.email}?subject=Wholesale%20Quote%20Request%20-%20${encodeURIComponent(selectedQuote.product_name)}`}
+                    className="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 text-white px-5 py-2.5 rounded-xl text-sm font-medium transition cursor-pointer shadow-md shadow-cyan-600/15"
+                  >
+                    <Mail className="size-4" />
+                    Reply via Email
+                  </a>
+                  <button
+                    onClick={() => setSelectedQuote(null)}
+                    className="px-4 py-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl text-sm font-medium transition cursor-pointer"
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>
