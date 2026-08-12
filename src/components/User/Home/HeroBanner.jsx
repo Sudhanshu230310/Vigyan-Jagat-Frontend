@@ -35,7 +35,7 @@ export function HeroBanner() {
           <motion.div {...fadeUp(0.05)}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 bg-blue-50 text-xs font-semibold text-cyan-600">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-600" />
-              Trusted since 1962 — labs across India
+              Trusted since 1962 — Labs Across India
             </span>
           </motion.div>
 
@@ -49,9 +49,9 @@ export function HeroBanner() {
 
           {/* Tagline / description */}
           <motion.p {...fadeUp(0.18)} className="text-lg md:text-xl text-zinc-800 leading-relaxed font-sans">
-            Laboratory equipment, chemicals &amp; glassware — since 1962.
-            Trusted by universities, research institutes, hospitals, industries,
-            government labs, pharma firms and defence labs across India.
+            Laboratory Equipment, Chemicals &amp; Glassware — Since 1962.
+            Trusted by Universities, Research Institutes, Hospitals, Industries,
+            Government Labs, Pharma Firms and Defence Labs Across India.
           </motion.p>
 
           {/* CTAs */}

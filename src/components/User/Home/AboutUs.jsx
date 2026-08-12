@@ -8,8 +8,8 @@ const stats = [
 
 export default function AboutUs() {
     return (
-        <section className="w-full mt-20 min-h-[80vh]">
-            <div className="mx-10 border  border-gray-300 shadow-md shadow-gray-300 rounded-4xl  my-auto grid h-full max-w-[1600px] grid-cols-1 gap-12 px-6 py-16 sm:px-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:px-16 lg:py-24">
+        <section className="w-full my-20 min-h-[80vh]">
+            <div className="mx-6 border  border-gray-300 shadow-md shadow-gray-300 rounded-4xl  my-auto grid h-full  grid-cols-1 gap-12 px-6 py-16 sm:px-10 lg:grid-cols-[1fr_1.4fr] lg:gap-20 lg:px-16 lg:py-24">
 
                 {/* ── Text column ───────────────────────────── */}
                 <div className="flex flex-col justify-center ">
