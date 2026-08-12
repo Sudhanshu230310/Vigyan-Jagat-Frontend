@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import EquipImg from '../../images/main4.png'
+import EquipImg from '../../images/main7.png'
 
 const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: 24 },
@@ -48,9 +48,9 @@ export function HeroBanner() {
 
                     {/* Tagline / description */}
                     <motion.p {...fadeUp(0.18)} className="text-lg md:text-xl text-zinc-800 leading-relaxed font-sans">
-                        Laboratory equipment, chemicals &amp; glassware — since 1962.
-                        Trusted by universities, research institutes, hospitals, industries,
-                        government labs, pharma firms and defence labs across India.
+                        Laboratory Equipment, Chemicals &amp; Glassware — Since 1962.
+                        Trusted by Universities, Research Institutes, Hospitals, Industries,
+                        Government Labs, Pharma Firms and Defence Labs Across India.
                     </motion.p>
 
 
