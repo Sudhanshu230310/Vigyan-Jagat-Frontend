@@ -11,6 +11,7 @@ import SearchResults from "./components/User/SearchResults";
 import Login from "./components/Admin/Login";
 import AdminDashboard from "./Dashboards/Admin/Admin";
 import BrandProductsPage from "./components/User/BrandsProductpage";
+import AllBrandsPage from "./components/User/AllBrands";
 
 function App() {
   return (
@@ -39,6 +40,8 @@ function App() {
           <Route path="about" element={<AboutUs />} />
 
           <Route path="contact" element={<Contact />} />
+
+          <Route path="brands" element={<AllBrandsPage />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

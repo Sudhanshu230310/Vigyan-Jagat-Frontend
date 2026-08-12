@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import EquipImg from '../../../images/main4.png'
+import EquipImg from '../../../images/main7.png'
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },

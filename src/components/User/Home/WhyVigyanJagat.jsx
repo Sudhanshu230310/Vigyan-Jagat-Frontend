@@ -104,7 +104,7 @@ export function WhyVigyanJagat() {
             transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
             className="text-3xl md:text-4xl lg:text-5xl font-lora font-bold text-white tracking-tight leading-[1.1] max-w-3xl"
           >
-            Why choose Vigyan Jagat?
+            Why choose ShodhIX?
           </motion.h2>
 
           {/* Subheading */}

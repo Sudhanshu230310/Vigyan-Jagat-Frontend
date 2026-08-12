@@ -258,8 +258,10 @@ export function Footer() {
                 ))}
               </div>
             </div>
+
           </motion.div>
         </motion.div>
+        <div className='pb-10 text-center text-sm text-zinc-500'> <span className='text-cyan-700 font-bold'>"ShodhIX"</span> trademark is owned by <span className='text-cyan-700 font-bold'>Vigyan Jagat</span> and licensed to its affiliates and subsidiaries. All rights to this website, including copyright in content represented thereat, vest in Vigyan Jagat and/or its respective affiliates and subsidiaries. All rights reserved.</div>
       </div>
     </footer>
   )
