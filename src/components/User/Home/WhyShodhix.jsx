@@ -4,38 +4,26 @@ const features = [
   {
     number: '01',
     title: 'Quality & Compliance',
-    description:
-      'Source products backed by quality certifications, safety documentation, and regulatory compliance.',
   },
   {
     number: '02',
     title: 'Verified Chemical Suppliers',
-    description:
-      'Partner with trusted manufacturers, distributors, and exporters who meet industry standards.',
   },
   {
     number: '03',
     title: 'Competitive Bulk Pricing',
-    description:
-      'Compare quotes from multiple suppliers and secure the best prices for your business.',
   },
   {
     number: '04',
     title: 'Fast & Secure Procurement',
-    description:
-      'Simplify sourcing with quick inquiries, efficient communication, and secure order management.',
   },
   {
     number: '05',
     title: 'Global Sourcing Network',
-    description:
-      'Access a worldwide network of verified suppliers across every major chemical category.',
   },
   {
     number: '06',
     title: 'Dedicated Support',
-    description:
-      'Get expert guidance from our team for every step of your procurement journey.',
   },
 ]
 
@@ -87,7 +75,7 @@ function groupIntoColumns(items, columnCount) {
   return columns
 }
 
-export function WhyVigyanJagat() {
+export function WhyShodhix() {
   const columns = groupIntoColumns(features, 3)
 
   return (
@@ -115,8 +103,8 @@ export function WhyVigyanJagat() {
             transition={{ duration: 0.5, delay: 0.14 }}
             className="text-slate-200 font-sans text-base md:text-lg mt-5 max-w-2xl"
           >
-            Trusted lab sourcing since 1962 — quality, compliance, and support
-            in every order.
+            Trusted Lab Sourcing Since 1962 — Quality, Compliance, And Support
+            In Every Order.
           </motion.p>
         </div>
 
@@ -158,7 +146,7 @@ export function WhyVigyanJagat() {
                       <li key={f.number} className="flex gap-3">
                         <span className={`mt-0.5 font-bold ${theme.check}`}>✓</span>
                         <span className="text-sm text-slate-600 leading-relaxed">
-                          <span className="font-semibold text-slate-800">{f.title}: </span>
+                          <span className="font-semibold text-slate-800">{f.title} </span>
                           {f.description}
                         </span>
                       </li>
@@ -184,4 +172,4 @@ export function WhyVigyanJagat() {
   )
 }
 
-export default WhyVigyanJagat
+export default WhyShodhix;

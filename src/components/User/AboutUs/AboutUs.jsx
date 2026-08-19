@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import {
     Beaker,
     Building2,
@@ -25,7 +26,12 @@ const BRAND_SAMPLE = [
 
 export default function AboutPage() {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-cyan-100 to-white text-slate-900 font-body">
+        <div className="min-h-screen text-slate-900 font-body">
+            <Helmet>
+                <title>About ShodhIX | Laboratory Equipment Supplier Since 1962 — India</title>
+                <meta name="description" content="Learn about ShodhIX (Vigyan Jagat), India's trusted laboratory equipment and chemical supplier since 1962. With offices in Muzaffarpur, Delhi, Kanpur, Patna, Durgapur and Dehradun." />
+                <link rel="canonical" href="https://shodhix.com/about" />
+            </Helmet>
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Public+Sans:ital,wght@0,300..900;1,300..900&display=swap');
                 .font-display { font-family: 'Lora', Georgia, serif; }

@@ -10,15 +10,14 @@ export default function Navbar() {
       </div>
 
       <div className='flex justify-center items-center gap-3'>
-        <button
+        {/* <button
           className="relative p-2 rounded-full hover:bg-gray-100 transition-colors"
           onClick={() => console.log("Notifications clicked")}
           aria-label="Notifications"
         >
           <Bell size={22} className="text-gray-700" />
-          {/* Optional notification dot */}
           <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-        </button>
+        </button> */}
         <button onClick={() => { navigate('/') }} className="flex justify-center items-center gap-3 bg-cyan-700 text-white px-4 py-1 rounded-xl hover:bg-cyan-600 cursor-pointer transition-colors">Logout</button>
       </div>
 

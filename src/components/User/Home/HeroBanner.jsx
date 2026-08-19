@@ -35,7 +35,7 @@ export function HeroBanner() {
           <motion.div {...fadeUp(0.05)}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 bg-blue-50 text-xs font-semibold text-cyan-600">
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-600" />
-              Trusted since 1962 — Labs Across India
+              Trusted Since 1962 — Labs Across India
             </span>
           </motion.div>
 

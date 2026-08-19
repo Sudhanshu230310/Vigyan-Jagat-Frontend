@@ -187,9 +187,9 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-zinc-500 leading-relaxed">
-              Authorized dealer and supplier of laboratory equipment,
-              chemicals, glassware and consumables — serving research,
-              education and industry since 1962.
+              Authorized Dealer and Supplier of Laboratory Equipment,
+              Chemicals, Glassware and Consumables — Serving Research,
+              Education and Industry Since 1962.
             </p>
             <div className="inline-flex items-center gap-2 text-xs font-mono tracking-wider text-cyan-700 bg-cyan-50 border border-cyan-100 rounded-full px-3 py-1">
               EST. 1962 · GeM REGISTERED

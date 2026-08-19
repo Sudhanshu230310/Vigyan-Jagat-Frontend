@@ -12,6 +12,7 @@ import Login from "./components/Admin/Login";
 import AdminDashboard from "./Dashboards/Admin/Admin";
 import BrandProductsPage from "./components/User/BrandsProductpage";
 import AllBrandsPage from "./components/User/AllBrands";
+import InstituteInquiry from "./components/User/InstituteInquiry";
 
 function App() {
   return (
@@ -42,6 +43,8 @@ function App() {
           <Route path="contact" element={<Contact />} />
 
           <Route path="brands" element={<AllBrandsPage />} />
+
+          <Route path="institute-inquiry" element={<InstituteInquiry />} />
         </Route>
 
         <Route path="/login" element={<Login />} />

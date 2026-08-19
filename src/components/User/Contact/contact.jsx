@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
 import axios from "axios";
 
@@ -40,6 +41,11 @@ export default function Contact() {
 
     return (
         <div className="py-10  bg-white text-slate-900 font-body">
+            <Helmet>
+                <title>Contact ShodhIX | Get a Quote for Lab Equipment &amp; Chemicals</title>
+                <meta name="description" content="Contact ShodhIX for bulk orders of laboratory equipment, chemicals, and glassware. Offices in Muzaffarpur, Delhi, Kanpur, Patna, Durgapur and Dehradun. Serving research institutes, hospitals and industries across India." />
+                <link rel="canonical" href="https://shodhix.com/contact" />
+            </Helmet>
             <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Public+Sans:ital,wght@0,300..900;1,300..900&display=swap');
                 .font-display { font-family: 'Lora', Georgia, serif; }

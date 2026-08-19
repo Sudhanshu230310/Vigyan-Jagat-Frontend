@@ -301,7 +301,7 @@ export function Categories() {
               <span className="text-black">Categories</span>
             </motion.h2>
             <p className="text-center font-sans text-slate-500 mt-3 text-sm sm:text-base max-w-xl mx-auto">
-              Discover our wide range of laboratory products for research, analysis and everyday experiments.
+              Discover our wide range of Laboratory Products for Research, Analysis and Everyday Experiments.
             </p>
           </motion.div>
         </div>

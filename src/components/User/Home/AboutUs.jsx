@@ -14,8 +14,8 @@ export default function AboutUs() {
                 {/* ── Text column ───────────────────────────── */}
                 <div className="flex flex-col justify-center ">
                     <h2 className=" text-3xl font-lora font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-5xl">
-                        <span className='text-cyan-600'>Trusted</span> by labs
-                        <br className="hidden sm:block" /> since 1962
+                        <span className='text-cyan-600'>Trusted</span> by Labs
+                        <br className="hidden sm:block" /> Since 1962
                     </h2>
 
                     <p className="mt-8 max-w-lg text-lg font-sans leading-relaxed text-zinc-800">

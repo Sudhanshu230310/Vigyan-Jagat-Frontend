@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import SearchIcon from "../../icons/Search";
+import Logo from "../../images/logo.png";
 
 const BackendURL = import.meta.env.VITE_BACKEND_URL;
 const IMAGE_BASE = import.meta.env.VITE_IMAGE_BASE_URL || BackendURL;
@@ -291,14 +292,12 @@ export function Navbar({ onToggleSidebar, onOpenMobileMenu }) {
           onClick={() => navigate("/")}
           className="cursor-pointer flex items-center gap-2"
         >
-          <div className="w-9 h-9 rounded-full bg-gradient-to-r from-cyan-500 to-cyan-600 flex items-center justify-center text-white font-bold">
-            S
-          </div>
 
           <div className="hidden sm:block">
-            <h1 className="text-zinc-900 font-semibold text-lg">
+            <img src={Logo} alt="Logo" className="w-28" />
+            {/* <h1 className="text-zinc-900 font-semibold text-lg">
               Shodh<span className="text-cyan-600">IX</span>
-            </h1>
+            </h1> */}
           </div>
         </div>
       </div>

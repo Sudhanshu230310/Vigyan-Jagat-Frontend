@@ -18,6 +18,20 @@ const pageBg = {
     backgroundAttachment: "fixed, scroll, scroll",
 };
 
+const FEATURED_BRANDS = [
+    "Systronics",
+    "Hanna Instruments",
+    "Glassco",
+    "Merck",
+    "Loba Chemie"
+];
+
+const getFeaturedIndex = (brandName) => {
+    if (!brandName) return -1;
+    const nameLower = brandName.trim().toLowerCase();
+    return FEATURED_BRANDS.findIndex(fb => fb.toLowerCase() === nameLower);
+};
+
 export default function BrandsPage() {
     const [brands, setBrands] = useState([]);
     const [status, setStatus] = useState("loading"); // loading | success | empty | error
@@ -54,8 +68,10 @@ export default function BrandsPage() {
         };
     }, []);
 
-    // Display maximum 8 brands in the home page section
-    const displayedBrands = brands.slice(0, 8);
+    // Filter & sort to show only specified featured brands in home page section
+    const displayedBrands = brands
+        .filter((b) => getFeaturedIndex(b.brand) !== -1)
+        .sort((a, b) => getFeaturedIndex(a.brand) - getFeaturedIndex(b.brand));
 
     function goToBrand(brand) {
         navigate(`/brands/${encodeURIComponent(brand)}`);
@@ -78,13 +94,13 @@ export default function BrandsPage() {
                             Our Brands
                         </div>
                         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-zinc-900 font-lora tracking-tight">
-                            Brands we{" "}
+                            Brands We{" "}
                             <span className="bg-gradient-to-r from-sky-600 to-cyan-600 bg-clip-text text-transparent">
-                                supply
+                                Supply
                             </span>
                         </h2>
                         <p className="mt-3 font-sans text-zinc-600 max-w-xl text-sm sm:text-base">
-                            Top laboratory equipment, chemical, and glassware manufacturers available in our catalog.
+                            Top Laboratory Equipment, Chemical, and Glassware Manufacturers available in our catalog.
                         </p>
                     </div>
 
@@ -171,7 +187,7 @@ export default function BrandsPage() {
                         </motion.div>
 
                         {/* Bottom CTA to View All */}
-                        {brands.length > 8 && (
+                        {brands.length > 0 && (
                             <div className="mt-10 text-center">
                                 <button
                                     onClick={() => navigate("/brands")}

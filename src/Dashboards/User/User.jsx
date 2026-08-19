@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import { Navbar } from "../../components/User/Navbar";
 import { Sidebar } from "../../components/User/Sidebar";
@@ -8,7 +9,7 @@ import { ScrollToTop } from "../../components/User/ScrollToTop";
 
 import { HeroBanner } from "../../components/User/Home/HeroBanner";
 import { Categories } from "../../components/User/Home/Categories";
-import WhyVigyanJagat from "../../components/User/Home/WhyVigyanJagat";
+import WhyShodhix from "../../components/User/Home/WhyShodhix";
 import AboutUs from "../../components/User/Home/AboutUs";
 import { Contact } from "../../components/User/Home/Contact";
 import BrandsPage from "../../components/User/Home/Brand";
@@ -16,9 +17,14 @@ import BrandsPage from "../../components/User/Home/Brand";
 export function UserHome() {
     return (
         <div>
+            <Helmet>
+                <title>ShodhIX | Laboratory Equipment, Chemicals &amp; Glassware — Since 1962</title>
+                <meta name="description" content="ShodhIX (Vigyan Jagat) — India's trusted supplier of laboratory equipment, chemicals, and scientific glassware since 1962. Serving universities, research institutes, hospitals, industries, and defence labs across India." />
+                <link rel="canonical" href="https://shodhix.com/" />
+            </Helmet>
             <HeroBanner />
             <Categories />
-            <WhyVigyanJagat />
+            <WhyShodhix />
             <AboutUs />
             <BrandsPage />
             <Contact />

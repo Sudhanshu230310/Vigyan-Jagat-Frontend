@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import { Beaker, Search, AlertCircle, ArrowLeft, Building2 } from "lucide-react";
 
 // Point this at your FastAPI backend
@@ -16,6 +17,20 @@ const pageBg = {
     backgroundImage: `linear-gradient(180deg, ${SKY_TOP} 0%, ${SKY_MID} 45%, ${SKY_BOTTOM} 100%), linear-gradient(${LINE_SOFT} 1px, transparent 1px), linear-gradient(90deg, ${LINE_SOFT} 1px, transparent 1px)`,
     backgroundSize: "auto, 28px 28px, 28px 28px",
     backgroundAttachment: "fixed, scroll, scroll",
+};
+
+const FEATURED_BRANDS = [
+    "Systronics",
+    "Hanna Instruments",
+    "Glassco",
+    "Merck",
+    "Loba Chemie"
+];
+
+const getFeaturedIndex = (brandName) => {
+    if (!brandName) return -1;
+    const nameLower = brandName.trim().toLowerCase();
+    return FEATURED_BRANDS.findIndex(fb => fb.toLowerCase() === nameLower);
 };
 
 export default function AllBrandsPage() {
@@ -55,7 +70,21 @@ export default function AllBrandsPage() {
         };
     }, []);
 
-    const filteredBrands = brands.filter((b) =>
+    // Sort featured brands to the top in priority order, then sort remaining brands alphabetically
+    const sortedBrands = [...brands].sort((a, b) => {
+        const indexA = getFeaturedIndex(a.brand);
+        const indexB = getFeaturedIndex(b.brand);
+
+        if (indexA !== -1 && indexB !== -1) {
+            return indexA - indexB;
+        }
+        if (indexA !== -1) return -1;
+        if (indexB !== -1) return 1;
+
+        return a.brand.localeCompare(b.brand);
+    });
+
+    const filteredBrands = sortedBrands.filter((b) =>
         b.brand.toLowerCase().includes(query.toLowerCase())
     );
 
@@ -65,6 +94,11 @@ export default function AllBrandsPage() {
 
     return (
         <div className="min-h-screen " style={pageBg}>
+            <Helmet>
+                <title>All Brands | Lab Equipment &amp; Chemical Suppliers — ShodhIX</title>
+                <meta name="description" content="Browse all laboratory equipment and chemical brands available on ShodhIX. Trusted suppliers of scientific instruments, glassware, and reagents for universities, research institutes and hospitals across India." />
+                <link rel="canonical" href="https://shodhix.com/brands" />
+            </Helmet>
             <div className="relative mx-auto px-6 md:px-12 lg:px-16 py-12">
                 {/* Back Button */}
                 <motion.div

@@ -19,7 +19,7 @@ import {
   Trash2
 } from "lucide-react";
 
-const BackendURL = import.meta.env.VITE_BACKEND_URL;
+const BackendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 export default function QuotesManagement() {
   const [quotes, setQuotes] = useState([]);
