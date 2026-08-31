@@ -45,6 +45,7 @@ export function HeroBanner() {
             className="text-5xl md:text-6xl font-lora font-bold text-black tracking-tight leading-[1.05]"
           >
             Shodh<span className="text-cyan-500">IX</span>
+            <span className="block mt-1 text-2xl font-lora font-semibold text-black tracking-wide leading-snug">A Vigyan Jagat Company</span>
           </motion.h1>
 
           {/* Tagline / description */}

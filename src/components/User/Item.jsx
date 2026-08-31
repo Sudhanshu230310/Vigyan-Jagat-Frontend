@@ -161,6 +161,8 @@ function SpecTable({ title, rows, onRequestVariantQuote }) {
                                                             </div>
                                                         ) : isPrice && val != null ? (
                                                             `₹ ${val}`
+                                                        ) : typeof val === 'object' && val !== null ? (
+                                                            JSON.stringify(val)
                                                         ) : (
                                                             val ?? "—"
                                                         )}
@@ -357,12 +359,36 @@ export default function Item() {
     if (!item) return null;
 
     const specs = item.specifications || {};
-    const scalarEntries = Object.entries(specs).filter(
-        ([, v]) => !Array.isArray(v)
-    );
-    const tableEntries = Object.entries(specs).filter(([, v]) =>
-        Array.isArray(v)
-    );
+    const scalarEntries = [];
+    const tableEntries = [];
+    const listEntries = [];
+
+    Object.entries(specs).forEach(([title, val]) => {
+        if (val === null || val === undefined) return;
+
+        if (Array.isArray(val)) {
+            if (val.length > 0) {
+                if (typeof val[0] === "object" && val[0] !== null) {
+                    tableEntries.push([title, val]);
+                } else {
+                    listEntries.push([title, val.map((item) => String(item))]);
+                }
+            }
+        } else if (typeof val === "object") {
+            Object.entries(val).forEach(([subKey, subVal]) => {
+                if (subVal !== null && subVal !== undefined) {
+                    if (typeof subVal === "object") {
+                        scalarEntries.push([subKey, JSON.stringify(subVal)]);
+                    } else {
+                        scalarEntries.push([subKey, String(subVal)]);
+                    }
+                }
+            });
+        } else {
+            scalarEntries.push([title, String(val)]);
+        }
+    });
+
     const images = (Array.isArray(item.images) ? item.images : []).filter(Boolean);
     const hasImages = images.length > 0;
 
@@ -480,12 +506,34 @@ export default function Item() {
                                                 key={key}
                                                 className="bg-zinc-50/80 border border-zinc-200/80 rounded-2xl p-3.5 flex flex-col hover:border-cyan-400/50 hover:bg-white transition-all duration-200"
                                             >
-                                                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-semibold mb-1">
+                                                <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 font-semibold mb-1 truncate" title={key}>
                                                     {key}
                                                 </span>
-                                                <span className="font-bold text-zinc-800 text-sm capitalize truncate">
-                                                    {value}
+                                                <span className="font-bold text-zinc-800 text-sm capitalize truncate" title={typeof value === 'object' ? JSON.stringify(value) : String(value)}>
+                                                    {typeof value === 'object' ? JSON.stringify(value) : String(value)}
                                                 </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Feature Lists / Applications / Bullet Specs */}
+                                {listEntries.length > 0 && (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+                                        {listEntries.map(([title, items]) => (
+                                            <div key={title} className="bg-zinc-50/70 border border-zinc-200/80 rounded-2xl p-4">
+                                                <h3 className="text-xs font-mono uppercase tracking-wider text-cyan-900 font-bold mb-3 flex items-center gap-2">
+                                                    <span className="w-2 h-2 bg-cyan-600 rounded-full shrink-0" />
+                                                    {title}
+                                                </h3>
+                                                <ul className="space-y-2">
+                                                    {items.map((itemStr, idx) => (
+                                                        <li key={idx} className="flex items-start gap-2 text-xs text-zinc-700 leading-relaxed">
+                                                            <CheckCircle2 className="size-3.5 text-cyan-600 shrink-0 mt-0.5" />
+                                                            <span>{itemStr}</span>
+                                                        </li>
+                                                    ))}
+                                                </ul>
                                             </div>
                                         ))}
                                     </div>

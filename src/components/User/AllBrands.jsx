@@ -20,11 +20,15 @@ const pageBg = {
 };
 
 const FEATURED_BRANDS = [
-    "Systronics",
-    "Hanna Instruments",
-    "Glassco",
     "Merck",
-    "Loba Chemie"
+    "Loba Chemie",
+    "Hanna Instruments",
+    "Systronics",
+    "Glassco",
+    "Tarsons",
+    "Whatman",
+    "Tecan",
+    "Shimadzu"
 ];
 
 const getFeaturedIndex = (brandName) => {

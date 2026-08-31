@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <title>Shodhix Icon</title>
+  <desc>Stylized Shodhix x with an orbital research motif</desc>
+
+  <!-- Clean white background -->
+  <rect width="512" height="512" rx="96" fill="#FFFFFF"/>
+
+  <!-- Orbital ring -->
+  <path d="M104 292
+           C88 208 143 118 229 91
+           C316 64 411 105 448 184"
+        fill="none" stroke="#10A9DE" stroke-width="24"
+        stroke-linecap="round"/>
+
+  <path d="M448 184
+           C474 246 462 318 420 371
+           C365 440 267 460 190 425"
+        fill="none" stroke="#10A9DE" stroke-width="24"
+        stroke-linecap="round"/>
+
+  <!-- Orbiting dots -->
+  <circle cx="425" cy="163" r="25" fill="#10A9DE"/>
+  <circle cx="155" cy="384" r="21" fill="#10A9DE"/>
+  <circle cx="148" cy="178" r="25" fill="#10A9DE"/>
+
+  <!-- Central X -->
+  <path d="M184 174 L238 174 L302 260 L366 174 L420 174
+           L330 290 L418 382 L363 382 L302 320 L241 382
+           L186 382 L274 290 Z"
+        fill="#102F6B"/>
+
+  <!-- Subtle cyan inner accent -->
+  <path d="M302 260 L330 290 L302 320 L274 290 Z"
+        fill="#10A9DE"/>
+</svg>

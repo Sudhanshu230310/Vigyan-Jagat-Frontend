@@ -20,7 +20,7 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         const adminEmail = import.meta.env.VITE_ADMIN_EMAIL || import.meta.env.ADMIN_EMAIL;
         const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || import.meta.env.ADMIN_PASSWORD;
 
@@ -37,12 +37,12 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen w-full flex items-center justify-center">
-            <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="min-h-screen w-full">
+            <div className="w-full min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch">
                 {/* Left column */}
-                <div className="px-10 h-full flex flex-col w-full bg-cyan-100">
-                    <div onClick={() => { navigate("/") }} className="relative cursor-pointer top-0 pt-10">ShodhIX</div>
-                    <div className="relative top-28">
+                <div className="px-6 lg:px-10 min-h-[280px] lg:min-h-screen flex flex-col w-full bg-cyan-100 py-10 lg:py-0">
+                    <div onClick={() => { navigate("/") }} className="cursor-pointer pt-2 lg:pt-10 text-2xl font-bold"><span className="text-cyan-500">S</span>hodhIX</div>
+                    <div className="flex-1 flex flex-col justify-center py-8 lg:py-0 mt-10 lg:mt-0">
                         <p className="text-[13px] font-semibold tracking-widest text-[#3FAE8C] mb-4">
                             WELCOME BACK
                         </p>
@@ -79,7 +79,7 @@ export default function Login() {
                 </div>
 
                 {/* Right column - form card */}
-                <div className="bg-white h-[95vh] w-full flex flex-col justify-center rounded-2xl shadow-sm p-8 md:p-9 ">
+                <div className="bg-white w-full flex flex-col justify-center lg:min-h-screen shadow-sm p-6 sm:p-8 md:p-10 lg:p-12">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {error && (
                             <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">

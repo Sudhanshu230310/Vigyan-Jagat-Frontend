@@ -108,7 +108,7 @@ export default function InstituteInquiryForm() {
                 </p>
             </div>
 
-            <div className="max-w-3xl">
+            <div className="w-full">
                 {/* Success banner */}
                 <AnimatePresence>
                     {submitted && lastSubmitted && (
