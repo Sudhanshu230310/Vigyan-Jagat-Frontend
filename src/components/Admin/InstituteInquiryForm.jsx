@@ -9,12 +9,18 @@ import {
     Loader2,
     CheckCircle2,
     RotateCcw,
+    User,
+    Mail,
+    Phone,
 } from "lucide-react";
 import axios from "axios";
 
 const BackendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 const EMPTY_FORM = {
+    name: "",
+    email: "",
+    contact: "",
     institute_name: "",
     department: "",
     frequent_items: "",
@@ -23,11 +29,42 @@ const EMPTY_FORM = {
 
 const fields = [
     {
+        id: "name",
+        label: "Contact Person Name",
+        placeholder: "e.g. Dr. Ramesh Kumar",
+        icon: User,
+        type: "input",
+        inputType: "text",
+        required: true,
+        col: "third",
+    },
+    {
+        id: "email",
+        label: "Email Address",
+        placeholder: "e.g. ramesh@iitd.ac.in",
+        icon: Mail,
+        type: "input",
+        inputType: "email",
+        required: true,
+        col: "third",
+    },
+    {
+        id: "contact",
+        label: "Phone / Contact Number",
+        placeholder: "e.g. +91 98765 43210",
+        icon: Phone,
+        type: "input",
+        inputType: "tel",
+        required: true,
+        col: "third",
+    },
+    {
         id: "institute_name",
         label: "Institute Name",
         placeholder: "e.g. IIT Delhi, AIIMS Patna, DRDO",
         icon: Building2,
         type: "input",
+        inputType: "text",
         required: true,
         col: "half",
     },
@@ -37,6 +74,7 @@ const fields = [
         placeholder: "e.g. Chemistry, Biochemistry, Physics",
         icon: Layers,
         type: "input",
+        inputType: "text",
         required: true,
         col: "half",
     },
@@ -148,14 +186,17 @@ export default function InstituteInquiryForm() {
 
                     <form onSubmit={handleSubmit} className="p-6 md:p-8">
                         {/* Two-column grid for short inputs, full-width for textareas */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className="grid grid-cols-1 md:grid-cols-6 gap-5">
                             {fields.map((field) => {
                                 const Icon = field.icon;
+                                const colSpan =
+                                    field.col === "full"
+                                        ? "md:col-span-6"
+                                        : field.col === "half"
+                                        ? "md:col-span-3"
+                                        : "md:col-span-2";
                                 return (
-                                    <div
-                                        key={field.id}
-                                        className={field.col === "full" ? "md:col-span-2" : ""}
-                                    >
+                                    <div key={field.id} className={colSpan}>
                                         <label
                                             htmlFor={`admin-${field.id}`}
                                             className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2"
@@ -173,7 +214,7 @@ export default function InstituteInquiryForm() {
                                             <input
                                                 id={`admin-${field.id}`}
                                                 name={field.id}
-                                                type="text"
+                                                type={field.inputType || "text"}
                                                 required={field.required}
                                                 value={form[field.id]}
                                                 onChange={handleChange}

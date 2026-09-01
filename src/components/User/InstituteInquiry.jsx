@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import { Building2, Layers, FlaskConical, Settings, Send, Loader2, CheckCircle2, ArrowLeft } from "lucide-react";
+import { Building2, Layers, FlaskConical, Settings, Send, Loader2, CheckCircle2, ArrowLeft, User, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -21,11 +21,39 @@ const pageBg = {
 
 const fields = [
     {
+        id: "name",
+        label: "Contact Person Name",
+        placeholder: "e.g. Dr. Ramesh Kumar",
+        icon: User,
+        type: "input",
+        inputType: "text",
+        required: true,
+    },
+    {
+        id: "email",
+        label: "Email Address",
+        placeholder: "e.g. ramesh@iitd.ac.in",
+        icon: Mail,
+        type: "input",
+        inputType: "email",
+        required: true,
+    },
+    {
+        id: "contact",
+        label: "Phone / Contact Number",
+        placeholder: "e.g. +91 98765 43210",
+        icon: Phone,
+        type: "input",
+        inputType: "tel",
+        required: true,
+    },
+    {
         id: "institute_name",
         label: "Institute Name",
         placeholder: "e.g. IIT Delhi, AIIMS Patna, DRDO",
         icon: Building2,
         type: "input",
+        inputType: "text",
         required: true,
     },
     {
@@ -34,6 +62,7 @@ const fields = [
         placeholder: "e.g. Chemistry, Biochemistry, Physics",
         icon: Layers,
         type: "input",
+        inputType: "text",
         required: true,
     },
     {
@@ -58,6 +87,9 @@ const fields = [
 
 export default function InstituteInquiry() {
     const [form, setForm] = useState({
+        name: "",
+        email: "",
+        contact: "",
         institute_name: "",
         department: "",
         frequent_items: "",
@@ -162,7 +194,7 @@ export default function InstituteInquiry() {
                                 <button
                                     onClick={() => {
                                         setSubmitted(false);
-                                        setForm({ institute_name: "", department: "", frequent_items: "", customization: "" });
+                                        setForm({ name: "", email: "", contact: "", institute_name: "", department: "", frequent_items: "", customization: "" });
                                     }}
                                     className="px-6 py-2.5 rounded-xl border border-zinc-200 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 transition-colors cursor-pointer"
                                 >
@@ -213,7 +245,7 @@ export default function InstituteInquiry() {
                                                 <input
                                                     id={field.id}
                                                     name={field.id}
-                                                    type="text"
+                                                    type={field.inputType || "text"}
                                                     required={field.required}
                                                     value={form[field.id]}
                                                     onChange={handleChange}

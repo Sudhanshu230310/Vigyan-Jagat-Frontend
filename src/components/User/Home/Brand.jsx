@@ -23,8 +23,11 @@ const FEATURED_BRANDS = [
     "Loba Chemie",
     "Hanna Instruments",
     "Systronics",
-    "Glassco",
     "Eppendorf",
+    "ZEISS",
+    "Sartorius",
+    "HiMedia",
+    "Glassco",
     "Tarsons",
     "Whatman",
     "Tecan",
@@ -158,7 +161,7 @@ export default function BrandsPage() {
                                 hidden: {},
                                 visible: { transition: { staggerChildren: 0.04 } },
                             }}
-                            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"
+                            className="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-7 gap-4"
                         >
                             {displayedBrands.map((b) => (
                                 <motion.div

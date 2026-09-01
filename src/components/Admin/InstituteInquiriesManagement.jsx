@@ -16,6 +16,9 @@ import {
     ClipboardList,
     ChevronDown,
     ChevronUp,
+    User,
+    Mail,
+    Phone,
 } from "lucide-react";
 
 const BackendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
@@ -71,7 +74,10 @@ function DetailModal({ inquiry, onClose }) {
                     </div>
 
                     {/* Modal body */}
-                    <div className="px-6 py-5 space-y-5">
+                    <div className="px-6 py-5 space-y-4">
+                        <Row icon={User} label="Contact Person" value={inquiry.name || "—"} />
+                        <Row icon={Mail} label="Email Address" value={inquiry.email || "—"} />
+                        <Row icon={Phone} label="Contact Number" value={inquiry.contact || "—"} />
                         <Row icon={Building2} label="Institute" value={inquiry.institute_name} />
                         <Row icon={Layers} label="Department" value={inquiry.department} />
                         <Row icon={FlaskConical} label="Frequent Items" value={inquiry.frequent_items} multiline />
@@ -162,6 +168,9 @@ export default function InstituteInquiriesManagement() {
         const q = searchQuery.toLowerCase();
         return inquiries.filter(
             (i) =>
+                i.name?.toLowerCase().includes(q) ||
+                i.email?.toLowerCase().includes(q) ||
+                i.contact?.toLowerCase().includes(q) ||
                 i.institute_name?.toLowerCase().includes(q) ||
                 i.department?.toLowerCase().includes(q) ||
                 i.frequent_items?.toLowerCase().includes(q) ||
@@ -200,7 +209,7 @@ export default function InstituteInquiriesManagement() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search by institute, department, or items..."
+                    placeholder="Search by name, email, contact, institute, or department..."
                     className="w-full pl-11 pr-4 py-3 rounded-xl border border-zinc-200 bg-white text-sm text-slate-700 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent shadow-sm"
                 />
             </div>
@@ -285,7 +294,25 @@ export default function InstituteInquiriesManagement() {
                                 </div>
 
                                 {/* Fields */}
-                                <div className="space-y-2.5 mb-4">
+                                <div className="space-y-2 mb-4">
+                                    {inq.name && (
+                                        <div className="flex items-center gap-2 text-xs font-semibold text-slate-800">
+                                            <User className="size-3.5 text-cyan-600 flex-shrink-0" />
+                                            <span className="truncate">{inq.name}</span>
+                                        </div>
+                                    )}
+                                    {inq.email && (
+                                        <div className="flex items-center gap-2 text-xs text-slate-500">
+                                            <Mail className="size-3.5 text-zinc-400 flex-shrink-0" />
+                                            <span className="truncate">{inq.email}</span>
+                                        </div>
+                                    )}
+                                    {inq.contact && (
+                                        <div className="flex items-center gap-2 text-xs text-slate-500">
+                                            <Phone className="size-3.5 text-zinc-400 flex-shrink-0" />
+                                            <span className="truncate">{inq.contact}</span>
+                                        </div>
+                                    )}
                                     <div className="flex items-center gap-2 text-xs text-slate-500">
                                         <Layers className="size-3.5 text-zinc-400 flex-shrink-0" />
                                         <span className="truncate">{inq.department}</span>
